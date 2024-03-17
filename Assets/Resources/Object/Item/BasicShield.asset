@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c30f18dd725cb47498e530deb87e4ece, type: 3}
+  m_Name: BasicShield
+  m_EditorClassIdentifier: 
+  itemNumber: 0
+  itemType: 0
+  itemName: BasicShield
+  description: This Item is Shield
+  itemWeight: 10
+  itemImege: {fileID: 21300000, guid: c67f6060700f79d4f842b3632c073ff9, type: 3}
+  shopPrice: 10000
+  sellPrice: 1000
+  FieldObject: {fileID: 9175119176896634117, guid: 63edf1e69a8d2e241a07f602d87eb6fe, type: 3}
+  equipType: 2
+  attack: 2
+  defence: 15
+  health: 5
+  mana: 5
+  equipItemObject: {fileID: 4050696871110514351, guid: 7eb43165bdc407d4984fbb4cc44b0d28, type: 3}
+  offset: {x: 0, y: 0, z: 0}
+  mesh: {fileID: -1272481795433867914, guid: ecf95f1ffbb96ce49a04f1b12783ca55, type: 3}

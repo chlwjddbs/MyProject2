@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Setting_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 02219cffbb409504f93d782de0fb6cc1, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 125625049088
+    m_Localized: Setting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46908250136576
+    m_Localized: Audio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5241446998016
+    m_Localized: Video
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13116303089664
+    m_Localized: ScreenMode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13701232336896
+    m_Localized: Change_Revolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13859063996416
+    m_Localized: Sort_Revolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14127088410624
+    m_Localized: FullScreen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19782230745088
+    m_Localized: MaximizedWindow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19798777274368
+    m_Localized: Window
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19802396958720
+    m_Localized: All
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20074187857920
+    m_Localized: Sort_[16:9]
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20119582810112
+    m_Localized: Sort_[16:10]
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46918412935168
+    m_Localized: MasterVolume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46920489115648
+    m_Localized: BGM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46921277644800
+    m_Localized: SFX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46921994870784
+    m_Localized: Ambient
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46922720485376
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46924612116480
+    m_Localized: Current Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 46925367091200
+    m_Localized: Chage Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 328629474435072
+    m_Localized: Control
+    m_Metadata:
+      m_Items: []
+  - m_Id: 328631940685824
+    m_Localized: PlayKey
+    m_Metadata:
+      m_Items: []
+  - m_Id: 328633576464384
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 328632792129536
+    m_Localized: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 328634398547968
+    m_Localized: Reset
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: GameUI Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: GameUI
+  m_TableCollectionNameGuidString: 833695393e9287b4fbb02bccff844d90
+  m_Entries:
+  - m_Id: 6951411712
+    m_Key: SkillBook
+    m_Metadata:
+      m_Items: []
+  - m_Id: 277853118464
+    m_Key: Inventory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9112072364032
+    m_Key: Status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9585424736256
+    m_Key: Drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10260439244800
+    m_Key: DropEA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10668440166400
+    m_Key: OK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10699931000832
+    m_Key: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15877308555264
+    m_Key: GateList
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380153332375552
+    m_Key: Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380204322529280
+    m_Key: Exp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380205891198976
+    m_Key: HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380206746836992
+    m_Key: MP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380207375982592
+    m_Key: Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380208005128192
+    m_Key: Defence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380284416958464
+    m_Key: MoveSpeed
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4635717085626630166
+  references:
+    version: 2
+    RefIds:
+    - rid: 4635717085626630166
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1707212708193

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffd3836cbba80cf4dbffb1b2f7edac34, type: 3}
+  m_Name: SmallPotion
+  m_EditorClassIdentifier: 
+  itemNumber: 5001
+  itemType: 2
+  itemName: SmallPotion
+  description: This item restores a 100 point of HP to the player.
+  itemWeight: 0.1
+  itemImege: {fileID: 21300000, guid: b2afa56667af6a249ba292fc371eb496, type: 3}
+  shopPrice: 100
+  sellPrice: 50
+  FieldObject: {fileID: 8920798932221935012, guid: 8e7e4d76789694a43a92e8559860aa36, type: 3}
+  potionTpye: 0
+  ownershipLimit: 15
+  quntity: 0
+  recoveryPoint: 15

@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: MainMenu Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: MainMenu
+  m_TableCollectionNameGuidString: f5ed4cfcd6909e94396163ca53afddf4
+  m_Entries:
+  - m_Id: 78942445568
+    m_Key: Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3719279550464
+    m_Key: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4101112209408
+    m_Key: Setting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4179596025856
+    m_Key: Ect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4243676602368
+    m_Key: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7594128239370240
+    m_Key: GameStart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7965694252949504
+    m_Key: Naming
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7967081128927232
+    m_Key: NameNotaVailable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7971545197977600
+    m_Key: NameConfirmed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8311254776422400
+    m_Key: NameEnter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17328173529571328
+    m_Key: Load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17328209093074944
+    m_Key: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17332635824431104
+    m_Key: MainMenuScreen
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 6875598355275972622
+  references:
+    version: 2
+    RefIds:
+    - rid: 6875598355275972622
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1699868305171

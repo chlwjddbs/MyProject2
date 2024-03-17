@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f70407b0e96ad4aa58c5c71dfec170, type: 3}
+  m_Name: HolyStrike 7
+  m_EditorClassIdentifier: 
+  itemNumber: 0
+  itemType: 4
+  itemName: TestSKill_Book
+  description: 
+  itemWeight: 0
+  itemImege: {fileID: 21300000, guid: 7d0db3a719d4ecb4d944bab596d811ab, type: 3}
+  shopPrice: 0
+  sellPrice: 0
+  FieldObject: {fileID: 9120395849000409295, guid: e75e09cc19e123c4b9577483f422fac1, type: 3}
+  skillName: TestSKill
+  skillType: 0
+  skill: {fileID: 680774134242604639, guid: e676ad8e9c7f3304dbee2f75e7984d6b, type: 3}

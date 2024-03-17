@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: MainMenu_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: f5ed4cfcd6909e94396163ca53afddf4, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 78942445568
+    m_Localized: Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3719279550464
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4101112209408
+    m_Localized: Setting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4179596025856
+    m_Localized: Etc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4243676602368
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7594128239370240
+    m_Localized: Game Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7965694252949504
+    m_Localized: Please enter the name.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7967081128927232
+    m_Localized: 'special characters and
+
+      Spaces cannot be used.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7971545197977600
+    m_Localized: 'Any available name.
+
+      Are you going to start game?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8311254776422400
+    m_Localized: Enter the name you want to use.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17328173529571328
+    m_Localized: Load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17328209093074944
+    m_Localized: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17332635824431104
+    m_Localized: Main Menu
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

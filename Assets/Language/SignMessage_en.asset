@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SignMessage_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 170212fb3206d924d91a4a8026e7caf1, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 100761214976
+    m_Localized: The sign reads, "you have acquired the item, open the inventory
+      and equip it."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12382497021952
+    m_Localized: The sign reads, "When the teleport gate is connected, fast movement
+      is possible."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14605960486912
+    m_Localized: The sign reads,"If you use hp potion, you can recover your hp"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15733062246400
+    m_Localized: The sign reads, "Learn skill using skill books."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16062881341440
+    m_Localized: 'The sign reads, "Danger: the way of the dead"'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27554573852672
+    m_Localized: It's a skill I've already learned.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45839067521024
+    m_Localized: This is the current location. Please select a different gate.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 47193525723136
+    m_Localized: There are no connected gates.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48046441635840
+    m_Localized: Select a gate to move to.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48732432637952
+    m_Localized: You found a new Teleport Gate.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49076445257728
+    m_Localized: No stored gate information
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49343085551616
+    m_Localized: Not enough mana.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57639838294016
+    m_Localized: You feel an unknown force to the door...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59248815251456
+    m_Localized: Not available...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60615504044032
+    m_Localized: skill being prepared...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61140219863040
+    m_Localized: It can't be released during cooltime.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 61648141688832
+    m_Localized: This skill can't be equip in a slots with Cooltime remaining.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64905106825216
+    m_Localized: The sign reads, "When shine the brightest..."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

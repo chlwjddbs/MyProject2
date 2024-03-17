@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: GameUI_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 833695393e9287b4fbb02bccff844d90, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 6951411712
+    m_Localized: SkillBook
+    m_Metadata:
+      m_Items: []
+  - m_Id: 277853118464
+    m_Localized: Inventory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9112072364032
+    m_Localized: Status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9585424736256
+    m_Localized: Drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10260439244800
+    m_Localized: 'EA :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10668440166400
+    m_Localized: OK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10699931000832
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15877308555264
+    m_Localized: Gate List
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380153332375552
+    m_Localized: 'Lv :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380204322529280
+    m_Localized: 'Exp :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380205891198976
+    m_Localized: 'HP :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380206746836992
+    m_Localized: 'MP :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380207375982592
+    m_Localized: 'Attack :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380208005128192
+    m_Localized: 'Defence : '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 380284416958464
+    m_Localized: 'MoveSpeed :'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

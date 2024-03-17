@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Assets-Shared
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-Assets-Shared
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 17134f5816138a241bc0a9771f7410de
+  m_SerializeEntries:
+  - m_GUID: f5ed4cfcd6909e94396163ca53afddf4
+    m_Address: Assets/Language/New Table Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 02219cffbb409504f93d782de0fb6cc1
+    m_Address: Assets/Language/New Table 1 Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 49a5f5e3743e365479cf427b3a1e3ab6
+    m_Address: Assets/Language/SettingTab Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 43bf38c392e49c44994e56c79b1aca2f
+    m_Address: Assets/Language/MenuGuideText Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 75a3612c8bcdc9641a0617a5e695e64c
+    m_Address: Assets/Language/General Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: d0a34ad19721afe46b05bf66c7b81371
+    m_Address: Assets/Language/SavaInfo Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: f5ace9a2d1a397846b7652b90ca8aab0
+    m_Address: Assets/Language/PopupUI Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 833695393e9287b4fbb02bccff844d90
+    m_Address: Assets/Language/GameUI Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 8efbccde52ee1aa4f9736892f602a5fd
+    m_Address: Assets/Language/ItemName Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 170212fb3206d924d91a4a8026e7caf1
+    m_Address: Assets/Language/SignMessage Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 96bacd6755000bd4da7267e6da3bb3c9
+    m_Address: Assets/Language/SkillName Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: e474570b75777d940b904fa333ab8a5d
+    m_Address: Assets/Language/GateName Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 5abc97afe0b7072489f6ee8b6808c52f, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 53a7b861df7a1e249b7d33888765c352, type: 2}
+    - {fileID: 11400000, guid: 2d9efa9b24d53214ebb303a43aba8e43, type: 2}

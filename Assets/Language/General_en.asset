@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: General_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 75a3612c8bcdc9641a0617a5e695e64c, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 47619383296
+    m_Localized: OK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24894644224
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5451550719090688
+    m_Localized: "\rTo delete the selected data, \npress the OK button."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5832819420307456
+    m_Localized: Save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5832893261029376
+    m_Localized: Load
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5832957811367936
+    m_Localized: Delete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5833284547649536
+    m_Localized: Load Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9686353194655744
+    m_Localized: "Are you sure you want to save \nit to the selected slot?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9687490023006208
+    m_Localized: "If you save the game, \nthe existing data will be deleted."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10050817337204736
+    m_Localized: Save Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10054363218583552
+    m_Localized: "When you Load in a new game, \nyou lose unsaved information."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10506532879212544
+    m_Localized: "Do you want to return \nto the main menu?\r\nyou lose unsaved information."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10515516205965312
+    m_Localized: Do you want to quit game?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10517645616357376
+    m_Localized: 'Do you want to quit game?
+
+      you lose unsaved information.'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

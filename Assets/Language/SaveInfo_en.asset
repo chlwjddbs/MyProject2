@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SaveInfo_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: d0a34ad19721afe46b05bf66c7b81371, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 11619672064
+    m_Localized: Auto save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 88274771968
+    m_Localized: Empty slot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 909364305920
+    m_Localized: 1st floor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 342479028494336
+    m_Localized: 2nd floor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 342482077753344
+    m_Localized: 3rd floor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 342485286395904
+    m_Localized: 4th floor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343259437473792
+    m_Localized: 5th floor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 348334260101120
+    m_Localized: Secret garden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362682428825600
+    m_Localized: Gubnae's Nest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 362795448541184
+    m_Localized: Entrance of the tower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 363725959077888
+    m_Localized: 15th floor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2559395851804672
+    m_Localized: First Vilige
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2898186860896256
+    m_Localized: floor
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

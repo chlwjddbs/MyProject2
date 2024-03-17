@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c30f18dd725cb47498e530deb87e4ece, type: 3}
+  m_Name: BasicSword
+  m_EditorClassIdentifier: 
+  itemNumber: 0
+  itemType: 0
+  itemName: BasicSword
+  description: This Item is Attack
+  itemWeight: 5
+  itemImege: {fileID: 21300000, guid: 009d4fc67f3ecc341a5229c548eea9a0, type: 3}
+  shopPrice: 10000
+  sellPrice: 1000
+  FieldObject: {fileID: 2876747046983046180, guid: b6e8444cea0de7848b328479f8b8ebea, type: 3}
+  equipType: 1
+  attack: 5
+  defence: 1
+  health: 0
+  mana: 0
+  equipItemObject: {fileID: 5275554661986837747, guid: cf89fe0c53082694eb8286cae695306c, type: 3}
+  offset: {x: 0, y: 0, z: 0}
+  mesh: {fileID: 4300004, guid: 3516e17d3fd70f8439b3c891e931ace3, type: 3}
+  attackClip: {fileID: 7400000, guid: 29b06588bceda1f47a3128ceb25f65d0, type: 2}

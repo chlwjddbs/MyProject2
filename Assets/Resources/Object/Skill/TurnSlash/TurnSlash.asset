@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f70407b0e96ad4aa58c5c71dfec170, type: 3}
+  m_Name: TurnSlash
+  m_EditorClassIdentifier: 
+  itemNumber: 0
+  itemType: 4
+  itemName: TurnSlash_Book
+  description: attackDamagex2
+  itemWeight: 0
+  itemImege: {fileID: 21300000, guid: a943077fe1913d349a50a7d8dec25b2a, type: 3}
+  shopPrice: 0
+  sellPrice: 0
+  FieldObject: {fileID: 9120395849000409295, guid: 63b539c744522da4a910d44efa1808a3, type: 3}
+  skillName: TurnSlash
+  skillType: 0
+  skill: {fileID: 680774134242604639, guid: b9439f3ab697e96438d55a21cc466989, type: 3}
+  skillSound:
+    name: TurnSlash
+    clip: {fileID: 8300000, guid: 707639fa619d7204eb22cd8b6270f95f, type: 3}
+    volume: 0.3
+    pitch: 1
+    loop: 0
+    soundType: 1
+    playOnAwake: 0
+    source: {fileID: 0}
