@@ -21,6 +21,10 @@ public class TestScript : MonoBehaviour
 
     public List<int> testList = new List<int>();
     public int[] testArray;
+
+    public string num_str;
+    public int answer = 0;
+    List<string> num_strs = new List<string>();
     // Start is called before the first frame update
     void Start()
     {
@@ -36,8 +40,28 @@ public class TestScript : MonoBehaviour
         Debug.Log((a3 - a).normalized);
         Debug.Log((a4 - a).normalized);
         */
-        Num();
-        Nums();
+        //Num();
+        //Nums();
+
+        num_str = "132451";
+
+        
+
+        foreach (var item in num_str)
+        {
+            answer += int.Parse(item.ToString());
+        }
+        
+        /*
+        for (int i = 0; i < num_strs.Count; i++)
+        {
+            int an = int.Parse(num_strs[i]);
+            answer += an;
+        }
+        */
+        
+
+        Debug.Log(answer);
     }
 
     // Update is called once per frame
