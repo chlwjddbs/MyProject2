@@ -112,6 +112,7 @@ public class MainSceneMenu : MainMenu
     public override void MenuClose(GameObject _closeMenu)
     {
         _closeMenu.SetActive(false);
+        //_closeMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(1920, 0);
         MainMenuObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
         tempMenu = MainMenuObj;
     }

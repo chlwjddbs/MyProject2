@@ -98,12 +98,13 @@ public class GameSceneMenu : MainMenu
 
     //열려있는 UI가 있을시 UI창만 닫고
     //열려있는 UI가 없으면 Menu를 불러온다.
-    public bool InGameUIOpenCheck()
+    public override bool InGameUIOpenCheck()
     {
         if (GetComponent<InventoryUI>().UIOpenCheck()) return true;
         if (GetComponent<EquipmentUI>().UIOpenCheck()) return true;
         if (GetComponent<SkillBookUI>().UIOpenCheck()) return true;
         if (PlayerController.isCasting) return true;
+        if (ControlOption.isChaning) return true;
         return false;
     }
 

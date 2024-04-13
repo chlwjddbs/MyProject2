@@ -71,7 +71,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
             CoolTimeAlarm();
 
             //keyCode를 누를 시 스킬 발동
-            if (Input.GetKeyDown(keyCode))
+            if (Input.GetButtonDown(keyCode))
             {
                 //플레이어가 액션을 취하지 않거나 쿨타임이 찼을 경우
                 if (UseButton())

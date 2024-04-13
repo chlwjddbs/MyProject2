@@ -63,6 +63,10 @@ public class MainMenu : MonoBehaviour
         //Esc를 눌렀을때
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (InGameUIOpenCheck())
+            {
+                return;
+            }
             //현재 메인 화면에 있다면 게임을 종료 할것인지 물어본다.
             if(tempMenu == MainMenuObj)
             {
@@ -137,5 +141,11 @@ public class MainMenu : MonoBehaviour
     {
         //popup.SetActive(false);
         Destroy(popup);
+    }
+
+    public virtual bool InGameUIOpenCheck()
+    {
+        if (ControlOption.isChaning) return true;
+        return false;
     }
 }
