@@ -24,6 +24,7 @@ public class OptionManager : MonoBehaviour
 
     public VideoOption videoOption;
     public AudioOption audioOption;
+    public ControllOption controllOption;
     public LanguageOption languageOption;
 
     private string screenMode = null;
@@ -61,6 +62,7 @@ public class OptionManager : MonoBehaviour
     {
         videoOption.GameStart();
         audioOption.GameStart();
+        controllOption.GameStart();
         languageOption.GameStart();
 
         //저장된 세팅을 불러오면서 세팅 값이 바뀌는데 바뀐 값이 임시 리스트에 저장된걸 지워준다.

@@ -104,7 +104,7 @@ public class GameSceneMenu : MainMenu
         if (GetComponent<EquipmentUI>().UIOpenCheck()) return true;
         if (GetComponent<SkillBookUI>().UIOpenCheck()) return true;
         if (PlayerController.isCasting) return true;
-        if (ControlOption.isChaning) return true;
+        if (ControllOption.isChanging) return true;
         return false;
     }
 

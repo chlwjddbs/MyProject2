@@ -145,7 +145,7 @@ public class MainMenu : MonoBehaviour
 
     public virtual bool InGameUIOpenCheck()
     {
-        if (ControlOption.isChaning) return true;
+        if (ControllOption.isChanging) return true;
         return false;
     }
 }

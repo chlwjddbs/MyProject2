@@ -20,8 +20,8 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     //장착 된 스킬이 들어갈 위치
     public Transform skillPos;
     
-    //해당 버튼의 트리거 버튼
-    public UserKey keyCode;
+    //해당 버튼의 옵션
+    public KeyOption keyOption;
 
     [SerializeField] private TextMeshProUGUI keyCodeText;
 
@@ -64,7 +64,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
 
     private bool usetext = true;
 
-    private ControlOption controlOption;
+    private ControllOption controlOption;
 
     // Update is called once per frame
     void Update()
@@ -74,8 +74,8 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         {
             CoolTimeAlarm();
 
-            //keyCode를 누를 시 스킬 발동
-            if (Input.GetKeyDown(controlOption.inputDic[keyCode].connectedCode))
+            //keyOption에 할당된 keycode를 눌렀을 시 스킬 사용.
+            if (Input.GetKeyDown(controlOption.bindKey_Dic[keyOption].bindKey))
             {
                 //플레이어가 액션을 취하지 않거나 쿨타임이 찼을 경우
                 if (UseButton())
@@ -99,16 +99,16 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     //KeyCode가 변경 되었을때 변경된 KeyCode를 표시해준다.
     public void ChangeKeyCode()
     {
-        if (controlOption.inputDic.TryGetValue(keyCode, out InputKeyInfo vale))
+        if (controlOption.bindKey_Dic.TryGetValue(keyOption, out KeyOptionInfo vale))
         {
-            keyCodeText.text = vale.connectedCode.ToString();
+            keyCodeText.text = vale.bindKey.ToString();
         }
     }
 
     //DataSetting
     public void SetData()
     {
-        controlOption = ControlOption.instance;
+        controlOption = ControllOption.instance;
         controlOption.changeKeyCode += ChangeKeyCode;
 
         //처음 데이터가 세팅되면 스킬 이미지, 남은 쿨타임을 표시해주는 text, 남을 쿨타임을 보여주는 Filled를 모두 초기화 해준다.

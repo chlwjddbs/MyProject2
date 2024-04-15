@@ -318,3 +318,8 @@ public class UserData
     public List<bool> openGate;
     #endregion
 }
+
+public class BindKeyData
+{
+    
+}
