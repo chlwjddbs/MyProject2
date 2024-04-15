@@ -1,0 +1,142 @@
+{
+    "name": "UserAction",
+    "maps": [
+        {
+            "name": "SkillButton",
+            "id": "0bddb92d-2983-44fd-bba5-c6c50a76f741",
+            "actions": [
+                {
+                    "name": "SkillButton1",
+                    "type": "Value",
+                    "id": "a90f4c17-ae89-4ee9-9a60-a788fbb2d107",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SkillButton2",
+                    "type": "Button",
+                    "id": "9001e098-b539-4f4b-927f-ea1bb9d2b901",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillButton3",
+                    "type": "Button",
+                    "id": "b99b5243-a758-4c85-b24b-f8ebf31028ed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillButton4",
+                    "type": "Button",
+                    "id": "f4d3e056-3dda-4651-8aa9-931ceadcb025",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillButton5",
+                    "type": "Button",
+                    "id": "35fa1e34-6bcf-476b-9569-bc676b5448aa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "67d80229-6c8e-4757-bc15-96312fe548a9",
+                    "path": "<Keyboard>/a",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillButton1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "17405243-a7a5-4121-b65d-7c61655dcf01",
+                    "path": "<Keyboard>/s",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillButton2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3a7afa81-ebd9-4c6f-b615-be4b808c4167",
+                    "path": "<Keyboard>/d",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillButton3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7e65af30-26e2-4c5d-a2cd-a0b53f80d849",
+                    "path": "<Keyboard>/f",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillButton4",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9ccbcde4-7795-48e7-a003-0911ac5feb4e",
+                    "path": "<Keyboard>/g",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkillButton5",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "InterfaceCall",
+            "id": "e672213a-16a8-4ec4-b212-ff3fd6cbe1ec",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "6636e526-0e68-4a50-bc02-d978002c4c01",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4b7b761d-f5ab-4df6-a43a-7665df92959b",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

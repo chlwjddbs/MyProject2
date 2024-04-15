@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [Serializable]
 public class InputKeyInfo : MonoBehaviour
 {
-    public string optionName;
+    public UserKey optionName;
     public KeyCode connectedCode;
     public Sprite currentImage;
 

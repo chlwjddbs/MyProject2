@@ -11,13 +11,11 @@ public class SkillBook : MonoBehaviour
     [System.Serializable]
     public class SetEquipSkill
     {
-        public string keyCode;
         public SkillItem equipSkill;
         public float coolTime;
 
-        public SetEquipSkill(string _keycode,SkillItem _skill = null , float _coolTime = 0)
+        public SetEquipSkill(SkillItem _skill = null , float _coolTime = 0)
         {
-            keyCode = _keycode;
             equipSkill = _skill;
             coolTime = _coolTime;
         }
@@ -119,7 +117,7 @@ public class SkillBook : MonoBehaviour
         for (int i = 0; i < skillButtons.transform.childCount; i++)
         {
             SetEquipSkill x = DataManager.instance.userData.skillButtonInfo[i];
-            skillButtonInfo.Add(i, new SetEquipSkill(x.keyCode, x.equipSkill, x.coolTime));
+            skillButtonInfo.Add(i, new SetEquipSkill(x.equipSkill, x.coolTime));
             button[i].SetData();
         }
     }

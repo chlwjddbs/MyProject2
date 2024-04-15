@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -20,7 +21,9 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     public Transform skillPos;
     
     //해당 버튼의 트리거 버튼
-    public string keyCode;
+    public UserKey keyCode;
+
+    [SerializeField] private TextMeshProUGUI keyCodeText;
 
     //스킬 위치 변경 시 필요한 공간
     public GameObject Dragtemp;
@@ -53,7 +56,6 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
             }
         }
     }
-    
 
     //버튼 사용 가능 여부
     public bool isUse = true;
@@ -61,6 +63,8 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     public PlayerController playerController;
 
     private bool usetext = true;
+
+    private ControlOption controlOption;
 
     // Update is called once per frame
     void Update()
@@ -71,7 +75,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
             CoolTimeAlarm();
 
             //keyCode를 누를 시 스킬 발동
-            if (Input.GetButtonDown(keyCode))
+            if (Input.GetKeyDown(controlOption.inputDic[keyCode].connectedCode))
             {
                 //플레이어가 액션을 취하지 않거나 쿨타임이 찼을 경우
                 if (UseButton())
@@ -92,15 +96,33 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         }
     }
 
+    //KeyCode가 변경 되었을때 변경된 KeyCode를 표시해준다.
+    public void ChangeKeyCode()
+    {
+        if (controlOption.inputDic.TryGetValue(keyCode, out InputKeyInfo vale))
+        {
+            keyCodeText.text = vale.connectedCode.ToString();
+        }
+    }
+
+    //DataSetting
     public void SetData()
     {
+        controlOption = ControlOption.instance;
+        controlOption.changeKeyCode += ChangeKeyCode;
+
+        //처음 데이터가 세팅되면 스킬 이미지, 남은 쿨타임을 표시해주는 text, 남을 쿨타임을 보여주는 Filled를 모두 초기화 해준다.
         skillImage.enabled = false;
         coolTimeAlarm.text = null;
         coolTimeFilled.enabled = false;
+        //KeyCode Text 표시
+        ChangeKeyCode();
 
+        //newGame이면 SkillButton의 스킬을 관리하는 SkillBook Class에 현재 스킬 Button 정보를 넘겨주어 저장한다.
+        //게임 플레이 중 변경되는 Button들의 정보를 수월하게 관리하기 위해 미리 딕셔너리 정보를 생성한다. 
         if (DataManager.instance.newGame)
         {
-            SkillBook.instance.skillButtonInfo.Add(buttonNum, new SkillBook.SetEquipSkill(keyCode, skillItem, remainingTime));
+            SkillBook.instance.skillButtonInfo.Add(buttonNum, new SkillBook.SetEquipSkill(skillItem, remainingTime));
         }
         else
         {
@@ -110,16 +132,18 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
 
     public void LoadData()
     {
+        //스킬버튼을 관리하는 딕셔너리에서 현재 스킬 버튼의 넘버를 키값으로 가지는 벨류를 찾아 값을 할당한다.
         if(SkillBook.instance.skillButtonInfo.TryGetValue(buttonNum,out SkillBook.SetEquipSkill value))
         {
-            keyCode = value.keyCode;
             LoadSkill(value.equipSkill, value.coolTime);
         }
+
     }
 
     public void SaveData()
     {
-        SkillBook.SetEquipSkill saveData = new SkillBook.SetEquipSkill(keyCode, skillItem, remainingTime);
+        //SetData 과정에서 스킬버튼을 관리하는 딕셔너리를 미리 생성해 두었기 때문에 현재 정보를 만들어 딕셔너리에 벨류만 교체해주면 된다.
+        SkillBook.SetEquipSkill saveData = new SkillBook.SetEquipSkill(skillItem, remainingTime);
         SkillBook.instance.skillButtonInfo[buttonNum] = saveData;
     }
 
@@ -140,6 +164,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         }
     }
 
+    //게임을 로드하면 사용했던 스킬의 쿨타임을 적용해주어야 하기 때문에 EquipSkill에서 쿨타임을 적용하는 형태로 적용한다. 
     public void LoadSkill(SkillItem _skillItem , float _coolTime)
     {
         if(_skillItem == null)
@@ -175,11 +200,12 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         coolTimeAlarm.text = null;
         isUse = true;
         remainingTime = 0;
-
     }
 
+    //현재 버튼이 사용가능한 상태인지 체크.
     public bool UseButton()
     {
+        //플레이어가 다른 액션을 취하지 않아 스킬을 사용가능하고 스킬이 쿨타임이 회복된 등 사용 가능한 상태일때 True 반환
         if (!PlayerController.isAction && isUse)
         {
             return true;

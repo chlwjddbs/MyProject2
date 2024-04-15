@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 
 public class ControlOption : MonoBehaviour
@@ -35,49 +35,57 @@ public class ControlOption : MonoBehaviour
         }
     }
 
-    public enum UserKey
-    {
-        SkillButton1,
-        SkillButton2,
-        SkillButton3,
-        SkillButton4,
-        SkillButton5,
-        KeyCount,
-    }
+    public static ControlOption instance;
 
     public Transform KeyBoard;
     public Transform KeyOption;
 
+    public List<Sprite> blackKey;
+    public List<Sprite> whiteKey;
+
     //input 설정이 가능한 키 모음
     public Dictionary<string, ConnectedInputKeyInfo> keysDic = new Dictionary<string, ConnectedInputKeyInfo>();
+    private Dictionary<string, Sprite> bKSprite_Dic = new Dictionary<string, Sprite>();
+    private Dictionary<string, Sprite> whSprite_Dic = new Dictionary<string, Sprite>();
 
     public ConnectedInputKeyInfo selectButton;
     public InputKeyInfo selectOption;
 
-    public List<Sprite> blackKey;
-    public List<Sprite> whiteKey;
+    public  Dictionary<UserKey, InputKeyInfo> inputDic = new Dictionary<UserKey, InputKeyInfo>();
 
-    public Dictionary<string, InputKeyInfo> inputDic = new Dictionary<string, InputKeyInfo>();
+    public  Dictionary<UserKey, KeyCode> userKeyDic = new Dictionary<UserKey, KeyCode>();
 
-    private Dictionary<string, Sprite> bKSprite_Dic = new Dictionary<string, Sprite>();
-    private Dictionary<string, Sprite> whSprite_Dic = new Dictionary<string, Sprite>();
 
-    [SerializeField]
-    private bool isChange = true;
+    [SerializeField]  private bool isChange = true;
     private float changeCoolTime = 0.5f;
 
     public static bool isChaning = false;
 
     public ScrollRect sc;
 
-    // Start is called before the first frame update
-    void Start()
+    public UnityAction changeKeyCode;
+
+    private void Awake()
+    {
+        if(instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        SetData();
+    }
+
+    public void SetData()
     {
         for (int i = 0; i < KeyBoard.childCount; i++)
         {
             //반복문 int 는 빈 공간에 넣어줘야 정상 작동함
             int keyNum = i;
-            if(KeyBoard.GetChild(keyNum).TryGetComponent(out ConnectedInputKeyInfo cnt_InputkeyInfo))
+            if (KeyBoard.GetChild(keyNum).TryGetComponent(out ConnectedInputKeyInfo cnt_InputkeyInfo))
             {
                 //매개변수로 사용할 인자는 람다식으로 넣어줘야함
                 //bt.onClick.AddListener(() => Clickbutton(bt.gameObject));
@@ -89,7 +97,7 @@ public class ControlOption : MonoBehaviour
                 //input 단축이 등록된 키는 white sprite로 보여지게 하기 위해 black과 white 둘다 저장한다.
                 foreach (var bk in blackKey)
                 {
-                    if(bk.name == cnt_InputkeyInfo.name)
+                    if (bk.name == cnt_InputkeyInfo.name)
                     {
                         bKSprite_Dic.Add(cnt_InputkeyInfo.name, bk);
                     }
@@ -105,14 +113,6 @@ public class ControlOption : MonoBehaviour
 
             }
         }
-
-        //Debug.Log($"{bKSprite_Dic.Count} + {whSprite_Dic.Count}");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Clickbutton(ConnectedInputKeyInfo _selectButton)
@@ -135,6 +135,7 @@ public class ControlOption : MonoBehaviour
             Debug.Log("저장된 버튼이 없습니다.");
             return;
         }
+        
         if (inputDic.ContainsKey(_selectedButton.savedInputKeyInfo.optionName))
         {
             Debug.Log(inputDic[_selectedButton.savedInputKeyInfo.optionName]);
@@ -148,10 +149,6 @@ public class ControlOption : MonoBehaviour
             //sc.verticalNormalizedPosition = 0.5f;
           
         }
-    }
-
-    public void Test()
-    {
         
     }
 
@@ -181,7 +178,7 @@ public class ControlOption : MonoBehaviour
                 //현재 버튼의 이미지를 입력 받은 키(Event.currnet)의 이미지로 교체한다.
                 //selectOption.GetComponent<Image>().sprite = bKSprite_Dic[keyName];
 
-                //ex) 선택한 옵션(skillbutton1)이 저장된 keyName을 찾는다.
+                //ex) 선택한 옵션(skillbutton1)이 저장된 keyName을 찾는다.              
                 if (inputDic.ContainsKey(selectOption.optionName))
                 {
                     keysDic[selectOption.connectInfo.name].UnConnect(bKSprite_Dic[selectOption.connectInfo.name]);
@@ -193,9 +190,10 @@ public class ControlOption : MonoBehaviour
                     keyInfo.SaveInputKeyInfo(selectOption, whSprite_Dic[keyName]);
                     selectOption.ChangeKeycode(ev.keyCode, bKSprite_Dic[keyName], keyInfo);
                     inputDic.Add(selectOption.optionName, selectOption);
-                }
+                }            
                 Debug.Log(Event.current.keyCode.ToString());
-                //currentButton = null;               
+                //currentButton = null;
+                changeKeyCode?.Invoke();
             }
             else
             {
@@ -238,4 +236,14 @@ public class ControlOption : MonoBehaviour
         selectOption = null;
         isChaning = false;
     }
+}
+
+public enum UserKey
+{
+    SkillButton1,
+    SkillButton2,
+    SkillButton3,
+    SkillButton4,
+    SkillButton5,
+    KeyCount,
 }
