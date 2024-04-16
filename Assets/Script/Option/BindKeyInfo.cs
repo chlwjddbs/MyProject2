@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [Serializable]
 public class BindKeyInfo : MonoBehaviour
 { 
-    public KeyOptionInfo bindKeyOption;
+    public KeyOptionInfo bindOption;
 
     [SerializeField]
     private Image mBt_Image;
@@ -16,15 +16,15 @@ public class BindKeyInfo : MonoBehaviour
         mBt_Image = GetComponent<Image>();
     }
 
-    public void BindKey(KeyOptionInfo _bindOption, Sprite _image)
+    public void BindOption(KeyOptionInfo _bindOption, Sprite _image)
     {
+        bindOption = _bindOption;
         mBt_Image.sprite = _image;
-        bindKeyOption = _bindOption;
     }
 
-    public void RemoveBindKey(Sprite _initial_image)
+    public void RemoveBindOption(Sprite _initial_image)
     {
         mBt_Image.sprite = _initial_image;
-        bindKeyOption = null;
+        bindOption = null;
     }
 }

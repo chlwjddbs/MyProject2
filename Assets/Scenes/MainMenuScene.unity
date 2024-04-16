@@ -17663,9 +17663,9 @@ MonoBehaviour:
   keyOption: 2
   bindKey: 0
   curImage: {fileID: 0}
-  bindKeyInfo: {fileID: 0}
-  InitialCode: 0
   mBt_Image: {fileID: 701587999}
+  bindKeyInfo: {fileID: 0}
+  InitialCode: 100
 --- !u!114 &701587998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20379,9 +20379,9 @@ MonoBehaviour:
   keyOption: 0
   bindKey: 0
   curImage: {fileID: 0}
+  mBt_Image: {fileID: 868155649}
   bindKeyInfo: {fileID: 0}
   InitialCode: 97
-  mBt_Image: {fileID: 868155649}
 --- !u!1 &868706354
 GameObject:
   m_ObjectHideFlags: 0
@@ -22484,9 +22484,9 @@ MonoBehaviour:
   keyOption: 1
   bindKey: 0
   curImage: {fileID: 0}
-  bindKeyInfo: {fileID: 0}
-  InitialCode: 0
   mBt_Image: {fileID: 962390503}
+  bindKeyInfo: {fileID: 0}
+  InitialCode: 115
 --- !u!114 &962390502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36667,9 +36667,9 @@ MonoBehaviour:
   keyOption: 3
   bindKey: 0
   curImage: {fileID: 0}
-  bindKeyInfo: {fileID: 0}
-  InitialCode: 0
   mBt_Image: {fileID: 1711058616}
+  bindKeyInfo: {fileID: 0}
+  InitialCode: 102
 --- !u!114 &1711058615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38904,9 +38904,9 @@ MonoBehaviour:
   keyOption: 4
   bindKey: 0
   curImage: {fileID: 0}
-  bindKeyInfo: {fileID: 0}
-  InitialCode: 0
   mBt_Image: {fileID: 1761317468}
+  bindKeyInfo: {fileID: 0}
+  InitialCode: 103
 --- !u!114 &1761317467
 MonoBehaviour:
   m_ObjectHideFlags: 0

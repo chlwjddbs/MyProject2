@@ -97,12 +97,41 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     }
 
     //KeyCode가 변경 되었을때 변경된 KeyCode를 표시해준다.
-    public void ChangeKeyCode()
+    public void ChangeKeyCode(KeyOption _option, KeyCode _keyCode)
     {
+        if (keyOption == _option)
+        {
+            if(_keyCode == KeyCode.None)
+            {
+                //Debug.Log($"{gameObject.name}키는 삭제됐습니다.");
+                keyCodeText.text = null;
+            }
+            else
+            {
+                //Debug.Log($"{gameObject.name}키는 {_keyCode}으로 변경되었습니다.");
+                keyCodeText.text = _keyCode.ToString();
+            }
+        }
+        /*
         if (controlOption.bindKey_Dic.TryGetValue(keyOption, out KeyOptionInfo vale))
         {
-            keyCodeText.text = vale.bindKey.ToString();
+            if(keyCodeText.text == vale.bindKey.ToString())
+            {
+                Debug.Log($"{gameObject.name}키는 변경 안해도 됩니다.");
+                return;
+            }
+            if (vale.bindKey.ToString() == "None")
+            {
+                Debug.Log($"{gameObject.name}키는 비어 있습니다.");
+                keyCodeText.text = null;
+            }
+            else
+            {
+                Debug.Log($"{gameObject.name}키는 {vale.bindKey.ToString()}으로 변경되었습니다.");
+                keyCodeText.text = vale.bindKey.ToString();
+            }
         }
+        */
     }
 
     //DataSetting
@@ -116,8 +145,10 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         coolTimeAlarm.text = null;
         coolTimeFilled.enabled = false;
         //KeyCode Text 표시
-        ChangeKeyCode();
-
+        if (controlOption.bindKey_Dic.TryGetValue(keyOption, out KeyOptionInfo vale))
+        {
+            ChangeKeyCode(vale.keyOption,vale.bindKey);
+        }
         //newGame이면 SkillButton의 스킬을 관리하는 SkillBook Class에 현재 스킬 Button 정보를 넘겨주어 저장한다.
         //게임 플레이 중 변경되는 Button들의 정보를 수월하게 관리하기 위해 미리 딕셔너리 정보를 생성한다. 
         if (DataManager.instance.newGame)

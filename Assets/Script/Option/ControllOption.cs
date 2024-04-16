@@ -39,7 +39,7 @@ public class ControllOption : MonoBehaviour
 
     public ScrollRect sc;
 
-    public UnityAction changeKeyCode;
+    public UnityAction<KeyOption,KeyCode> changeKeyCode;
 
     private void Awake()
     {
@@ -51,6 +51,14 @@ public class ControllOption : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            ResetKeyBind();
+        }
     }
 
     public void GameStart()
@@ -111,15 +119,16 @@ public class ControllOption : MonoBehaviour
                         if (_keyOption.InitialCode == KeyCode.None)
                         {
                             //초기값으로 초기화 후 NoneCode 이미지로 변경
-                            _keyOption.SetOptionInfo(_keyOption.InitialCode, nobind_image, null);
+                            _keyOption.Bindkey(_keyOption.InitialCode, nobind_image, null);
+                            bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
                         }
                         //현재 옵션의 기본 keycode가 None이 아닐때
                         else
                         {
                             string code = _keyOption.InitialCode.ToString();
                             //현재 keyOption의 값을 세팅하고
-                            _keyOption.SetOptionInfo(_keyOption.InitialCode, bKSprite_Dic[code], key_Dic[code]);
-                            key_Dic[code].BindKey(_keyOption, whSprite_Dic[code]);
+                            _keyOption.Bindkey(_keyOption.InitialCode, bKSprite_Dic[code], key_Dic[code]);
+                            key_Dic[code].BindOption(_keyOption, whSprite_Dic[code]);
 
                             //초기 코드가 None이면 bind 될 키가 없다는 뜻임으로 None일는 추가 하지 않는다.
                             bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
@@ -138,7 +147,7 @@ public class ControllOption : MonoBehaviour
         }
     }
 
-    public void ResetKeyOption()
+    public void ResetKeyBind()
     {
         for (int i = 0; i < OptionKeyContent.childCount; i++)
         {
@@ -159,14 +168,19 @@ public class ControllOption : MonoBehaviour
                     //기본코드가 None이지만 유저가 키를 세팅 했을 경우가 된다.
                     if (_keyOption.InitialCode == KeyCode.None)
                     {
-                        //key에 저장된 keyOpiton 정보를 지워준다.
-                        key_Dic[_keyOption.bindKey.ToString()].RemoveBindKey(nobind_image);
+                        //기존 option에서 쓰던 key를 찾아 key에 bind된 option 제거
+                        key_Dic[_keyOption.bindKey.ToString()].RemoveBindOption(bKSprite_Dic[_keyOption.bindKey.ToString()]);
+                        //_keyOption.bindKeyInfo.RemoveBindKey(bKSprite_Dic[_keyOption.bindKey.ToString()]);
 
-                        //bindKey를 다시 None으로 바꿔주고
-                        _keyOption.SetOptionInfo(_keyOption.InitialCode, nobind_image);
-                        //bindkey 딕셔너리에서 해당 옵션을 지워준다.
-                        bindKey_Dic.Remove(_keyOption.keyOption);
-                      
+                        //keyOption에 bind된 key 제거
+                        _keyOption.RemoveBindKey(nobind_image);
+
+                        //option이 연결된 key가 없어졌으로 null값 적용.
+                        Debug.Log(bindKey_Dic[_keyOption.keyOption].bindKeyInfo);
+
+                        //bindkey 딕셔너리에서 해당 옵션을 지워준다. <- 프로세스 변경으로 인해 지워주지 않는다.
+                        //bindKey_Dic.Remove(_keyOption.keyOption);
+
                         //ex) SkillButton1의 InitialCode 가 None이지만 현재 bind된 key가 A일때
                         //skillButton1의 bindKey를 None으로 바꿔주고
                         //bindKey_Dic에서 SkillButton1을 찾아서 지워준다.
@@ -175,13 +189,26 @@ public class ControllOption : MonoBehaviour
                     else
                     {
                         string code = _keyOption.InitialCode.ToString();
+                        //초기값에 해당하는 key에 할당된 option에 연결되어 있는 초기값 key 제거
+                        //button1이 S에 할당되어 있고 A가 초기 값일때
+                        //A에 할당되어 있는 option을 찾아
+                        //해당 옵션에서 A키와의 bind 삭제
+                        if (key_Dic[code].bindOption != null)
+                        {
+                            key_Dic[code].bindOption.RemoveBindKey(nobind_image);
+                        }
+                        //초기값 키에 연결된 option제거 : 해당키는 아래에서 다시 쓰일 것임으로 굳이 초기화하지 않아도 된다.
+                        //key_Dic[code].RemoveBindOption(bKSprite_Dic[code]);
+
+                        if (_keyOption.bindKeyInfo != null)
+                        {
+                            //현재 옵션이 사용중인 key에서 현재 옵션과의 bind를 제거한다.
+                            _keyOption.bindKeyInfo.RemoveBindOption(bKSprite_Dic[_keyOption.bindKey.ToString()]);
+                        }
 
                         //현재 keyOption의 초기값으로 Bind한다.
-                        _keyOption.SetOptionInfo(_keyOption.InitialCode, bKSprite_Dic[code], key_Dic[code]);
-                        key_Dic[code].BindKey(_keyOption, whSprite_Dic[code]);
-
-                        //Bind된 정보를 등록한다.
-                        bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
+                        _keyOption.Bindkey(_keyOption.InitialCode, bKSprite_Dic[code], key_Dic[code]);
+                        key_Dic[code].BindOption(_keyOption, whSprite_Dic[code]);
                     }
                 }
             }
@@ -200,21 +227,34 @@ public class ControllOption : MonoBehaviour
         isChanging = true;
     }
 
-    public void Focucemenu(BindKeyInfo _selectedButton)
-    {
-        Debug.Log(_selectedButton.bindKeyOption);
-        if(_selectedButton.bindKeyOption == null)
+    public void Focucemenu(BindKeyInfo _selectKey)
+    {      
+        if (bindKey_Dic.TryGetValue(_selectKey.bindOption.keyOption, out KeyOptionInfo _keyOption))
+        {
+            Debug.Log(_keyOption.keyOption);
+            selectOption = _keyOption;
+        }
+        else
+        {
+            Debug.Log("연결된 기능이 없습니다.");
+        }
+
+        /*
+         * 이 문단은 if(bindKey_Dic.TryGetValue(_selectKey.bindKeyOption.keyOption, out KeyOptionInfo _keyOption)의
+         * _keyOption = null 인것과 같습니다.
+        Debug.Log(_selectKey.bindKeyOption);
+        if(_selectKey.bindKeyOption == null)
         {
             Debug.Log("저장된 버튼이 없습니다.");
             return;
         }
-        
-        if (bindKey_Dic.ContainsKey(_selectedButton.bindKeyOption.keyOption))
+
+        if (bindKey_Dic.ContainsKey(_selectKey.bindKeyOption.keyOption))
         {
-            Debug.Log(bindKey_Dic[_selectedButton.bindKeyOption.keyOption]);
+            Debug.Log(bindKey_Dic[_selectKey.bindKeyOption.keyOption]);
             //inputDic[SelectedButton.name].matchedButton
             //sc.verticalNormalizedPosition = 0.5f;
-            selectOption = bindKey_Dic[_selectedButton.bindKeyOption.keyOption];
+            selectOption = bindKey_Dic[_selectKey.bindKeyOption.keyOption];
         }
         else
         {
@@ -222,65 +262,141 @@ public class ControllOption : MonoBehaviour
             //sc.verticalNormalizedPosition = 0.5f;
           
         }
-        
+        */
     }
 
     public void ChangeInputKey()
     {
         //Event.current.iskey를 통해 키 입력을 받았을 시 True를 받아 if문을 넘길수도 있다.
-        //하지만 Event.current.iskey는 input.Getkey와 같이 동작함으로 한번 만 입력 받기 위에 keyDown으로 처리한다.
-        //keyDown 효과 외에도 여러가지 버튼을 빠르게 누르면 Event가 빠르게 변하기 때문에 동작이 꼬인다.
-        //예를 들어 123을 빠르게 따다닥 입력하면 1213 과 같이 입력외 입력이 출력 되기도 한다.
-        //그렇기 때문에 코루틴을 통해 입력 쿨타임을 제한함과 동시에 keyDown으로 한번에 하나의 key만 처리 하도록 한다.
-        //&& Event.current.isKey 를 추가해 마우스 입력은 필터한다.
-
+        //하지만 Event.current.iskey는 input.Getkey와 같이 동작함으로 같은 키가 여러번 들어올 수 있기 때문에 keyDown으로 한번에 하나의 동작만 처리한다.
+        //단시간 내에 여러개 버튼을 빠르게 누르면 Event가 빠르게 변하기 때문에 동작이 꼬인다.
+        //예를 들어 123을 빠르게 따다닥 입력하면 1213 과 같이 출력이 된다.
+        //입력에 제한 시간을 두어 한번에 하나의 key만 처리 하도록 한다.
+        //&& Event.current.isKey 를 추가해 마우스 입력은 필터한다. [마우스 설정 추가시 변경 예정]
         if (Input.anyKeyDown && Event.current.isKey) 
         {
             isChange = false;
             StartCoroutine(ChangeCoolTime());
 
-            //입력받은 Event 정보를 저장
+            //입력받은 key 정보를 저장
             Event ev = Event.current;
-            //입력받은 keyCode 저장
             string keyName = ev.keyCode.ToString();
 
-            //keysDic : input 설정이 가능한 키
-            //입력받은 key가 keycode 설정이 가능한 키일때
-            if (key_Dic.TryGetValue(keyName, out BindKeyInfo keyInfo))
+            if(ev.keyCode == KeyCode.Escape)
             {
-                if (keyInfo.bindKeyOption != null)
-                {
-                    Debug.Log(keyInfo.bindKeyOption.bindKey.ToString());
-                    bindKey_Dic[keyInfo.bindKeyOption.keyOption].SetOptionInfo(KeyCode.None,nobind_image);
-                }
-                //현재 버튼의 이미지를 입력 받은 키(Event.currnet)의 이미지로 교체한다.
-                //selectOption.GetComponent<Image>().sprite = bKSprite_Dic[keyName];
+                selectOption = null;
+                isChanging = false;
+            }
 
-                //ex) 선택한 옵션(skillbutton1)이 bind된 key를 찾는다.              
-                if (bindKey_Dic.TryGetValue(selectOption.keyOption, out KeyOptionInfo _keyOption) )
+            if (key_Dic.TryGetValue(keyName, out BindKeyInfo _bindkey))
+            {             
+                //selectOption이 bind된 key를 찾는다.           
+                if (bindKey_Dic.TryGetValue(selectOption.keyOption, out KeyOptionInfo _keyOption))
                 {
-                    _keyOption.bindKeyInfo.RemoveBindKey(bKSprite_Dic[_keyOption.bindKey.ToString()]);
-                    //key_Dic[_keyOption.bindKey.ToString()].RemoveBindKey(bKSprite_Dic[_keyOption.bindKeyInfo.name]);
-                    keyInfo.BindKey(selectOption, whSprite_Dic[keyName]);
-                    selectOption.SetOptionInfo(ev.keyCode, bKSprite_Dic[keyName], keyInfo);
+                    if (keyName == _keyOption.bindKey.ToString())
+                    {
+                        Debug.Log("같은 키로 변경할 수 없습니다.");
+                        return;
+                    }
+                    //입력받은 key에 연결된 keyoption에 있는 연결된 key정보를 없애준다.
+                    //ex)skillbutton1이 S에 할당되어 있을때 A로 바꾸고 싶다면 A에 skillbutton2가 할당되어 있다면 skillbutton2에 연결된 A버튼을 제거한다.
+                    //A에 skillbutton1만 새로 덮으면 데이터상 skillbutton2에도 A랑 연결되어 있기 때문에 제거해준다.
+                    if (_bindkey.bindOption != null)
+                    {
+                        _bindkey.bindOption.RemoveBindKey(nobind_image);
+                    }
+
+                    //위와 마찬가지로 selectOption에 할당되어 있던 bindKeyInfo에서 selectOption을 제거한다.
+                    if (_keyOption.bindKeyInfo != null)
+                    {
+                        _keyOption.bindKeyInfo.RemoveBindOption(bKSprite_Dic[_keyOption.bindKey.ToString()]);
+                    }
+
+                    //입력받은 key에 selectOtpion 정보를 새로 Bind 해준다.
+                    _bindkey.BindOption(selectOption, whSprite_Dic[keyName]);
+
+                    //selectOption의 정보를 입력받은 key로 갱신한다.
+                    _keyOption.Bindkey(ev.keyCode, bKSprite_Dic[keyName], _bindkey);
+                    //bindKey_Dic[selectOption.keyOption] = _keyOption; : 딕셔너리부터 값을 가져온거기 때문에 값을 변경해주면 굳이 다시 넣지 않아도 된다.                  
                 }
-                //bind 되지 않는 경우는 option의 초기값이 KeyCode.None으로 처음부터 지정이 되어 있지 않거나, bind에서 지웠을 때 이다.
                 else
                 {
-                    keyInfo.BindKey(selectOption, whSprite_Dic[keyName]);
-                    selectOption.SetOptionInfo(ev.keyCode, bKSprite_Dic[keyName], keyInfo);
-                    bindKey_Dic.Add(selectOption.keyOption, selectOption);
-                }            
-                //currentButton = null;
-                changeKeyCode?.Invoke();
-            }
-            else
-            {
-                Debug.Log(keyName);
+                    Debug.Log("연결된 기능이 없습니다. 확인해주세요.");
+                }
+
+                //Case) skillButton1과 A key가 bind , skillButton2와 S key가 bind
+                //      ->skillButton1의 key를 S로 변경 시도시 -> S key에 참조된 skillButton2로 들어가 연결된 S key 제거.
+                //      ->skillButton1에 참조된 A key로 들어가 연결된 skillButton1 제거
+                //      ->비어이는 S key에 skillButton1 Bind
+                //      ->skillButton1에 S key 정보를 입력
+                //      ->A key와 SkillButton2는 연결된 정보 없음.
+                //      ->S key에 SkillBUtton1 덮어쓰기 완료.
             }
         }
     }
 
+    public void OldChangeInputKey()
+    {
+        isChange = false;
+        StartCoroutine(ChangeCoolTime());
+
+        //입력받은 key 정보를 저장
+        Event ev = Event.current;
+        string keyName = ev.keyCode.ToString();
+
+        if (ev.keyCode == KeyCode.Escape)
+        {
+            selectOption = null;
+            isChanging = false;
+        }
+       
+        //key_Dic : bind 가능한 key목록
+        //입력받은 keyCode가 bind 가능한 키인지 체크
+        if (key_Dic.TryGetValue(keyName, out BindKeyInfo _bindkey))
+        {
+            //입력받은 key에 기존에 bind된 option이 있는지 확인
+            if (_bindkey.bindOption != null)
+            {
+                //Debug.Log($"{keyName} , {_bindkey.bindKeyOption}의 keyCode :{_bindkey.bindKeyOption.bindKey}");
+
+                //bind된 option이 있다면 바인드 된 key정보를 지워준다.                       
+                bindKey_Dic[_bindkey.bindOption.keyOption].RemoveBindKey(nobind_image);
+                //bindKey_Dic.Remove(_bindkey.bindKeyOption.keyOption); : BindKeyInfo의 RemovedOptionInfo안으로 통합
+            }
+
+            //selectOption이 bind된 key를 찾는다.           
+            if (bindKey_Dic.TryGetValue(selectOption.keyOption, out KeyOptionInfo _keyOption))
+            {
+                //Debug.Log($"{keyName} , {_bindkey.bindKeyOption}의 keyCode :{_bindkey.bindKeyOption.bindKey}");
+                Debug.Log($"{keyName} , {_keyOption}의 keyCode :{_keyOption.bindKey}");
+
+                //selectOption이 변경되기 전 key와의 Bind 정보를 지워준다.
+                _keyOption.bindKeyInfo.RemoveBindOption(bKSprite_Dic[_keyOption.bindKey.ToString()]);
+                //입력받은 key에 selectOtpion 정보를 Bind 해준다.
+                _bindkey.BindOption(selectOption, whSprite_Dic[keyName]);
+
+                //selectOption의 정보를 입력받은 key로 바꿔준다.
+                _keyOption.Bindkey(ev.keyCode, bKSprite_Dic[keyName], _bindkey);
+                //bindKey_Dic[selectOption.keyOption] = _keyOption; : 딕셔너리부터 값을 가져온거기 때문에 값을 변경해주면 굳이 다시 넣지 않아도 된다.             
+            }
+            else
+            {
+                //bind 되지 않는 경우는 option의 초기값이 KeyCode.None으로 처음부터 지정이 되어 있지 않거나, bind에서 지웠을 때 이다.
+                _bindkey.BindOption(selectOption, whSprite_Dic[keyName]);
+                selectOption.Bindkey(ev.keyCode, bKSprite_Dic[keyName], _bindkey);
+                //
+                bindKey_Dic.Add(selectOption.keyOption, selectOption);
+            }
+            //currentButton = null;
+        }
+        else
+        {
+            Debug.Log($"{keyName} : Bind 불가능 Key");
+        }
+    }
+
+    //ControllOption이 SetAcitve False 처리가 되면 동작이 멈추기 때문에 OnEnable에서 다시 실행
+    //키 옵션 변경 처리 시간을 확보한다.
     IEnumerator ChangeCoolTime()
     {
         yield return new WaitForSecondsRealtime(changeCoolTime);
