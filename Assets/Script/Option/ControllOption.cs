@@ -38,6 +38,7 @@ public class ControllOption : MonoBehaviour
     public static bool isChanging = false;
 
     public ScrollRect sc;
+    public GameObject test;
 
     public UnityAction<KeyOption,KeyCode> changeKeyCode;
 
@@ -228,7 +229,8 @@ public class ControllOption : MonoBehaviour
     }
 
     public void Focucemenu(BindKeyInfo _selectKey)
-    {      
+    {
+        //scrollview vale = 보여줄 컨텐츠의 위치 / (전체 content의 크기) - (contentview의 크기)
         if (bindKey_Dic.TryGetValue(_selectKey.bindOption.keyOption, out KeyOptionInfo _keyOption))
         {
             Debug.Log(_keyOption.keyOption);
@@ -431,6 +433,11 @@ public class ControllOption : MonoBehaviour
     {
         selectOption = null;
         isChanging = false;
+    }
+
+    public void TestScrollbar()
+    {
+        Debug.Log(test.GetComponent<RectTransform>().rect.height);
     }
 }
 
