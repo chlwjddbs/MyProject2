@@ -69,7 +69,7 @@ public class OptionManager : MonoBehaviour
         ClearList();
         //SettingMenuUI.SetActive(false);
 
-        DataManager.instance.isSet = true;
+        GameData.instance.isSet = true;
     }
 
     public void SaveOption()

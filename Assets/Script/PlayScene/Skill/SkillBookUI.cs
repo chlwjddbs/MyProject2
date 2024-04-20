@@ -26,7 +26,7 @@ public class SkillBookUI : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if (!DataManager.instance.isSet)
+        if (!GameData.instance.isSet)
         {
             return;
         }

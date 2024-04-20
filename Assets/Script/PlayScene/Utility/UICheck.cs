@@ -7,7 +7,7 @@ public class UICheck : MonoBehaviour//, IPointerExitHandler, IPointerEnterHandle
 {
     private void Update()
     {
-        if (!DataManager.instance.isSet)
+        if (!GameData.instance.isSet)
         {
             return;
         }

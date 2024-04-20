@@ -51,7 +51,7 @@ public class GateManager : MonoBehaviour
     // Start is called before the first frame update
     void Update()
     {
-        if (!DataManager.instance.isSet)
+        if (!GameData.instance.isSet)
         {
             return;
         }
@@ -83,7 +83,7 @@ public class GateManager : MonoBehaviour
         teleportGateUIRect = teleportGateUI.GetComponent<RectTransform>();
         CloseUI();
 
-        if (DataManager.instance.newGame)
+        if (GameData.instance.newGame)
         {
             
         }
@@ -104,27 +104,27 @@ public class GateManager : MonoBehaviour
 
     private void LoadData()
     {
-        foreach (var item in DataManager.instance.userData.gateInfo)
+        foreach (var item in GameData.instance.userData.gateInfo)
         {
             Debug.Log(item.gateName);
         }
-        for (int i = 0; i < DataManager.instance.userData.gateNum.Count; i++)
+        for (int i = 0; i < GameData.instance.userData.gateNum.Count; i++)
         {
-            GateInfo gateInfo = DataManager.instance.userData.gateInfo[i];
-            ActiveGateSlot(DataManager.instance.userData.gateNum[i], gateInfo.gateName, gateInfo.coordinate, gateInfo.isActive);
+            GateInfo gateInfo = GameData.instance.userData.gateInfo[i];
+            ActiveGateSlot(GameData.instance.userData.gateNum[i], gateInfo.gateName, gateInfo.coordinate, gateInfo.isActive);
         }
     }
 
     public void SaveData()
     {
-        DataManager.instance.userData.gateNum = new List<int>(gateDic.Keys);
-        DataManager.instance.userData.gateInfo = new List<GateInfo>(gateDic.Values);
+        GameData.instance.userData.gateNum = new List<int>(gateDic.Keys);
+        GameData.instance.userData.gateInfo = new List<GateInfo>(gateDic.Values);
 
-        foreach (var _gate in DataManager.instance.userData.gateNum)
+        foreach (var _gate in GameData.instance.userData.gateNum)
         {
             Debug.Log(_gate);
         }
-        foreach (var _gate in DataManager.instance.userData.gateInfo)
+        foreach (var _gate in GameData.instance.userData.gateInfo)
         {
             Debug.Log(_gate.gateName + " " + _gate.coordinate);
         }

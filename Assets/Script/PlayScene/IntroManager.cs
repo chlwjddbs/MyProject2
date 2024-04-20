@@ -14,7 +14,7 @@ public class IntroManager : MonoBehaviour
 
     private void Awake()
     {
-        fader = DataManager.instance.fader;
+        fader = GameData.instance.fader;
     }
 
     // Start is called before the first frame update
@@ -34,7 +34,7 @@ public class IntroManager : MonoBehaviour
 
     IEnumerator UserNameTyping()
     {
-        string name = DataManager.instance.userData.userName;
+        string name = GameData.instance.userData.userName;
 
         yield return new WaitForSeconds(0.1f);
 

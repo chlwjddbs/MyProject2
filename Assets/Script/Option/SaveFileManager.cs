@@ -27,7 +27,7 @@ public class SaveFileManager : MonoBehaviour
 
     public static bool isMain = true;
 
-    private DataManager dataManager;
+    private GameData dataManager;
 
     public LocalizeStringEvent gameSlotTitle;
 
@@ -39,7 +39,7 @@ public class SaveFileManager : MonoBehaviour
     {
         rect = GetComponent<RectTransform>();
         //deleteButton.onClick.AddListener(DataManager.instance.DeleteData);
-        dataManager = DataManager.instance;
+        dataManager = GameData.instance;
         gameSlotTitle.StringReference.TableReference = "General";
     }
 
@@ -151,8 +151,8 @@ public class SaveFileManager : MonoBehaviour
         dataManager.userData.saveTime = DateTime.Now.ToString("yyyy-MM-dd [HH:mm]");
         dataManager.userData.sceneName = SceneManager.GetActiveScene().name;
         objectManager?.SaveData();
-        Debug.Log(DataManager.instance.userData.userName);
-        DataManager.instance.CreateSaveData();
+        Debug.Log(GameData.instance.userData.userName);
+        GameData.instance.CreateSaveData();
     }
 
     public void LoadButton()

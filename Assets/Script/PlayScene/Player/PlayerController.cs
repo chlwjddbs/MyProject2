@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (!DataManager.instance.isSet)
+        if (!GameData.instance.isSet)
         {
             return;
         }

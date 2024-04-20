@@ -88,7 +88,7 @@ public class SkillBook : MonoBehaviour
         skillbookUI = GetComponentInParent<SkillBookUI>();
         skillbookUI.SetData();
 
-        if (DataManager.instance.newGame)
+        if (GameData.instance.newGame)
         {
             for (int i = 0; i < button.Length; i++)
             {
@@ -108,15 +108,15 @@ public class SkillBook : MonoBehaviour
         learnedSkill = new List<SkillItem>();
         //equipSkill = (SkillItem[])(DataManager.instance.userData.equipSkill).Clone();
 
-        for (int i = 0; i < DataManager.instance.userData.learedSkill.Count; i++)
+        for (int i = 0; i < GameData.instance.userData.learedSkill.Count; i++)
         {
-            LearnSkill(DataManager.instance.userData.learedSkill[i]);
+            LearnSkill(GameData.instance.userData.learedSkill[i]);
         }
         skillbookUI.CloseUI();
 
         for (int i = 0; i < skillButtons.transform.childCount; i++)
         {
-            SetEquipSkill x = DataManager.instance.userData.skillButtonInfo[i];
+            SetEquipSkill x = GameData.instance.userData.skillButtonInfo[i];
             skillButtonInfo.Add(i, new SetEquipSkill(x.equipSkill, x.coolTime));
             button[i].SetData();
         }
@@ -124,19 +124,19 @@ public class SkillBook : MonoBehaviour
 
     public void SaveData()
     {
-        DataManager.instance.userData.learedSkill = learnedSkill;
+        GameData.instance.userData.learedSkill = learnedSkill;
         //DataManager.instance.userData.equipSkill = equipSkill;
         for (int i = 0; i < button.Length; i++)
         {
             button[i].SaveData();
-            if (DataManager.instance.userData.skillButtonNum.Contains(i))
+            if (GameData.instance.userData.skillButtonNum.Contains(i))
             {
-                DataManager.instance.userData.skillButtonInfo[i] = skillButtonInfo[i];
+                GameData.instance.userData.skillButtonInfo[i] = skillButtonInfo[i];
             }
             else
             {
-                DataManager.instance.userData.skillButtonNum.Add(i);
-                DataManager.instance.userData.skillButtonInfo.Add(skillButtonInfo[i]);
+                GameData.instance.userData.skillButtonNum.Add(i);
+                GameData.instance.userData.skillButtonInfo.Add(skillButtonInfo[i]);
             }
         }
         
@@ -304,5 +304,4 @@ public class SkillBook : MonoBehaviour
             AudioManager.instance.PlayExSound("pageChage");
         }
     }
-    
 }

@@ -11,7 +11,7 @@ using UnityEngine.Localization.Settings;
 public class SlotTest : MonoBehaviour
 {
     private string slotName;
-    private DataManager dataManager;
+    private GameData dataManager;
     public TextMeshProUGUI savedTimeText;
     public TextMeshProUGUI gameDataText;
 
@@ -30,7 +30,7 @@ public class SlotTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dataManager = DataManager.instance;
+        dataManager = GameData.instance;
         //LanguageOption.setSlot += SetSlot;
         //SetSlot();
     }

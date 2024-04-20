@@ -15,7 +15,7 @@ public class ObjectManager : MonoBehaviour
     protected string startArea;
     public string currentArea;
 
-    protected DataManager dataManager;
+    protected GameData dataManager;
 
     public DropItemManager dropItemManager;
     public List<GameObject> startFieldItems;
@@ -27,7 +27,7 @@ public class ObjectManager : MonoBehaviour
 
     private void Awake()
     {
-        dataManager = DataManager.instance;
+        dataManager = GameData.instance;
         fader = dataManager.fader;
         SaveFileManager.isMain = false;
     }
@@ -47,7 +47,7 @@ public class ObjectManager : MonoBehaviour
 
     public virtual void SetData()
     {
-        if (DataManager.instance.newGame)
+        if (GameData.instance.newGame)
         {
             StartStage();
         }
@@ -66,7 +66,7 @@ public class ObjectManager : MonoBehaviour
         //로드시 남은 HP,MP를 불러오고 장비가 장착 되기 때문에 저장전보다 많은 HP가 생긴다.
         //장비 장착이 끝나고 저장된 HP,MP로 돌려준다.
         //코드 정렬 더 생각해보기.
-        if (!DataManager.instance.newGame)
+        if (!GameData.instance.newGame)
         {
             player.GetComponent<PlayerStatus>().remainHealth = dataManager.userData.remainHealth;
             player.GetComponent<PlayerStatus>().playerStatusUI.SetHpBar();

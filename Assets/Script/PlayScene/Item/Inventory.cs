@@ -118,7 +118,7 @@ public class Inventory : MonoBehaviour
 
         SetInvenData?.Invoke();
 
-        if (DataManager.instance.newGame)
+        if (GameData.instance.newGame)
         {
             //Debug.Log("new Game");
             invenSize = 25;
@@ -140,13 +140,13 @@ public class Inventory : MonoBehaviour
 
     public void LoadData()
     {
-        invenSize = DataManager.instance.userData.invenSize;
-        spareSlot = DataManager.instance.userData.spareSlot;
-        items = (Item[])(DataManager.instance.userData.inventoryItem).Clone();
+        invenSize = GameData.instance.userData.invenSize;
+        spareSlot = GameData.instance.userData.spareSlot;
+        items = (Item[])(GameData.instance.userData.inventoryItem).Clone();
 
         for (int i = 0; i < invenSize; i++)
         {
-            invenItems.Add(i, new InvenItem(DataManager.instance.userData.invenItem[i].slotItem));
+            invenItems.Add(i, new InvenItem(GameData.instance.userData.invenItem[i].slotItem));
             /*
             if(DataManager.instance.userData.slotNum.Contains(i))
             {
@@ -198,20 +198,20 @@ public class Inventory : MonoBehaviour
     }
     public void SaveData()
     {
-        DataManager.instance.userData.inventoryItem = items;
-        DataManager.instance.userData.invenSize = invenSize;
-        DataManager.instance.userData.spareSlot = spareSlot;
+        GameData.instance.userData.inventoryItem = items;
+        GameData.instance.userData.invenSize = invenSize;
+        GameData.instance.userData.spareSlot = spareSlot;
 
         for (int i = 0; i < invenSize; i++)
         {
-            if (DataManager.instance.userData.slotNum.Contains(i))
+            if (GameData.instance.userData.slotNum.Contains(i))
             {
-                DataManager.instance.userData.invenItem[i] = invenItems[i];
+                GameData.instance.userData.invenItem[i] = invenItems[i];
             }
             else
             {
-                DataManager.instance.userData.slotNum.Add(i);
-                DataManager.instance.userData.invenItem.Add(invenItems[i]);
+                GameData.instance.userData.slotNum.Add(i);
+                GameData.instance.userData.invenItem.Add(invenItems[i]);
             }
         }
 

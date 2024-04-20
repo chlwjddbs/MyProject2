@@ -151,7 +151,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         }
         //newGame이면 SkillButton의 스킬을 관리하는 SkillBook Class에 현재 스킬 Button 정보를 넘겨주어 저장한다.
         //게임 플레이 중 변경되는 Button들의 정보를 수월하게 관리하기 위해 미리 딕셔너리 정보를 생성한다. 
-        if (DataManager.instance.newGame)
+        if (GameData.instance.newGame)
         {
             SkillBook.instance.skillButtonInfo.Add(buttonNum, new SkillBook.SetEquipSkill(skillItem, remainingTime));
         }

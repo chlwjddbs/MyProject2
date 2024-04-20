@@ -49,7 +49,7 @@ public class InventoryUI : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if (!DataManager.instance.isSet)
+        if (!GameData.instance.isSet)
         {
             return;
         }
@@ -120,7 +120,7 @@ public class InventoryUI : MonoBehaviour
         inven.CheckUseableSlot += CheckSlot;
         inven.GoodsOverlap += GoodsOverlap;
 
-        if (DataManager.instance.newGame)
+        if (GameData.instance.newGame)
         {
 
         }
@@ -191,7 +191,7 @@ public class InventoryUI : MonoBehaviour
             itemSlot[_slotNum].CheckUseSlot();
             
             */
-            for (int i = 0; i < DataManager.instance.userData.invenItem[_slotNum].quantity; i++)
+            for (int i = 0; i < GameData.instance.userData.invenItem[_slotNum].quantity; i++)
             {
                 itemSlot[_slotNum].SetItemSlot();
             }

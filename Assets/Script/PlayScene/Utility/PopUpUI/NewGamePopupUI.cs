@@ -42,14 +42,14 @@ public class NewGamePopupUI : MonoBehaviour
     //안내 팝업창을 상황에 맞게 쓰기 위한 LocalizeStringEvent 선언.
     public LocalizeStringEvent noticePopupText;
 
-    private DataManager dataManager;
+    private GameData dataManager;
 
     public string userName;
 
     
     private void Awake()
     {
-        dataManager = DataManager.instance;
+        dataManager = GameData.instance;
         //안내 팝업창은 MainMenu 테이블에 있는 entry를 사용 할것.
         noticePopupText.StringReference.TableReference = "MainMenu";
     }

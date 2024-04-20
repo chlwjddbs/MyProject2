@@ -36,7 +36,7 @@ public class DropItemPopupUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!DataManager.instance.isSet)
+        if (!GameData.instance.isSet)
         {
             return;
         }

@@ -20,13 +20,13 @@ public class LevelUp : MonoBehaviour
 
     IEnumerator levelupCo()
     {
-        DataManager.instance.isSet = false;
+        GameData.instance.isSet = false;
         levelupPart.Play();
         levelupLight.enabled = true;
         AudioManager.instance.PlayExSound("Levelup");
         Time.timeScale = 0.05f;
         yield return new WaitForSecondsRealtime(levelupPart.duration + 0.3f);
-        DataManager.instance.isSet = true;
+        GameData.instance.isSet = true;
         levelupLight.enabled = false;
         Time.timeScale = 1;
     }

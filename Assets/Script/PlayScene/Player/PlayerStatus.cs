@@ -8,7 +8,7 @@ using TMPro;
 
 public class PlayerStatus : MonoBehaviour
 {
-    private DataManager dataManager;
+    private GameData dataManager;
 
     public PlayerStatusUI playerStatusUI;
     private PlayerController player;
@@ -97,7 +97,7 @@ public class PlayerStatus : MonoBehaviour
 
     public void SetData()
     {
-        dataManager = DataManager.instance;
+        dataManager = GameData.instance;
         player = GetComponent<PlayerController>();
 
         int equipItems = (int)(EquipType.EquipTypeMax);
@@ -106,7 +106,7 @@ public class PlayerStatus : MonoBehaviour
         equipHealth = new float[equipItems];
         equipMana = new float[equipItems];
 
-        if (DataManager.instance.newGame)
+        if (GameData.instance.newGame)
         {
             player.enabled = true;
             GetComponent<NavMeshAgent>().enabled = true;
@@ -161,7 +161,7 @@ public class PlayerStatus : MonoBehaviour
 
     public void SetUI()
     {
-        userNameUI.text = DataManager.instance.userData.userName;
+        userNameUI.text = GameData.instance.userData.userName;
         levelUI.text = playerLv.ToString();
         expUI.text = currentExp + " / " + nextLvExp;
         hpUI.text = remainHealth + " / " + maxHealth;

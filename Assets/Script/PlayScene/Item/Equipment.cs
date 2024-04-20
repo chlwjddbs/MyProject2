@@ -60,7 +60,7 @@ public class Equipment : MonoBehaviour
 
         SetEquipData?.Invoke();
 
-        if (DataManager.instance.newGame)
+        if (GameData.instance.newGame)
         {
 
         }
@@ -156,12 +156,12 @@ public class Equipment : MonoBehaviour
 
     public void SaveData()
     {
-        DataManager.instance.userData.equipmentItem = equipItems;
+        GameData.instance.userData.equipmentItem = equipItems;
     }
 
     public void LoadData()
     {
-        equipItems = DataManager.instance.userData.equipmentItem;
+        equipItems = GameData.instance.userData.equipmentItem;
         SetEquip();
     }
 }

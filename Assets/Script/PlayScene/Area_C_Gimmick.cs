@@ -168,14 +168,14 @@ public class Area_C_Gimmick : MonoBehaviour
         {
             puzzleKey[i] = puzzleKeyControllers[i].isOpen;
         }
-        DataManager.instance.userData.puzzleKey = puzzleKey;
+        GameData.instance.userData.puzzleKey = puzzleKey;
 
-        DataManager.instance.userData.openGate = openGate;
+        GameData.instance.userData.openGate = openGate;
     }
 
     public void LoadData()
     {
-        openGate = DataManager.instance.userData.openGate.ConvertAll(b => b);
+        openGate = GameData.instance.userData.openGate.ConvertAll(b => b);
 
         for (int i = 0; i < openGate.Count; i++)
         {
@@ -189,7 +189,7 @@ public class Area_C_Gimmick : MonoBehaviour
         {
             try
             {
-                puzzleKeyControllers[i].LoadData(DataManager.instance.userData.puzzleKey[i]);
+                puzzleKeyControllers[i].LoadData(GameData.instance.userData.puzzleKey[i]);
             }
             catch
             {

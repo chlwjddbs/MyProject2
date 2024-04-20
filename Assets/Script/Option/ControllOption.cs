@@ -39,6 +39,8 @@ public class ControllOption : MonoBehaviour
 
     public ScrollRect sc;
     public GameObject test;
+    public RectTransform AllOption;
+    private float scrollVale = 0;
 
     public UnityAction<KeyOption,KeyCode> changeKeyCode;
 
@@ -107,7 +109,7 @@ public class ControllOption : MonoBehaviour
     
     public void SetKeyBind()
     {
-        if (DataManager.instance.newGame)
+        if (GameData.instance.newGame)
         {
             for (int i = 0; i < OptionKeyContent.childCount; i++)
             {
@@ -127,6 +129,7 @@ public class ControllOption : MonoBehaviour
                         else
                         {
                             string code = _keyOption.InitialCode.ToString();
+                            Debug.Log(key_Dic[code].gameObject.name);
                             //현재 keyOption의 값을 세팅하고
                             _keyOption.Bindkey(_keyOption.InitialCode, bKSprite_Dic[code], key_Dic[code]);
                             key_Dic[code].BindOption(_keyOption, whSprite_Dic[code]);
@@ -235,6 +238,15 @@ public class ControllOption : MonoBehaviour
         {
             Debug.Log(_keyOption.keyOption);
             selectOption = _keyOption;
+
+            if (_keyOption.TryGetComponent<RectTransform>(out RectTransform _opRect))
+            {
+                float _opPos = (_opRect.anchoredPosition.y + (_opRect.rect.height / 2));
+                scrollVale = 1 + (_opPos / (AllOption.rect.height - sc.viewport.rect.height));
+                Debug.Log(scrollVale);
+                scrollVale = Mathf.Clamp(scrollVale, 0, 1);
+                sc.verticalScrollbar.value = (scrollVale);
+            }
         }
         else
         {
@@ -437,7 +449,7 @@ public class ControllOption : MonoBehaviour
 
     public void TestScrollbar()
     {
-        Debug.Log(test.GetComponent<RectTransform>().rect.height);
+        
     }
 }
 

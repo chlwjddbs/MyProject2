@@ -88,11 +88,11 @@ public class Object_1stFloor : ObjectManager
             }
         }
 
-        for (int i = 0; i < DataManager.instance.userData.FiledItme_1F.Count; i++)
+        for (int i = 0; i < GameData.instance.userData.FiledItme_1F.Count; i++)
         {
-            GameObject field = Instantiate(DataManager.instance.userData.FiledItme_1F[i].fieldItem.FieldObject, dropItemManager.transform);
-            field.transform.position = DataManager.instance.userData.FiledItme_1F[i].itemPos;
-            field.GetComponentInChildren<AddItem>().quantity = DataManager.instance.userData.FiledItme_1F[i].quantity;
+            GameObject field = Instantiate(GameData.instance.userData.FiledItme_1F[i].fieldItem.FieldObject, dropItemManager.transform);
+            field.transform.position = GameData.instance.userData.FiledItme_1F[i].itemPos;
+            field.GetComponentInChildren<AddItem>().quantity = GameData.instance.userData.FiledItme_1F[i].quantity;
         }
 
         c_Gimmick.LoadData();

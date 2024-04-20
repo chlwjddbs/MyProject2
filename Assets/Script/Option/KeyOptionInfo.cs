@@ -21,7 +21,7 @@ public class KeyOptionInfo : MonoBehaviour
 
     private void Awake()
     {
-        mBt_Image = GetComponent<Image>();
+        mBt_Image = GetComponentInChildren<Image>();
     }
 
     public void Bindkey(KeyCode _bindKey, Sprite _curImage, BindKeyInfo _bindKeyInfo = null)

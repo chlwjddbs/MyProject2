@@ -67,7 +67,7 @@ public class TeleportGate : Interaction
         gateManager = _gateManager;
        
 
-        if (DataManager.instance.newGame) 
+        if (GameData.instance.newGame) 
         {
              gateCoordinate = transform.position;
             //gateManager.gateDic.Add(gateNumber, new GateManager.GateInfo(gateName, gateCoordinate, isActive));

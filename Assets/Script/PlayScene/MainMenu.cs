@@ -26,7 +26,7 @@ public class MainMenu : MonoBehaviour
 
     //public Fader fader;
 
-    protected DataManager dataManager;
+    protected GameData dataManager;
 
     protected GameObject popupObj;
 
@@ -36,7 +36,7 @@ public class MainMenu : MonoBehaviour
     public virtual void Start()
     {
         //Debug.Log("main");
-        dataManager = DataManager.instance;
+        dataManager = GameData.instance;
         fader = dataManager.fader;
         MenuCloseAll();       
     }

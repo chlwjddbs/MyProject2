@@ -12,7 +12,7 @@ public class SaveSlot : MonoBehaviour
 {
     private bool isSelect = false;
     private string slotName;
-    private DataManager dataManager;
+    private GameData dataManager;
     public TextMeshProUGUI savedTimeText;
     public TextMeshProUGUI gameDataText;
 
@@ -38,7 +38,7 @@ public class SaveSlot : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dataManager = DataManager.instance;
+        dataManager = GameData.instance;
         LanguageOption.setSlot += SetSlot;
         //메인 게임에 LanguageOption 추가전까지 임시로 사용
         if (!SaveFileManager.isMain)
