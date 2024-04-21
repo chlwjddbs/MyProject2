@@ -9,8 +9,6 @@ using UnityEngine.Events;
 
 public class ControllOption : MonoBehaviour
 {
-    public static ControllOption instance;
-
     //설정 가능한 키 모음
     public Transform KeyBoard;
     //설정 가능한 옵션 모음
@@ -37,30 +35,17 @@ public class ControllOption : MonoBehaviour
 
     public static bool isChanging = false;
 
-    public ScrollRect sc;
-    public GameObject test;
+    public ScrollRect scrollRect;
     public RectTransform AllOption;
     private float scrollVale = 0;
 
     public UnityAction<KeyOption,KeyCode> changeKeyCode;
 
-    private void Awake()
+    private void LateUpdate()
     {
-        if(instance != null)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Destroy(this);
-            return;
-        }
-
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            ResetKeyBind();
+            DeSelectAll();
         }
     }
 
@@ -94,7 +79,6 @@ public class ControllOption : MonoBehaviour
                     }                  
                 }
 
-
                 foreach (var wh in whKey_Image)
                 {
                     if (wh.name == _bindkeyInfo.name)
@@ -102,14 +86,13 @@ public class ControllOption : MonoBehaviour
                         whSprite_Dic.Add(_bindkeyInfo.name, wh);
                     }
                 }
-
             }
         }
     }
     
     public void SetKeyBind()
     {
-        if (GameData.instance.newGame)
+        if (!OptionData.instance.LoadData())
         {
             for (int i = 0; i < OptionKeyContent.childCount; i++)
             {
@@ -117,37 +100,67 @@ public class ControllOption : MonoBehaviour
 
                 if (OptionKeyContent.GetChild(optionNum).TryGetComponent(out KeyOptionInfo _keyOption))
                 {
-                    if (!bindKey_Dic.TryGetValue(_keyOption.keyOption,out KeyOptionInfo value))
+                    //키옵션 정보가 중복됐는지 확인하기 위해서 다시 검사해준다.                  
+                    if (!bindKey_Dic.TryGetValue(_keyOption.keyOption,out KeyOptionInfo overlapVal))
                     {
                         if (_keyOption.InitialCode == KeyCode.None)
                         {
-                            //초기값으로 초기화 후 NoneCode 이미지로 변경
+                            //None으로 초기화 후 NoneCode 이미지로 변경
                             _keyOption.Bindkey(_keyOption.InitialCode, nobind_image, null);
+
                             bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
                         }
-                        //현재 옵션의 기본 keycode가 None이 아닐때
-                        else
-                        {
+                        else //현재 옵션의 기본 keycode가 None이 아닐때
+                        {                          
                             string code = _keyOption.InitialCode.ToString();
                             Debug.Log(key_Dic[code].gameObject.name);
-                            //현재 keyOption의 값을 세팅하고
+                            //현재 keyOption의 값을 code로 세팅하고
                             _keyOption.Bindkey(_keyOption.InitialCode, bKSprite_Dic[code], key_Dic[code]);
                             key_Dic[code].BindOption(_keyOption, whSprite_Dic[code]);
 
-                            //초기 코드가 None이면 bind 될 키가 없다는 뜻임으로 None일는 추가 하지 않는다.
                             bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
                         }
                     }
                     else
                     {
-                        Debug.Log($"{value.keyOption}이 중복 되었습니다.");
+                        //ex) 설정 실수로 인해 OptionKeyContent[0]과 OptionKeyContent[1]이 같은 keyOption을 가지게 되면
+                        //[0]이 등록된 후에 [1]을 등록하려고 시도하면 이미 등록된 옵션이기 때문에 [1]이 중복되었다고 출력해준다.
+                        Debug.Log($"{overlapVal.keyOption} : 중복된 옵션.");
                     }
                 }
             }
-        }
-        else
-        {
 
+            OptionData.instance.SetData(bindKey_Dic);
+        }
+        else //변경된 정보가 있을 경우
+        {
+            int test = 0;
+            for (int i = 0; i < OptionKeyContent.childCount; i++)
+            {
+                int optionNum = i;
+                if (OptionKeyContent.GetChild(optionNum).TryGetComponent(out KeyOptionInfo _keyOption))
+                {
+                    
+                    if (!bindKey_Dic.TryGetValue(_keyOption.keyOption, out KeyOptionInfo overlapVal))
+                    {
+                        KeyCode code = OptionData.instance.bindKeyData.bindCode[test];
+                        Debug.Log(code);
+                        if (code == KeyCode.None)
+                        {
+                            _keyOption.Bindkey(code, nobind_image, null);
+                            bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
+                        }
+                        else
+                        {
+                            _keyOption.Bindkey(code, bKSprite_Dic[code.ToString()], key_Dic[code.ToString()]);
+                            key_Dic[code.ToString()].BindOption(_keyOption, whSprite_Dic[code.ToString()]);
+
+                            bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
+                        }
+                        test++;
+                    }
+                }
+            }
         }
     }
 
@@ -217,39 +230,120 @@ public class ControllOption : MonoBehaviour
                 }
             }
         }
+        DeSelectAll();
+        OptionData.instance.DeleteData();
     }
 
-    public void SelectBindKey(BindKeyInfo _selectButton)
+    public void SelectBindKey(BindKeyInfo _selectKey)
     {
-        selectKey = _selectButton;
-        Focucemenu(selectKey);
-    }
-
-    public void SelectOption(KeyOptionInfo _infoKey)
-    {
-        selectOption = _infoKey;
-        isChanging = true;
-    }
-
-    public void Focucemenu(BindKeyInfo _selectKey)
-    {
-        //scrollview vale = 보여줄 컨텐츠의 위치 / (전체 content의 크기) - (contentview의 크기)
-        if (bindKey_Dic.TryGetValue(_selectKey.bindOption.keyOption, out KeyOptionInfo _keyOption))
+        //똑같은 Key를 한번 더 누르면 선택 해제를 해준다.
+        if (selectKey == _selectKey)
         {
-            Debug.Log(_keyOption.keyOption);
-            selectOption = _keyOption;
-
-            if (_keyOption.TryGetComponent<RectTransform>(out RectTransform _opRect))
-            {
-                float _opPos = (_opRect.anchoredPosition.y + (_opRect.rect.height / 2));
-                scrollVale = 1 + (_opPos / (AllOption.rect.height - sc.viewport.rect.height));
-                Debug.Log(scrollVale);
-                scrollVale = Mathf.Clamp(scrollVale, 0, 1);
-                sc.verticalScrollbar.value = (scrollVale);
-            }
+            DeSelectAll();
         }
         else
         {
+            //기존에 선택한 키가 있고
+            if (selectKey != null)
+            {
+                //selectKey는 선택한 키가 저장된다. 그래서 selectKey가 null이 아니라면 기존에 선택했던 key가 존재한다.
+                //그래서 _selectKey를 selectKey에 넣어주기 전까지는 기존에 선택한 키가 된다.
+                //기존에 선택한 키에 바인드 된 옵션이 있으면 바인드 된 옵션도 select 상태임으로 DeSelect해준다.
+                selectKey.bindOption?.DeSelectOption();
+                //기존에 선택한 키도 DeSelect해준다.
+                selectKey.DeSelectKey();
+            }
+
+            //새로 선택한 Key를 Select 해주고
+            _selectKey.SelectKey();
+
+            //새로 선택한 키를 선택한 키로 바꿔준다.
+            selectKey = _selectKey;
+            FocusOption(selectKey);
+
+            isChanging = true;
+        }
+    }
+
+    public void SelectOption(KeyOptionInfo _optionInfo)
+    {
+        //똑같은 Option을 다시 선택하면 선택 해제를 해준다.
+        if (selectOption == _optionInfo)
+        {
+            Debug.Log("여기 안옴?");
+            DeSelectAll();
+        }
+        else
+        {
+            if (selectOption != null)
+            {
+                selectOption.bindKeyInfo?.DeSelectKey();
+                selectOption.DeSelectOption();
+            }
+
+            _optionInfo.SelectOption();
+
+            selectOption = _optionInfo;
+            Focuskey(selectOption);
+
+            isChanging = true;
+        }
+    }
+
+    public void DeSelectAll()
+    {
+        Debug.Log(selectKey.name);
+        selectKey?.DeSelectKey();
+        selectKey = null;       
+        selectOption?.DeSelectOption();
+        selectOption = null;
+        isChanging = false;
+    }
+
+    public void Focuskey(KeyOptionInfo _selectOption)
+    {
+        if(_selectOption.bindKeyInfo != null) 
+        {
+            selectKey?.DeSelectKey();
+            _selectOption.bindKeyInfo.SelectKey();
+            selectKey = _selectOption.bindKeyInfo;
+        }
+        else
+        {
+            selectKey.DeSelectKey();
+            selectKey = null;
+            Debug.Log("연결된 키가 없습니다.");
+        }
+    }
+
+    public void FocusOption(BindKeyInfo _selectKey)
+    {       
+        if (_selectKey.bindOption != null)
+        {
+            //scrollview vale = 보여줄 컨텐츠의 위치 / (전체 content의 크기) - (contentview의 크기)
+            if (bindKey_Dic.TryGetValue(_selectKey.bindOption.keyOption, out KeyOptionInfo _keyOption))
+            {
+                Debug.Log(_keyOption.keyOption);
+                //SelectOption(_keyOption);
+                if (_keyOption.TryGetComponent(out RectTransform _opRect))
+                {
+                    float _opPos = (_opRect.anchoredPosition.y + (_opRect.rect.height / 2));
+                    scrollVale = 1 + (_opPos / (AllOption.rect.height - scrollRect.viewport.rect.height));
+                    Debug.Log(scrollVale);
+                    scrollVale = Mathf.Clamp(scrollVale, 0, 1);
+                    scrollRect.verticalScrollbar.value = (scrollVale);
+
+                    selectOption?.DeSelectOption();
+                    _keyOption.SelectOption();
+                    selectOption = _keyOption;
+                }
+            }
+        }
+        else //현재 선택한 키에 바인드 된 옵션이 없다면
+        {
+            //기존에 선택되어 있던 옵션은 DeSelect 해준다.
+            selectOption?.DeSelectOption();
+            selectOption = null;
             Debug.Log("연결된 기능이 없습니다.");
         }
 
@@ -298,8 +392,7 @@ public class ControllOption : MonoBehaviour
 
             if(ev.keyCode == KeyCode.Escape)
             {
-                selectOption = null;
-                isChanging = false;
+                DeSelectAll();
             }
 
             if (key_Dic.TryGetValue(keyName, out BindKeyInfo _bindkey))
@@ -326,12 +419,19 @@ public class ControllOption : MonoBehaviour
                         _keyOption.bindKeyInfo.RemoveBindOption(bKSprite_Dic[_keyOption.bindKey.ToString()]);
                     }
 
+
                     //입력받은 key에 selectOtpion 정보를 새로 Bind 해준다.
                     _bindkey.BindOption(selectOption, whSprite_Dic[keyName]);
 
                     //selectOption의 정보를 입력받은 key로 갱신한다.
                     _keyOption.Bindkey(ev.keyCode, bKSprite_Dic[keyName], _bindkey);
-                    //bindKey_Dic[selectOption.keyOption] = _keyOption; : 딕셔너리부터 값을 가져온거기 때문에 값을 변경해주면 굳이 다시 넣지 않아도 된다.                  
+                    //bindKey_Dic[selectOption.keyOption] = _keyOption; : 딕셔너리부터 값을 가져온거기 때문에 값을 변경해주면 굳이 다시 넣지 않아도 된다.
+
+
+                    selectKey?.DeSelectKey();
+                    _bindkey.SelectKey();
+                    selectKey = _bindkey;
+
                 }
                 else
                 {
@@ -344,7 +444,7 @@ public class ControllOption : MonoBehaviour
                 //      ->비어이는 S key에 skillButton1 Bind
                 //      ->skillButton1에 S key 정보를 입력
                 //      ->A key와 SkillButton2는 연결된 정보 없음.
-                //      ->S key에 SkillBUtton1 덮어쓰기 완료.
+                //      ->S key에 SkillBUtton1 덮어쓰기 완료.              
             }
         }
     }
@@ -443,14 +543,9 @@ public class ControllOption : MonoBehaviour
 
     private void OnDisable()
     {
-        selectOption = null;
-        isChanging = false;
+        DeSelectAll();
     }
-
-    public void TestScrollbar()
-    {
-        
-    }
+    
 }
 
 public enum KeyOption
@@ -460,5 +555,8 @@ public enum KeyOption
     SkillButton3,
     SkillButton4,
     SkillButton5,
+    Inventory,
+    Status,
+    SkillBook,
     KeyCount,
 }

@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
 public class BindKeyInfo : MonoBehaviour
 { 
     public KeyOptionInfo bindOption;
 
-    [SerializeField]
-    private Image mBt_Image;
+    [SerializeField] private Image mBt_Image;
+    [SerializeField] private Image selectImage;
 
     private void Awake()
     {
         mBt_Image = GetComponent<Image>();
+
+        foreach (Transform child in transform)
+        {
+            selectImage = child.GetComponent<Image>();
+        }
     }
 
     public void BindOption(KeyOptionInfo _bindOption, Sprite _image)
@@ -26,5 +30,15 @@ public class BindKeyInfo : MonoBehaviour
     {
         mBt_Image.sprite = _initial_image;
         bindOption = null;
+    }
+
+    public void SelectKey()
+    {
+        selectImage.enabled = true;
+    }
+
+    public void DeSelectKey()
+    {
+        selectImage.enabled = false;
     }
 }

@@ -137,7 +137,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     //DataSetting
     public void SetData()
     {
-        controlOption = ControllOption.instance;
+        controlOption = OptionManager.instance.controllOption;
         controlOption.changeKeyCode += ChangeKeyCode;
 
         //처음 데이터가 세팅되면 스킬 이미지, 남은 쿨타임을 표시해주는 text, 남을 쿨타임을 보여주는 Filled를 모두 초기화 해준다.
