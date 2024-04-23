@@ -137,7 +137,7 @@ public class MainMenu : MonoBehaviour
         //settingMenu.SetActive(false);      
     }
 
-    public void PopupClose(GameObject popup)
+    public virtual void PopupClose(GameObject popup)
     {
         //popup.SetActive(false);
         Destroy(popup);

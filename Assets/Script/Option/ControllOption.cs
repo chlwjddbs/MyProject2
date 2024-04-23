@@ -9,6 +9,9 @@ using UnityEngine.Events;
 
 public class ControllOption : MonoBehaviour
 {
+    private OptionManager optionManager;
+    private OptionData optionData;
+
     //설정 가능한 키 모음
     public Transform KeyBoard;
     //설정 가능한 옵션 모음
@@ -51,6 +54,8 @@ public class ControllOption : MonoBehaviour
 
     public void GameStart()
     {
+        optionManager = OptionManager.instance;
+        optionData = OptionData.instance;
         KeyOptionData();
         SetKeyBind();
     }
@@ -92,7 +97,7 @@ public class ControllOption : MonoBehaviour
     
     public void SetKeyBind()
     {
-        if (!OptionData.instance.LoadData())
+        if (!optionData.LoadData())
         {
             for (int i = 0; i < OptionKeyContent.childCount; i++)
             {
@@ -129,38 +134,74 @@ public class ControllOption : MonoBehaviour
                     }
                 }
             }
-
-            OptionData.instance.SetData(bindKey_Dic);
+            optionData.SetData(bindKey_Dic);
         }
         else //변경된 정보가 있을 경우
         {
-            int test = 0;
+            //옵션 정보를 모두 불러온다.
             for (int i = 0; i < OptionKeyContent.childCount; i++)
             {
                 int optionNum = i;
+
+                //옵션 정보를 가지고 있는 keyOptionInfo가 있는지 확인하고
                 if (OptionKeyContent.GetChild(optionNum).TryGetComponent(out KeyOptionInfo _keyOption))
                 {
-                    
+                    //등록된 정보에서 중복 검사를 한다.
                     if (!bindKey_Dic.TryGetValue(_keyOption.keyOption, out KeyOptionInfo overlapVal))
                     {
-                        KeyCode code = OptionData.instance.bindKeyData.bindCode[test];
-                        Debug.Log(code);
-                        if (code == KeyCode.None)
+                        //업데이트로 인해 새로운 옵션이 추가 되면 기존에 저장된 정보와 데이터가 맞지 않게 된다.
+                        //기존 Bind 정보는 그대로 불러오고 그 이후에 추가된 정보만 새로 추가해 준다.
+                        if (optionNum >= optionData.bindKeyData.keyOtion.Count)
                         {
-                            _keyOption.Bindkey(code, nobind_image, null);
-                            bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
+                            string newDataCode = _keyOption.InitialCode.ToString();
+
+                            //새로 들어온 데이터의 초기값에 바인드 된 정보가 없으면 바로 Bind 해준다.
+                            if (key_Dic[newDataCode].bindOption == null)
+                            {
+                                _keyOption.Bindkey(_keyOption.InitialCode, bKSprite_Dic[newDataCode], key_Dic[newDataCode]);
+                                key_Dic[newDataCode].BindOption(_keyOption, whSprite_Dic[newDataCode]);
+
+                                bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
+
+                                Debug.Log($"새로 추가 된 옵션 : {_keyOption.keyOption}");
+                            }
+                            else //바인드 된 정보가 있으면 기존에 사용하고 있는 옵션이 있다는 뜻으로 None으로 처리 해 준다.
+                            {
+                                _keyOption.Bindkey(KeyCode.None, nobind_image, null);
+                                bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
+
+                                Debug.Log($"{newDataCode}에 이미 등록된 정보가 있습니다. {_keyOption.keyOption}은 None 처리 됩니다.");
+                            }
                         }
                         else
                         {
-                            _keyOption.Bindkey(code, bKSprite_Dic[code.ToString()], key_Dic[code.ToString()]);
-                            key_Dic[code.ToString()].BindOption(_keyOption, whSprite_Dic[code.ToString()]);
+                            KeyCode code = optionData.bindKeyData.bindCode[optionNum];
+                            Debug.Log(code);
+                            if (code == KeyCode.None)
+                            {
+                                _keyOption.Bindkey(code, nobind_image, null);
+                                bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
+                            }
+                            else
+                            {
+                                _keyOption.Bindkey(code, bKSprite_Dic[code.ToString()], key_Dic[code.ToString()]);
+                                key_Dic[code.ToString()].BindOption(_keyOption, whSprite_Dic[code.ToString()]);
 
-                            bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
+                                bindKey_Dic.Add(_keyOption.keyOption, _keyOption);
+                            }
                         }
-                        test++;
+                    }
+                    else
+                    {
+                        Debug.Log($"에러 : {overlapVal} 데이터가 중복 되었습니다. 데이터를 확인해 주세요.");
                     }
                 }
+                else
+                {
+                    Debug.Log($"{optionNum}번 옵션에 스크립트가 없습니다.");
+                }
             }
+            optionData.SetData(bindKey_Dic);
         }
     }
 
@@ -231,7 +272,7 @@ public class ControllOption : MonoBehaviour
             }
         }
         DeSelectAll();
-        OptionData.instance.DeleteData();
+        optionData.DeleteData();
     }
 
     public void SelectBindKey(BindKeyInfo _selectKey)
@@ -292,7 +333,6 @@ public class ControllOption : MonoBehaviour
 
     public void DeSelectAll()
     {
-        Debug.Log(selectKey.name);
         selectKey?.DeSelectKey();
         selectKey = null;       
         selectOption?.DeSelectOption();
@@ -310,7 +350,7 @@ public class ControllOption : MonoBehaviour
         }
         else
         {
-            selectKey.DeSelectKey();
+            selectKey?.DeSelectKey();
             selectKey = null;
             Debug.Log("연결된 키가 없습니다.");
         }
@@ -373,7 +413,7 @@ public class ControllOption : MonoBehaviour
         */
     }
 
-    public void ChangeInputKey()
+    public void ChangeKeyBind()
     {
         //Event.current.iskey를 통해 키 입력을 받았을 시 True를 받아 if문을 넘길수도 있다.
         //하지만 Event.current.iskey는 input.Getkey와 같이 동작함으로 같은 키가 여러번 들어올 수 있기 때문에 keyDown으로 한번에 하나의 동작만 처리한다.
@@ -389,6 +429,7 @@ public class ControllOption : MonoBehaviour
             //입력받은 key 정보를 저장
             Event ev = Event.current;
             string keyName = ev.keyCode.ToString();
+            KeyCode tmp_Code = selectOption.bindKey;
 
             if(ev.keyCode == KeyCode.Escape)
             {
@@ -406,10 +447,20 @@ public class ControllOption : MonoBehaviour
                         return;
                     }
                     //입력받은 key에 연결된 keyoption에 있는 연결된 key정보를 없애준다.
-                    //ex)skillbutton1이 S에 할당되어 있을때 A로 바꾸고 싶다면 A에 skillbutton2가 할당되어 있다면 skillbutton2에 연결된 A버튼을 제거한다.
-                    //A에 skillbutton1만 새로 덮으면 데이터상 skillbutton2에도 A랑 연결되어 있기 때문에 제거해준다.
+                    //ex)skillbutton1이 S에 할당되어 있을때 A로 바꾸고 싶다면
+                    //A에 연결 되어있는 keyOption(skillbutton2)을 찾아 skillbutton2에 연결된 A버튼을 제거한다.
+                    //A에 skillbutton1만 새로 덮으면 데이터상 skillbutton2에도 A랑 연결되어 있기 때문에 제거 해준다.
                     if (_bindkey.bindOption != null)
                     {
+                        if(optionManager.tmp_BindDic.TryGetValue(_bindkey.bindOption.keyOption, out KeyCode vale))
+                        {
+                            //취소 기능을 위해 만들어진 tmp 딕셔너리는 옵션이 바뀌기 전 값만 있으면 된다.
+                            //수 없이 많이 반복해서 바꿔도 취소를 누르면 처음의 값이 필요하기 때문이다.
+                        }
+                        else
+                        {
+                            optionManager.tmp_BindDic.Add(_bindkey.bindOption.keyOption, _bindkey.bindOption.bindKey);
+                        }
                         _bindkey.bindOption.RemoveBindKey(nobind_image);
                     }
 
@@ -419,7 +470,6 @@ public class ControllOption : MonoBehaviour
                         _keyOption.bindKeyInfo.RemoveBindOption(bKSprite_Dic[_keyOption.bindKey.ToString()]);
                     }
 
-
                     //입력받은 key에 selectOtpion 정보를 새로 Bind 해준다.
                     _bindkey.BindOption(selectOption, whSprite_Dic[keyName]);
 
@@ -427,10 +477,20 @@ public class ControllOption : MonoBehaviour
                     _keyOption.Bindkey(ev.keyCode, bKSprite_Dic[keyName], _bindkey);
                     //bindKey_Dic[selectOption.keyOption] = _keyOption; : 딕셔너리부터 값을 가져온거기 때문에 값을 변경해주면 굳이 다시 넣지 않아도 된다.
 
+                    if (optionManager.tmp_BindDic.TryGetValue(selectOption.keyOption, out KeyCode _code))
+                    {
+                        //optionManager.tmp_BindDic[selectOption.keyOption] = tmp_Code;
+                    }
+                    else
+                    {
+                        optionManager.tmp_BindDic.Add(selectOption.keyOption, tmp_Code);
+                    }
 
                     selectKey?.DeSelectKey();
                     _bindkey.SelectKey();
                     selectKey = _bindkey;
+
+                    optionManager.ToggleSaveButton(true);
 
                 }
                 else
@@ -447,6 +507,52 @@ public class ControllOption : MonoBehaviour
                 //      ->S key에 SkillBUtton1 덮어쓰기 완료.              
             }
         }
+    }
+
+    public void BindCancel(Dictionary<KeyOption,KeyCode> tmp_bindDic)
+    {
+        foreach (var bindInfo in tmp_bindDic)
+        {
+            string keyName = bindInfo.Value.ToString();
+            Debug.Log(bindInfo.Value);
+
+            if (key_Dic.TryGetValue(keyName, out BindKeyInfo _bindkey))
+            {
+                if (bindKey_Dic.TryGetValue(bindInfo.Key, out KeyOptionInfo _keyOption))
+                {
+                    if (_bindkey.bindOption != null)
+                    {
+                        _bindkey.bindOption.RemoveBindKey(nobind_image);
+                    }
+
+                    if (_keyOption.bindKeyInfo != null)
+                    {
+                        _keyOption.bindKeyInfo.RemoveBindOption(bKSprite_Dic[_keyOption.bindKey.ToString()]);
+                    }
+
+                    _bindkey.BindOption(_keyOption, whSprite_Dic[keyName]);
+
+                    _keyOption.Bindkey(bindInfo.Value, bKSprite_Dic[keyName], _bindkey);
+
+                    DeSelectAll();
+                    optionData.CreateSaveData();
+                }
+                else
+                {
+                    Debug.Log($"에러 : {_keyOption.keyOption}이 저장이 안됐습니다.");
+                }
+            }
+            else
+            {
+                Debug.Log($"{keyName}에 에러가 있습니다.!");
+            }
+        }
+    }
+
+    public void SaveOption()
+    {
+        DeSelectAll();
+        optionData.CreateSaveData();
     }
 
     public void OldChangeInputKey()
@@ -527,7 +633,7 @@ public class ControllOption : MonoBehaviour
 
         if (isChange)
         {
-            ChangeInputKey();
+            ChangeKeyBind();
         }
     }
 
@@ -543,6 +649,7 @@ public class ControllOption : MonoBehaviour
 
     private void OnDisable()
     {
+        BindCancel(optionManager.tmp_BindDic);
         DeSelectAll();
     }
     
@@ -555,8 +662,16 @@ public enum KeyOption
     SkillButton3,
     SkillButton4,
     SkillButton5,
+
     Inventory,
     Status,
     SkillBook,
+
+    QuickSlot1,
+    QuickSlot2,
+    QuickSlot3,
+    QuickSlot4,
+    QuickSlot5,
+
     KeyCount,
 }

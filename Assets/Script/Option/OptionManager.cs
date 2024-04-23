@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.Localization.Components;
 
 
 public class OptionManager : MonoBehaviour
@@ -45,10 +46,16 @@ public class OptionManager : MonoBehaviour
     public List<int> tmp_SfxVol;
     public List<int> tmp_AmbVol;
 
+    public Dictionary<KeyOption, KeyCode> tmp_BindDic = new Dictionary<KeyOption, KeyCode>();
+
     //옵션 변경 후 변경한 옵션을 저장하거나 취소하기 전 선택중인 상태 표시
     public bool isChange = false;
 
     public Button saveButton;
+
+    public ConfirmedPopup confirmedPopupPrefab;
+    public Transform popupPos;
+    private ConfirmedPopup confirmedPopup;
     
     private void Start()
     {
@@ -71,7 +78,7 @@ public class OptionManager : MonoBehaviour
 
         GameData.instance.isSet = true;
     }
-
+  
     public void SaveOption()
     {
         if (!isChange)
@@ -92,7 +99,7 @@ public class OptionManager : MonoBehaviour
     {
         videoOption.SaveOption();
         audioOption.SaveOption();
-
+        controllOption.SaveOption();       
     }
 
     //SaveButton의 활성, 비활성화 상태 여부를 정해준다.
@@ -123,14 +130,32 @@ public class OptionManager : MonoBehaviour
         
         videoOption.CancelOption(tmp_Screen.Count == 0? -1 : tmp_Screen[0], tmp_ResVale.Count ==0? -1 : tmp_ResVale[0], tmp_Ratio.Count == 0? -1 : tmp_Ratio[0]);
         audioOption.ChangeOption("Cancel");
+        controllOption.BindCancel(tmp_BindDic);
         ClearList();
         //videoOption.ChangeRatio(ratio);
+    }
+
+    public void ResetPopupUI()
+    {
+        if(confirmedPopup != null)
+        {
+            Destroy(confirmedPopup.gameObject);
+        }
+
+        ConfirmedPopup _confirmedPopup = Instantiate(confirmedPopupPrefab, popupPos);
+        confirmedPopup = _confirmedPopup;
+        confirmedPopup.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+        confirmedPopup.popupText.StringReference.TableReference = "Setting";
+        confirmedPopup.popupText.StringReference.TableEntryReference = "ResetMessage";
+        confirmedPopup.okButton.onClick.AddListener(ResetOption);
+        confirmedPopup.cancelButton.onClick.AddListener(confirmedPopup.Cancel);
     }
 
     public void ResetOption()
     {
         videoOption.ResetOption();
         audioOption.ChangeOption("Reset");
+        controllOption.ResetKeyBind();
         ClearList();
         Save();
     }
@@ -145,6 +170,7 @@ public class OptionManager : MonoBehaviour
         tmp_BgmVol.Clear();
         tmp_SfxVol.Clear();
         tmp_AmbVol.Clear();
+        tmp_BindDic.Clear();
 
         ToggleSaveButton(false);
     }

@@ -121,4 +121,9 @@ public class MainSceneMenu : MainMenu
     {
         noticePopupUI.SetActive(false);
     }
+
+    public override void PopupClose(GameObject popup)
+    {
+        popup.SetActive(false);
+    }
 }

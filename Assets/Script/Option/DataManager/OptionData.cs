@@ -47,12 +47,15 @@ public class OptionData : DataManager
 
     public void SetData(Dictionary<KeyOption, KeyOptionInfo> _bindData)
     {
+        bindKeyData.keyOtion.Clear();
+        bindKeyData.bindCode.Clear();
+
         foreach (var saveData in _bindData)
         {
             bindKeyData.keyOtion.Add(saveData.Key);
             bindKeyData.bindCode.Add(saveData.Value.bindKey);
-            Debug.Log(saveData.Key);
-            Debug.Log(saveData.Value);
+            //Debug.Log(saveData.Key);
+            //Debug.Log(saveData.Value);
         }
 
         CreateSaveData();
@@ -69,7 +72,7 @@ public class OptionData : DataManager
             }
         }
 
-        CreateSaveData();
+        //CreateSaveData();
     }
 
     IEnumerator C_SaveData(Dictionary<KeyOption, KeyOptionInfo> _bindData)

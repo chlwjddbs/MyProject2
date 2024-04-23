@@ -114,6 +114,63 @@ MonoBehaviour:
     m_Localized: Reset
     m_Metadata:
       m_Items: []
+  - m_Id: 328635153522688
+    m_Localized: "If you press the OK button, \nAll values of the image, audio, and
+      control are reset."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58768601696759808
+    m_Localized: Skill Button1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58768636647895040
+    m_Localized: Skill Button2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58768638942179328
+    m_Localized: Skill Button3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58768640401797120
+    m_Localized: Skill Button4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58768683548602368
+    m_Localized: Skill Button5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58768965825261568
+    m_Localized: Inventory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58769033336778752
+    m_Localized: Skill Book
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58769170012368896
+    m_Localized: Status Info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58769333850271744
+    m_Localized: Quick Slot1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58769343690108928
+    m_Localized: Quick Slot2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58769345195864064
+    m_Localized: Quick Slot3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58769346823254016
+    m_Localized: Quick Slot4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58769348316426240
+    m_Localized: Quick Slot5
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
