@@ -56,11 +56,11 @@ public class ControllOption : MonoBehaviour
     {
         optionManager = OptionManager.instance;
         optionData = OptionData.instance;
-        KeyOptionData();
-        SetKeyBind();
+        SetKeyData();
+        SetKeyBindData();
     }
 
-    public void KeyOptionData()
+    public void SetKeyData()
     {
         for (int i = 0; i < KeyBoard.childCount; i++)
         {
@@ -68,6 +68,7 @@ public class ControllOption : MonoBehaviour
             int keyNum = i;
             if (KeyBoard.GetChild(keyNum).TryGetComponent(out BindKeyInfo _bindkeyInfo))
             {
+                _bindkeyInfo.SetKeyInfo();
                 //매개변수로 사용할 인자는 람다식으로 넣어줘야함
                 //bt.onClick.AddListener(() => Clickbutton(bt.gameObject));
                 _bindkeyInfo.GetComponent<Button>().onClick.AddListener(() => SelectBindKey(_bindkeyInfo));
@@ -95,7 +96,7 @@ public class ControllOption : MonoBehaviour
         }
     }
     
-    public void SetKeyBind()
+    public void SetKeyBindData()
     {
         if (!optionData.LoadData())
         {
@@ -105,6 +106,12 @@ public class ControllOption : MonoBehaviour
 
                 if (OptionKeyContent.GetChild(optionNum).TryGetComponent(out KeyOptionInfo _keyOption))
                 {
+                    if (_keyOption.mBt == null)
+                    {
+                        _keyOption.SetKeyOptionInfo();
+                        _keyOption.GetComponent<Button>().onClick.AddListener(() => SelectOption(_keyOption));
+                    }
+
                     //키옵션 정보가 중복됐는지 확인하기 위해서 다시 검사해준다.                  
                     if (!bindKey_Dic.TryGetValue(_keyOption.keyOption,out KeyOptionInfo overlapVal))
                     {
@@ -146,11 +153,19 @@ public class ControllOption : MonoBehaviour
                 //옵션 정보를 가지고 있는 keyOptionInfo가 있는지 확인하고
                 if (OptionKeyContent.GetChild(optionNum).TryGetComponent(out KeyOptionInfo _keyOption))
                 {
+                    if (_keyOption.mBt == null)
+                    {
+                        _keyOption.SetKeyOptionInfo();
+                        _keyOption.GetComponent<Button>().onClick.AddListener(() => SelectOption(_keyOption));
+                    }
+
                     //등록된 정보에서 중복 검사를 한다.
                     if (!bindKey_Dic.TryGetValue(_keyOption.keyOption, out KeyOptionInfo overlapVal))
                     {
                         //업데이트로 인해 새로운 옵션이 추가 되면 기존에 저장된 정보와 데이터가 맞지 않게 된다.
                         //기존 Bind 정보는 그대로 불러오고 그 이후에 추가된 정보만 새로 추가해 준다.
+
+                        //새로 추가된 정보
                         if (optionNum >= optionData.bindKeyData.keyOtion.Count)
                         {
                             string newDataCode = _keyOption.InitialCode.ToString();

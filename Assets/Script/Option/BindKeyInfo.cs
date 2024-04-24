@@ -10,7 +10,7 @@ public class BindKeyInfo : MonoBehaviour
     [SerializeField] private Image mBt_Image;
     [SerializeField] private Image selectImage;
 
-    private void Awake()
+    public void SetKeyInfo()
     {
         mBt_Image = GetComponent<Image>();
 

@@ -11,13 +11,18 @@ public class KeyOptionInfo : MonoBehaviour
     public Sprite curImage;
 
     [SerializeField] private Image mBt_Image;
-    [SerializeField] private Button mBt;
+    public Button mBt;
 
     public BindKeyInfo bindKeyInfo;
 
     public KeyCode InitialCode;
 
     [SerializeField] private Image focusImage;
+
+    public void SetKeyOptionInfo()
+    {
+        mBt = GetComponent<Button>();
+    }
   
     public void Bindkey(KeyCode _bindKey, Sprite _curImage, BindKeyInfo _bindKeyInfo = null)
     {
