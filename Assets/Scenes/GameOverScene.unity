@@ -421,6 +421,7 @@ MonoBehaviour:
   externalSound: []
   skillSound: []
   audioMixer: {fileID: 24100000, guid: c180d8e7f5a443b49882e56a36249787, type: 2}
+  audioGroups: []
 --- !u!4 &436005092
 Transform:
   m_ObjectHideFlags: 0
@@ -445,8 +446,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 578900711}
-  - component: {fileID: 578900710}
   - component: {fileID: 578900712}
+  - component: {fileID: 578900713}
   m_Layer: 0
   m_Name: DataManager
   m_TagString: Untagged
@@ -454,23 +455,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &578900710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 578900709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25d365028c2328647938f6c416ca9f0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotName: 
-  selectedSlot: {fileID: 0}
-  fader: {fileID: 295618015}
-  newGame: 1
-  isSet: 0
 --- !u!4 &578900711
 Transform:
   m_ObjectHideFlags: 0
@@ -499,6 +483,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eca23a2d8f4b524fb4e6e4ebbe0996c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &578900713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578900709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5010f6eb152d4b64d95a1b4c6c954d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dirName: /Save/
+  slotName: 
+  selectedSlot: {fileID: 0}
+  fader: {fileID: 295618015}
+  newGame: 1
+  isSet: 0
 --- !u!1 &703094770
 GameObject:
   m_ObjectHideFlags: 0
