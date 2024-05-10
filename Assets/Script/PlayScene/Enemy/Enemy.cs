@@ -575,7 +575,8 @@ public class Enemy : MonoBehaviour
 
     protected void PlayerDeath()
     {
-        if (target.GetComponent<PlayerStatus>().isDeath && !isStop)
+        //if (target.GetComponent<PlayerStatus>().isDeath && !isStop)
+        if(PlayerStatus.isDeath && !isStop)
         {
             isStop = true;
             ResetState();

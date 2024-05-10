@@ -25,6 +25,9 @@ public class TestScript : MonoBehaviour
     public string num_str;
     public int answer = 0;
     List<string> num_strs = new List<string>();
+
+    public Dictionary<string, int> testDic = new Dictionary<string, int>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,15 +46,7 @@ public class TestScript : MonoBehaviour
         //Num();
         //Nums();
 
-        num_str = "132451";
 
-        
-
-        foreach (var item in num_str)
-        {
-            answer += int.Parse(item.ToString());
-        }
-        
         /*
         for (int i = 0; i < num_strs.Count; i++)
         {
@@ -59,9 +54,6 @@ public class TestScript : MonoBehaviour
             answer += an;
         }
         */
-        
-
-        Debug.Log(answer);
     }
 
     // Update is called once per frame

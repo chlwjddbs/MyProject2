@@ -24,7 +24,8 @@ public class IceElementalTrigger : MonoBehaviour
             AudioManager.instance.PlayBGM("PlayScene_Floor_1");
         }
 
-        if (IceElemental.target.GetComponent<PlayerStatus>().isDeath)
+        //if (IceElemental.target.GetComponent<PlayerStatus>().isDeath)
+        if(PlayerStatus.isDeath)
         {
             AudioManager.instance.StopAm("Snow");
         }

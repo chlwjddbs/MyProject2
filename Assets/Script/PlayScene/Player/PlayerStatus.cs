@@ -56,7 +56,7 @@ public class PlayerStatus : MonoBehaviour
 
     private GameObject target;
 
-    public bool isDeath;
+    public static bool isDeath;
 
     public int playerLv = 1;
     public float currentExp = 0;
@@ -99,6 +99,7 @@ public class PlayerStatus : MonoBehaviour
     {
         dataManager = GameData.instance;
         player = GetComponent<PlayerController>();
+        isDeath = false;
 
         int equipItems = (int)(EquipType.EquipTypeMax);
         equipDamage = new float[equipItems];

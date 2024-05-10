@@ -85,7 +85,8 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log(isUI);
         }
-        if (playerStatus.isDeath)
+        //if (playerStatus.isDeath)
+        if(PlayerStatus.isDeath)
         {
             return;
         }
