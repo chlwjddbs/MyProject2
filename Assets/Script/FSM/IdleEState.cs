@@ -6,7 +6,7 @@ public class IdleEState : EnemyStates
 {
     public override void Initialize()
     {
-        eAnim = enemy.CallEnemyAnime();
+        base.Initialize();
         enemyState = EnemyState.Idle;
     }
 

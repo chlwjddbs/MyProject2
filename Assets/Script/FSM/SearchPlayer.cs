@@ -36,6 +36,7 @@ public class SearchPlayer : MonoBehaviour
     private float updateTargetTime = 0.1f;
 
     public bool VisibelTarget { get { return VisibleTarget(targetDir, targetDis); } }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -112,5 +113,10 @@ public class SearchPlayer : MonoBehaviour
     {
         targetDir = (_target.transform.position - transform.position).normalized;
         targetDis = (_target.transform.position - transform.position).magnitude;
+    }
+
+    public void StopSearch()
+    {
+        StopAllCoroutines();
     }
 }

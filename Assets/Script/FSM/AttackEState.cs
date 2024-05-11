@@ -6,12 +6,13 @@ public class AttackEState : EnemyStates
 {
     public override void Initialize()
     {
-        eAnim = enemy.CallEnemyAnime();
+        base.Initialize();
         enemyState = EnemyState.Attack;
     }
 
     public override void OnEnter()
     {
+        enemy.attackCollider.enabled = true;
         base.OnEnter();
     }
 
@@ -22,6 +23,7 @@ public class AttackEState : EnemyStates
 
     public override void OnExit()
     {
-        
+        enemy.attackCollider.enabled = false;
+        enemy.atarget.Clear();
     }
 }

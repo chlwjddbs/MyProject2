@@ -83,7 +83,7 @@ public class Skeleton : Enemy
     }
 
     private void OnTriggerEnter(Collider other)
-    {      
+    {
         if (other.CompareTag("Player"))
         {
             if (!player.Contains(other))

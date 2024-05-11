@@ -108,8 +108,9 @@ public class Weapon : MonoBehaviour
                         {
                             Vector3 damageDir = (other.transform.position - transform.position).normalized;
                             //damageDir.y = 0.5f;
-                            other.GetComponent<Enemy>().Runaway(damageDir);
-                            other.GetComponent<Enemy>().TakeDamage(attackDamage);
+                            other.GetComponent<Enemy>()?.Runaway(damageDir);
+                            other.GetComponent<Enemy>()?.TakeDamage(attackDamage);
+                            other.GetComponent<Enemy_FSM>()?.TakeDamage(attackDamage);
                         }
                     }
                 }
@@ -123,8 +124,9 @@ public class Weapon : MonoBehaviour
                             {
                                 Vector3 damageDir = (other.transform.position - transform.position).normalized;
                                 //damageDir.y = 0.5f;
-                                other.GetComponent<Enemy>().Runaway(damageDir);
-                                other.GetComponent<Enemy>().TakeDamage(attackDamage);
+                                other.GetComponent<Enemy>()?.Runaway(damageDir);
+                                other.GetComponent<Enemy>()?.TakeDamage(attackDamage);
+                                other.GetComponent<Enemy_FSM>()?.TakeDamage(attackDamage);
                             }
                         }
                     }
