@@ -19,11 +19,11 @@ public class DeathEState : EnemyStates
 
     public override void OnEnter()
     {
-        eAnim.SetBool("isDeath", enemy.IsDeath);
+        eAnim.SetBool("isDeath", enemy.isDeath);
         //PlayEnemySound(deadSound);
         enemy.Target.GetComponent<PlayerStatus>().AddExp(enemy.Exp);
-        enemy.EnemyMark.SetActive(false);
-        enemy.HitBox.enabled = false;
+        enemy.enemyMark.SetActive(false);
+        enemy.hitBox.enabled = false;
         agent.enabled = false;
         enemy.enabled = false;
     }

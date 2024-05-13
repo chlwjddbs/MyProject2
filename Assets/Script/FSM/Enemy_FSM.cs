@@ -49,21 +49,20 @@ public class Enemy_FSM : MonoBehaviour, EnemyStatusDataInterface
 
     public bool VisibleTarget { get { return searchPlayer.VisibelTarget; } }
 
-    [SerializeField] protected Vector3 startPoint;
-    public Vector3 StartPoint { get { return startPoint; } }
+    public Vector3 StartPoint { get; set; }
 
-    protected bool isDeath = false;
-    public bool IsDeath { get { return isDeath; } }
+    public bool isDeath;
 
-    [SerializeField]protected GameObject enemyMark;
-    public GameObject EnemyMark { get { return enemyMark; } }
-  
-    protected CapsuleCollider hitBox;
-    public CapsuleCollider HitBox { get { return hitBox; } }
+    public GameObject enemyMark;
 
-    [SerializeField]public Collider attackCollider;
+    public CapsuleCollider hitBox;
+
+    public Collider attackCollider;
 
     public List<GameObject> atarget = new List<GameObject>();
+
+    public bool chaseMode;
+    public bool returnHome;
 
     protected virtual void Start()
     {
@@ -84,7 +83,7 @@ public class Enemy_FSM : MonoBehaviour, EnemyStatusDataInterface
         return eAnime;
     }
 
-    public State ChangeState(State newState)
+    public virtual State ChangeState(State newState)
     {
         return eStateMachine.ChangeState(newState);
     }
@@ -132,6 +131,7 @@ public class Enemy_FSM : MonoBehaviour, EnemyStatusDataInterface
             //Dagamed();
             Debug.Log(currentHealth / maxHealth * 100 + " %");
             //PlayEnemySound(damagedSound);
+            chaseMode = true;
         }
 
         if (currentHealth <= 0)
@@ -151,7 +151,7 @@ public class Enemy_FSM : MonoBehaviour, EnemyStatusDataInterface
     {
         maxHealth = startHealth;
         currentHealth = maxHealth;
-        startPoint = transform.position;
+        StartPoint = transform.position;
     }
 
     public virtual void SetData()
@@ -168,9 +168,10 @@ public class Enemy_FSM : MonoBehaviour, EnemyStatusDataInterface
 
     private void OnCollisionEnter(Collision collision)
     {
-        //충돌체가 Player이고
+        //Player와 충돌을 감지한 collider가 
         if (collision.transform.CompareTag("Player"))
         {
+            //attackCollider이면 데미지를 준다.
             if ((collision.contacts[0].thisCollider == attackCollider))
             {
                 //공격 한번이 끝나기 전에 중복으로 데미지를 주는것을 방지.
@@ -182,14 +183,11 @@ public class Enemy_FSM : MonoBehaviour, EnemyStatusDataInterface
                     atarget.Add(collision.gameObject);
                     if (collision.transform.TryGetComponent<PlayerStatus>(out PlayerStatus value))
                     {
-                        //충돌체에 데미지를 준다.
                         value.TakeDamage(attackDamage);
                         Debug.Log(value.remainHealth);
                     }
                 }
             }        
         }
-
-        //Debug.Log();
     }
 }

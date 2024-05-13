@@ -20,8 +20,13 @@ public abstract class StateMachine
 
     //Update 역활을 할 함수를 만들어 여러가지 State중에 활성화된 State(currentState)만 적용한다.
     public virtual void Update()
-    {
+    {       
         currentState.OnUpdate();
+    }
+
+    public void UpdateElapsedTime()
+    {
+        elapsedTime += Time.deltaTime;
     }
 
     //사용할 State를 등록
@@ -54,6 +59,7 @@ public abstract class StateMachine
         previousState = currentState;
         currentState = states[newType];
         currentState.OnEnter();
+        elapsedTime = 0f;
 
         return currentState;
     }

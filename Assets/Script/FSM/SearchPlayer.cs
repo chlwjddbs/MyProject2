@@ -9,7 +9,7 @@ public class SearchPlayer : MonoBehaviour
     public Transform Target { get { return target; } }
 
     //Enemy와 Player와의 거리
-    private float targetDis = Mathf.Infinity;
+    [SerializeField]private float targetDis = Mathf.Infinity;
     public float TargetDis
     {
         get { return targetDis; }

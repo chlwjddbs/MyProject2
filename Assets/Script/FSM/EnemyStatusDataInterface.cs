@@ -17,7 +17,7 @@ public interface EnemyStatusDataInterface : DataInterface
 
     int Exp { get; }
 
-    Vector3 StartPoint { get; }
+    Vector3 StartPoint { get; set; }
 
     public void TakeDamage(float _damage);
     public void Die();

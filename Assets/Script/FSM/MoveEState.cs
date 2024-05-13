@@ -5,7 +5,9 @@ using UnityEngine.AI;
 
 public class MoveEState : EnemyStates
 {
-    private NavMeshAgent agent;
+    protected NavMeshAgent agent;
+    protected float resetTime = 3f;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -35,12 +37,23 @@ public class MoveEState : EnemyStates
         }
         else
         {
-            if ((enemy.StartPoint - enemy.transform.position).magnitude > 1.0f)
+            if (enemy.returnHome)
             {
-                agent.SetDestination(enemy.StartPoint);
+                //원래 자리로 돌아간다.
+                if ((enemy.StartPoint - enemy.transform.position).magnitude > 1.0f)
+                {
+                    agent.SetDestination(enemy.StartPoint);
+                }
+                else
+                {
+                    enemy.returnHome = false;
+                    stateMachine.ChangeState(new IdleEState());
+                }
             }
             else
             {
+                agent.ResetPath();
+                agent.velocity = Vector3.zero;
                 stateMachine.ChangeState(new IdleEState());
             }
         }
