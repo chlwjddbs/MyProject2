@@ -110,7 +110,15 @@ public class Weapon : MonoBehaviour
                             //damageDir.y = 0.5f;
                             other.GetComponent<Enemy>()?.Runaway(damageDir);
                             other.GetComponent<Enemy>()?.TakeDamage(attackDamage);
-                            other.GetComponent<Enemy_FSM>()?.TakeDamage(attackDamage);
+
+                            if (other.TryGetComponent<Damageable>(out Damageable _target))
+                            {
+                                _target.TakeDamage(attackDamage, playerStatus.transform, damageDir);
+                            }
+                            else
+                            {
+                                Debug.Log("Erorr : 공격할 수 없는 대상입니다.");
+                            }
                         }
                     }
                 }
@@ -126,7 +134,15 @@ public class Weapon : MonoBehaviour
                                 //damageDir.y = 0.5f;
                                 other.GetComponent<Enemy>()?.Runaway(damageDir);
                                 other.GetComponent<Enemy>()?.TakeDamage(attackDamage);
-                                other.GetComponent<Enemy_FSM>()?.TakeDamage(attackDamage);
+
+                                if (other.TryGetComponent<Damageable>(out Damageable _target))
+                                {
+                                    _target.TakeDamage(attackDamage, playerStatus.transform, damageDir);
+                                }
+                                else
+                                {
+                                    Debug.Log("Erorr : 공격할 수 없는 대상입니다.");
+                                }
                             }
                         }
                     }

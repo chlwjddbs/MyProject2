@@ -92,7 +92,7 @@ public class MeteorStrike : SkillManager
                                     GameObject _meteor = Instantiate(meteorPrefab, new Vector3(hitpos.x, 0, hitpos.z), Quaternion.identity);
                                     _meteor.GetComponent<Meteor>().SetMeor(new Vector3(hitpos.x, 0, hitpos.z));
                                     float _skillDamage = player.playerStatus.currentDamage * skillDamage;
-                                    _meteor.GetComponent<Meteor>().SetDagage(_skillDamage);
+                                    _meteor.GetComponent<Meteor>().SetDagage(_skillDamage ,player.transform);
                                 }
                             }
                         }

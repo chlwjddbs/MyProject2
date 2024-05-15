@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Meteor : MonoBehaviour
 {
+    public Transform caster;
+
     public ParticleSystem meteorEffect;
     public ParticleSystem meteorExplosion;
     public ParticleSystem dropPosEffect;
@@ -81,9 +83,10 @@ public class Meteor : MonoBehaviour
         meteorEffect.transform.Translate(dropDir * dropSpeed * Time.deltaTime, Space.World);
     }
 
-    public void SetDagage(float _damage)
+    public void SetDagage(float _damage,Transform _player)
     {
         damage = _damage;
+        caster = _player;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -94,9 +97,18 @@ public class Meteor : MonoBehaviour
             {
                 enemies.Add(other);
                 Vector3 damageDir = (other.transform.position - transform.position).normalized;
-                damageDir.y = 0.5f;
-                other.GetComponent<Enemy>().Runaway(damageDir);
-                other.GetComponent<Enemy>().TakeDamage(damage);
+                damageDir.y = 0f;
+                other.GetComponent<Enemy>()?.Runaway(damageDir);
+                other.GetComponent<Enemy>()?.TakeDamage(damage);
+
+                if(other.TryGetComponent<Damageable>(out Damageable _target))
+                {
+                    _target.TakeDamage(damage, caster, damageDir);
+                }
+                else
+                {
+                    Debug.Log("Erorr : 공격할 수 없는 대상입니다.");
+                }
             }
         }
     }
