@@ -71,31 +71,37 @@ public class SearchPlayer : MonoBehaviour
                 //범위 내의 Collider중에 Player가 있다면
                 if (searchEnemy.TryGetComponent<PlayerStatus>(out PlayerStatus _target))
                 {
-                    //Player의 위치 확인
-                    LocateTarget(_target.transform);
-                                     
-                    //Player가 보이는지 확인 후 추가해준다.
-                    if (VisibleTarget(TargetDir, TargetDis))
+                    if(target != _target)
                     {
                         target = _target.transform;
-                    }                  
+                    }
+                    //Player의 위치 확인
+                    LocateTarget(_target.transform);
                 }
             }
         }
         else
         {
-            //Player가 감지 범위 밖으로 벗어나거나 시야에 가려져 보이지 않는다면 정보 제거
-            if (TargetDis > detectRange || !VisibleTarget(TargetDir, TargetDis))
+            //Player가 감지 범위 밖으로 벗어나면 정보 제거
+            if (TargetDis > detectRange)
             {
                 target = null;
                 targetDis = Mathf.Infinity;
                 targetDir = Vector3.zero;
-                visibelTarget = false;
-
+                //visibelTarget = false;
                 return;
             }
-            LocateTarget(Target);
+            LocateTarget(Target);           
         }
+    }
+
+
+    public void LocateTarget(Transform _target)
+    {
+        targetDir = (_target.transform.position - transform.position).normalized;
+        targetDis = (_target.transform.position - transform.position).magnitude;
+
+        VisibleTarget(TargetDir, TargetDis);
     }
 
     public bool VisibleTarget(Vector3 _dir, float _dis)
@@ -113,12 +119,6 @@ public class SearchPlayer : MonoBehaviour
             visibelTarget = true;
             return true;
         }
-    }
-
-    public void LocateTarget(Transform _target)
-    {
-        targetDir = (_target.transform.position - transform.position).normalized;
-        targetDis = (_target.transform.position - transform.position).magnitude;
     }
 
     public void StopSearch()

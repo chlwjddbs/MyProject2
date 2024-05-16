@@ -56,8 +56,6 @@ public class ChaseEState : MoveEState
         }
     }
 
-    public override void OnExit()
-    {
-        base.OnExit();
-    }
+    //OnEixt는 변경 사항이 없어서 작성하지 않음.
+
 }

@@ -58,6 +58,7 @@ public class Enemy_FSM : MonoBehaviour, EnemyStatusDataInterface, Damageable
     #endregion
  
     public Vector3 StartPoint { get; set; }
+    public Transform[] PatrolPoint;
 
     public GameObject enemyMark;
 
