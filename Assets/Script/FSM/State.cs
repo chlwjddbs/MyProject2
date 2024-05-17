@@ -19,4 +19,6 @@ public abstract class State
     public virtual void OnEnter() { }
     public virtual void OnExit() { }
     public abstract void OnUpdate();
+
+    public virtual void LoadData() { }
 }

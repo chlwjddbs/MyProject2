@@ -12,7 +12,7 @@ public class AttackEState : EnemyStates
 
     public override void OnEnter()
     {
-        enemy.attackCollider.enabled = true;
+        enemy.AttackCollider.enabled = true;
         base.OnEnter();
     }
 
@@ -23,7 +23,8 @@ public class AttackEState : EnemyStates
 
     public override void OnExit()
     {
-        enemy.attackCollider.enabled = false;
-        enemy.attackedTargets.Clear();
+        enemy.AttackCollider.enabled = false;
+        enemy.AttackedTargets.Clear();
+        stateMachine.ResetAttackCoolTime();
     }
 }

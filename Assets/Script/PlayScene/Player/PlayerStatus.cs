@@ -22,7 +22,7 @@ public class PlayerStatus : MonoBehaviour
     public float startHealth = 150f;
     //최대 체력(기본 체력 + 장비나 기타 등으로 올라가는 모든 수치를 합산한 체력)
     public float maxHealth;
-    //플레이어의 체력
+    //플레이어의 자체 체력
     public float baseHealth;
     //플레이어의 남은 체력
     public float remainHealth;

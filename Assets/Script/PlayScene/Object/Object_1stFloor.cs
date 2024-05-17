@@ -10,6 +10,8 @@ public class Object_1stFloor : ObjectManager
 
     public Area_C_Gimmick c_Gimmick;
 
+    public List<Enemy_FSM> testSaveLoad = new List<Enemy_FSM>();
+
     public override void StartStage()
     {
         base.StartStage();
@@ -17,6 +19,11 @@ public class Object_1stFloor : ObjectManager
         currentStage = startStage;
         startArea = "≈æ ¿‘±∏";
         currentArea = startArea;
+
+        for (int i = 0; i < testSaveLoad.Count; i++)
+        {
+            testSaveLoad[i].SetData();
+        }
     }
 
     public override void SaveMapdata()
@@ -69,11 +76,26 @@ public class Object_1stFloor : ObjectManager
         }
 
         c_Gimmick.SaveData();
+
+        for (int i = 0; i < testSaveLoad.Count; i++)
+        {
+            try
+            {
+                dataManager.userData.eDatas_1F_skeleton[i] = testSaveLoad[i].SaveData();
+
+            }
+            catch
+            {
+
+                dataManager.userData.eDatas_1F_skeleton.Add(testSaveLoad[i].SaveData());
+            }
+        }
     }
 
     public override void LoadMapData()
     {
         base.LoadMapData();
+
         for (int i = 0; i < stageEnemy.Count; i++)
         {
             stageEnemy[i].LoadState(dataManager.userData.eDatas_1F[i]);
@@ -86,6 +108,12 @@ public class Object_1stFloor : ObjectManager
             {
                 Destroy(startFieldItems[i]);
             }
+        }
+
+        for (int i = 0; i < testSaveLoad.Count; i++)
+        {
+            testSaveLoad[i].SetData();
+            testSaveLoad[i].LoadData(dataManager.userData.eDatas_1F_skeleton[i]);
         }
 
         for (int i = 0; i < GameData.instance.userData.FiledItme_1F.Count; i++)

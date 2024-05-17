@@ -12,18 +12,13 @@ public class DeathEState : EnemyStates
         agent = enemy.GetComponent<NavMeshAgent>();
     }
 
-    public override void OnUpdate()
-    {
-        
-    }
-
     public override void OnEnter()
     {
         eAnim.SetBool("isDeath", enemy.isDeath);
         //PlayEnemySound(deadSound);
-        enemy.Target.GetComponent<PlayerStatus>().AddExp(enemy.Exp);
+        //enemy.Target.GetComponent<PlayerStatus>().AddExp(enemy.Exp);
         enemy.enemyMark.SetActive(false);
-        enemy.hitBox.enabled = false;
+        enemy.HitBox.enabled = false;
         agent.enabled = false;
         enemy.enabled = false;
     }

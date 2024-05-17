@@ -23,7 +23,7 @@ public class EnemyStateMachine : StateMachine
     {
         ((EnemyStates)setState).SetEStateMachine(enemy,this);
 
-        states[setState.GetType()] = setState;
+        states[setState.ToString()] = setState;
     }
 }
 

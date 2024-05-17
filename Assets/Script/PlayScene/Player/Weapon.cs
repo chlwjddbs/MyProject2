@@ -111,7 +111,7 @@ public class Weapon : MonoBehaviour
                             other.GetComponent<Enemy>()?.Runaway(damageDir);
                             other.GetComponent<Enemy>()?.TakeDamage(attackDamage);
 
-                            if (other.TryGetComponent<Damageable>(out Damageable _target))
+                            if (other.TryGetComponent<IAttackable>(out IAttackable _target))
                             {
                                 _target.TakeDamage(attackDamage, playerStatus.transform, damageDir);
                             }
@@ -135,7 +135,7 @@ public class Weapon : MonoBehaviour
                                 other.GetComponent<Enemy>()?.Runaway(damageDir);
                                 other.GetComponent<Enemy>()?.TakeDamage(attackDamage);
 
-                                if (other.TryGetComponent<Damageable>(out Damageable _target))
+                                if (other.TryGetComponent<IAttackable>(out IAttackable _target))
                                 {
                                     _target.TakeDamage(attackDamage, playerStatus.transform, damageDir);
                                 }

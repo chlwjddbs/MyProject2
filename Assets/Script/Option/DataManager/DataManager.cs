@@ -129,6 +129,8 @@ public class UserData
     public List<Enemy.EnemyData> eDatas_1F_olaf = new List<Enemy.EnemyData>();
     public List<Enemy.EnemyData> eDatas_1F_gubne = new List<Enemy.EnemyData>();
     public List<Enemy.EnemyData> eDatas_1F_spawn = new List<Enemy.EnemyData>();
+
+    public List<Enemy_FSM.EnemyData> eDatas_1F_skeleton = new List<Enemy_FSM.EnemyData>();
     #endregion
 
     #region 필드 아이템 관리

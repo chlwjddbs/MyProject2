@@ -101,7 +101,7 @@ public class Meteor : MonoBehaviour
                 other.GetComponent<Enemy>()?.Runaway(damageDir);
                 other.GetComponent<Enemy>()?.TakeDamage(damage);
 
-                if(other.TryGetComponent<Damageable>(out Damageable _target))
+                if(other.TryGetComponent<IAttackable>(out IAttackable _target))
                 {
                     _target.TakeDamage(damage, caster, damageDir);
                 }

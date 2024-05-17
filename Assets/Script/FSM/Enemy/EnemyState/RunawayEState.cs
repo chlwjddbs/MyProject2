@@ -23,7 +23,7 @@ public class RunawayEState : EnemyStates
 
     public override void OnUpdate()
     {
-        stateMachine.UpdateElapsedTime();
+        //stateMachine.UpdateElapsedTime();
         if(stateMachine.ElapsedTime >= resetTime) 
         {          
             stateMachine.ChangeState(new IdleEState());

@@ -32,7 +32,7 @@ public class MoveEState : EnemyStates
                 {
                     stateMachine.ChangeState(new AttackEState());
                 }
-                else if(enemy.TargetDis <= enemy.ActionRange)
+                else if (enemy.TargetDis <= enemy.ActionRange)
                 {
                     agent.SetDestination(enemy.Target.position);
                 }
@@ -54,26 +54,15 @@ public class MoveEState : EnemyStates
         {
             if (enemy.VisibleTarget)
             {
-                agent.SetDestination(enemy.Target.position);
+                if (enemy.TargetDis > enemy.AttackRange && enemy.TargetDis <= enemy.ActionRange)
+                {
+                    agent.SetDestination(enemy.Target.position);
+                    return;
+                }
+            }
+        }
 
-                if (enemy.TargetDis <= enemy.AttackRange)
-                {
-                    stateMachine.ChangeState(new AttackEState());
-                }
-                else if (enemy.TargetDis > enemy.ActionRange)
-                {
-                    stateMachine.ChangeState(new IdleEState());
-                }
-            }
-            else
-            {
-                stateMachine.ChangeState(new IdleEState());
-            }
-        }
-        else
-        {
-            stateMachine.ChangeState(new IdleEState());
-        }
+        stateMachine.ChangeState(new IdleEState());
     }
 
     public void ChaseMode()
@@ -109,3 +98,30 @@ public class MoveEState : EnemyStates
         ReSetPath();
     }
 }
+
+/*
+        if (enemy.Target != null)
+        {
+            if (enemy.VisibleTarget)
+            {
+                agent.SetDestination(enemy.Target.position);
+
+                if (enemy.TargetDis <= enemy.AttackRange)
+                {
+                    stateMachine.ChangeState(new AttackEState());
+                }
+                else if (enemy.TargetDis > enemy.ActionRange)
+                {
+                    stateMachine.ChangeState(new IdleEState());
+                }
+            }
+            else
+            {
+                stateMachine.ChangeState(new IdleEState());
+            }
+        }
+        else
+        {
+            stateMachine.ChangeState(new IdleEState());
+        }
+        */

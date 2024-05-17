@@ -4,15 +4,57 @@ using UnityEngine;
 
 public class ChaseEState : MoveEState
 {
-    private Transform chaseTarget;
+    private float resetCount;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        resetTime = 7f;
+    }
 
     public override void OnUpdate()
     {
+        agent.SetDestination(enemy.ChaseTarget.position);
+
+        if (enemy.VisibleChaseTarget(enemy.chaseTargetDir, enemy.chaseTargetDis))
+        {
+            if (enemy.chaseTargetDis <= enemy.AttackRange)
+            {
+                stateMachine.ChangeState(new IdleEState());
+                return;
+            }
+        }
+        else if (enemy.chaseTargetDis > enemy.DetectRange || !enemy.VisibleChaseTarget(enemy.chaseTargetDir, enemy.chaseTargetDis))
+        {
+            resetCount += Time.deltaTime;
+            if (resetCount > resetTime)
+            {
+                enemy.ResetChaseTarget();
+                stateMachine.ChangeState(new IdleEState());
+            }
+        }
+    }
+
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        //chaseTarget = _chaseTaret;
+    }
+
+    public override void OnExit()
+    {
+        base.OnExit();
+        resetCount = 0;
+    }
+}
+
+        /*        
         agent.SetDestination(chaseTarget.position);
 
+        //캐싱해서 사용하도록 하자.
         Vector3 targetDir = (chaseTarget.position - enemy.transform.position).normalized;
-        float targetDis = (chaseTarget.position - enemy.transform.position).magnitude;
-
+        float targetDis = (chaseTarget.position - enemy.transform.position).magnitude; 
+          
         if (targetDis <= enemy.AttackRange)
         {
             if (VisibleTarget(targetDir,targetDis))
@@ -30,32 +72,4 @@ public class ChaseEState : MoveEState
                 stateMachine.ChangeState(new MoveEState());
             }
         }
-    }
-
-    public override void OnEnter()
-    {
-        base.OnEnter();
-        resetTime = 7f;
-        //chaseTarget = _chaseTaret;
-    }
-
-    public void SetTarget(Transform _chaseTaret)
-    {       
-        chaseTarget = _chaseTaret;   
-    }
-
-    public bool VisibleTarget(Vector3 _dir, float _dis)
-    {
-        if (Physics.Raycast(enemy.transform.position + enemy.searchPlayer.SightOffset, _dir, _dis, 1 << 12))
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    //OnEixt는 변경 사항이 없어서 작성하지 않음.
-
-}
+        */
