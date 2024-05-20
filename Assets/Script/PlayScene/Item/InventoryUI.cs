@@ -34,7 +34,7 @@ public class InventoryUI : MonoBehaviour
 
     private void Awake()
     { 
-        Inventory.instance.SetInvenData += SetData;
+        Inventory.instance.SetUIData += SetUIData;
     }
 
     private void Start()
@@ -85,7 +85,7 @@ public class InventoryUI : MonoBehaviour
     }
     */
 
-    public void SetData()
+    public void SetUIData()
     {
         inven = Inventory.instance;
         equipUI = GetComponent<EquipmentUI>();
@@ -120,19 +120,16 @@ public class InventoryUI : MonoBehaviour
         inven.CheckUseableSlot += CheckSlot;
         inven.GoodsOverlap += GoodsOverlap;
 
-        if (GameData.instance.newGame)
-        {
+        inven.LoadSlot += LoadSlot;
+    }
 
-        }
-        else
+    public void LoadSlot()
+    {
+        for (int i = 0; i < inven.invenItems.Count; i++)
         {
-            inven.LoadData();
-            for (int i = 0; i < inven.items.Length; i++)
+            if(inven.invenItems[i].slotItem != null)
             {
-                if (inven.items[i] != null)
-                {
-                    SetData(i);
-                }
+                itemSlot[i].LoadData(GameData.instance.userData.invenItem[i].quantity);
             }
         }
     }
@@ -178,25 +175,6 @@ public class InventoryUI : MonoBehaviour
     public void AddItemUI(int _slotNum)
     {
         itemSlot[_slotNum].SetItemSlot();
-    }
-
-    public void SetData(int _slotNum)
-    {
-        if (inven.invenItems[_slotNum].slotItem != null)
-        {
-            /*
-            itemSlot[_slotNum].SetItemSlot();
-            inven.invenItems[_slotNum].quantity = DataManager.instance.userData.invenItem[_slotNum].quantity;
-            itemSlot[_slotNum].QuantityItem();
-            itemSlot[_slotNum].CheckUseSlot();
-            
-            */
-            for (int i = 0; i < GameData.instance.userData.invenItem[_slotNum].quantity; i++)
-            {
-                itemSlot[_slotNum].SetItemSlot();
-            }
-            //*/
-        }
     }
 
     //인벤토리에 추가되는 아이템이 중첩 가능한 아이템일 때 중첩 가능한지 체크

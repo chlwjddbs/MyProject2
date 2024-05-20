@@ -100,11 +100,11 @@ public class UserData
     #endregion
 
     #region 플레이어 장비 데이터
-    public Item[] inventoryItem;
+    //public Item[] inventoryItem;
     //인벤토리 기본 크기 25
     public int invenSize = 25;
     //캐릭터 생성시 사용중인 인벤토리 0
-    public int spareSlot= 0;
+    public int useSlot= 0;
 
     public List<int> slotNum = new List<int>();
     public List<Inventory.InvenItem> invenItem = new List<Inventory.InvenItem>();

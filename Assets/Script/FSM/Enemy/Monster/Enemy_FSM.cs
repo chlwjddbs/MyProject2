@@ -22,12 +22,12 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         public float remainHealth;      
         public float previousDamage;
         
-        public Vector3 startPoint;
         public Vector3 enemyPos;
         public Quaternion enemyQuat;
         public int patrolNum;
 
         public string chaseTargetName;
+        public float chaseCount;
     }
 
     protected Enemy_FSM.EnemyData enemyData;
@@ -261,18 +261,19 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         //ex) Die로부터 자신을 죽은 타겟을 받아와 해당 타겟의 경험치를 상승시키도록 한다.
     }
 
-    public virtual void SetInitData()
-    {
-        maxHealth = startHealth;
-        remainHealth = maxHealth;
-        StartPoint = transform.position;
-    }
-
     public virtual void SetData()
     {
         eAnime = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        searchPlayer = GetComponent<SearchPlayer>();
+        hitBox = GetComponent<CapsuleCollider>();
 
+        SetState();
+        SetValue();
+    }
+
+    public virtual void SetState()
+    {
         eStateMachine = new EnemyStateMachine(this, new IdleEState());
         eStateMachine.RegisterEState(new MoveEState());
         eStateMachine.RegisterEState(new AttackEState());
@@ -282,16 +283,14 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         {
             eStateMachine.RegisterEState(new PatrolEState());
         }
+    }
 
-        searchPlayer = GetComponent<SearchPlayer>();
-        hitBox = GetComponent<CapsuleCollider>();
-
+    public virtual void SetValue()
+    {
+        maxHealth = startHealth;
+        remainHealth = maxHealth;
+        StartPoint = transform.position;
         agent.speed = moveSpeed;
-
-        if (GameData.instance.newGame)
-        {
-            SetInitData();
-        }
     }
 
     public virtual Enemy_FSM.EnemyData SaveData()
@@ -308,11 +307,14 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         enemyData.remainHealth = remainHealth;
         enemyData.previousDamage = previousDamage;
 
-        enemyData.startPoint = StartPoint;
         enemyData.enemyPos = transform.position;
         enemyData.enemyQuat = transform.rotation;
 
         enemyData.chaseTargetName = chaseTarget == null ? "" : chaseTarget.name;
+        if (eStateMachine.CurrentState.ToString() == new ChaseEState().ToString())
+        {
+            enemyData.chaseCount = (eStateMachine.CurrentState as ChaseEState).Save();
+        }
 
         if (patrolUnit)
         {
@@ -326,12 +328,12 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     {
         enemyData = _enemyData;
 
+        eStateMachine.LoadData(enemyData.currentState, enemyData.attackCoolTime);
+
         transform.position = enemyData.enemyPos;
         transform.rotation = enemyData.enemyQuat;
         
-        eStateMachine.LoadData(enemyData.currentState.ToString(), enemyData.attackCoolTime);
-
-        if (enemyData.currentState == new DeathEState().GetType().ToString())
+        if (enemyData.isDeath)
         {
             //Die();
             isDeath = enemyData.isDeath;
@@ -345,19 +347,20 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
 
         isAttackable = enemyData.isAttackable;
         chaseMode = enemyData.chaseMode;
+        returnHome = enemyData.returnHome;
 
         if (chaseMode)
         {
             chaseTarget = GameObject.Find(enemyData.chaseTargetName).transform;
+
+            if (enemyData.currentState == new ChaseEState().ToString())
+            {
+                (eStateMachine.states[new ChaseEState().ToString()] as ChaseEState).Load(enemyData.chaseCount);
+            }
         }
 
-        returnHome = enemyData.returnHome;
-
-        maxHealth = startHealth;
         remainHealth = enemyData.remainHealth;
         previousDamage = enemyData.previousDamage;
-
-        StartPoint = enemyData.startPoint;
 
         if (patrolUnit)
         {

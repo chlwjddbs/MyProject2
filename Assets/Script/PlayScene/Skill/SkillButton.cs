@@ -73,7 +73,6 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         if (skill != null)
         {
             CoolTimeAlarm();
-
             //keyOption에 할당된 keycode를 눌렀을 시 스킬 사용.
             if (Input.GetKeyDown(controlOption.bindKey_Dic[keyOption].bindKey))
             {
@@ -139,25 +138,23 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     {
         controlOption = OptionManager.instance.controllOption;
         controlOption.changeKeyCode += ChangeKeyCode;
-
-        //처음 데이터가 세팅되면 스킬 이미지, 남은 쿨타임을 표시해주는 text, 남을 쿨타임을 보여주는 Filled를 모두 초기화 해준다.
-        skillImage.enabled = false;
-        coolTimeAlarm.text = null;
-        coolTimeFilled.enabled = false;
+     
         //KeyCode Text 표시
         if (controlOption.bindKey_Dic.TryGetValue(keyOption, out KeyOptionInfo vale))
         {
             ChangeKeyCode(vale.keyOption,vale.bindKey);
         }
+
+        //처음 데이터가 세팅되면 스킬 이미지, 남은 쿨타임을 표시해주는 text, 남을 쿨타임을 보여주는 Filled를 모두 초기화 해준다.
+        skillImage.enabled = false;
+        coolTimeAlarm.text = null;
+        coolTimeFilled.enabled = false;
+
         //newGame이면 SkillButton의 스킬을 관리하는 SkillBook Class에 현재 스킬 Button 정보를 넘겨주어 저장한다.
         //게임 플레이 중 변경되는 Button들의 정보를 수월하게 관리하기 위해 미리 딕셔너리 정보를 생성한다. 
         if (GameData.instance.newGame)
         {
             SkillBook.instance.skillButtonInfo.Add(buttonNum, new SkillBook.SetEquipSkill(skillItem, remainingTime));
-        }
-        else
-        {
-            LoadData();
         }
     }
 
@@ -168,7 +165,6 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         {
             LoadSkill(value.equipSkill, value.coolTime);
         }
-
     }
 
     public void SaveData()

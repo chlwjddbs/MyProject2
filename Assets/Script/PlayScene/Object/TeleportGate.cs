@@ -65,33 +65,26 @@ public class TeleportGate : Interaction
     public void SetData(GateManager _gateManager)
     {
         gateManager = _gateManager;
-       
-
-        if (GameData.instance.newGame) 
-        {
-             gateCoordinate = transform.position;
-            //gateManager.gateDic.Add(gateNumber, new GateManager.GateInfo(gateName, gateCoordinate, isActive));
-        }
-        else
-        {
-            LoadData();
-        }
-        
+        gateCoordinate = transform.position;
+        //gateManager.gateDic.Add(gateNumber, new GateManager.GateInfo(gateName, gateCoordinate, isActive));
     }
 
     public void LoadData()
     {
         if (gateManager.gateDic.TryGetValue(gateNumber, out GateManager.GateInfo _gateInfo))
         {
+            //일부 게이트는 특정 몬스터 처치시 생성되어 게이트 위치가 바뀔수 있다.
             isActive = _gateInfo.isActive;
             gateCoordinate = _gateInfo.coordinate;
             transform.position = gateCoordinate;
             gameObject.SetActive(isActive);
         }
+        /*
         else
         {
             gateCoordinate = transform.position;
             Debug.Log("NoStoredGateInfo");
         }
+        */
     }
 }

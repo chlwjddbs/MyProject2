@@ -59,15 +59,6 @@ public class Equipment : MonoBehaviour
         equipItems = new EquipItem[equipmentSize];
 
         SetEquipData?.Invoke();
-
-        if (GameData.instance.newGame)
-        {
-
-        }
-        else
-        {
-            LoadData();
-        }
     }
 
     //EquipItem으로부터 장착할 아이템을 받아온 후 장착한 아이템 표시
@@ -126,7 +117,7 @@ public class Equipment : MonoBehaviour
         //UpdateDamage?.Invoke();
     }
     
-    public void SetEquip()
+    public void LoadEquip()
     {
         for (int i = 0; i < equipItems.Length; i++)
         {
@@ -162,6 +153,7 @@ public class Equipment : MonoBehaviour
     public void LoadData()
     {
         equipItems = GameData.instance.userData.equipmentItem;
-        SetEquip();
+        LoadEquip();
+        playerStatus.SetUI();
     }
 }

@@ -88,19 +88,10 @@ public class SkillBook : MonoBehaviour
         skillbookUI = GetComponentInParent<SkillBookUI>();
         skillbookUI.SetData();
 
-        if (GameData.instance.newGame)
+        for (int i = 0; i < button.Length; i++)
         {
-            for (int i = 0; i < button.Length; i++)
-            {
-                button[i].SetData();
-            }
+            button[i].SetData();
         }
-        else
-        {
-            LoadData();
-            //Debug.Log(learnedSkill[0].skillName + learnedSkill[0].skillType + learnedSkill[0].skill);
-        }
-
     }
 
     public void LoadData()
@@ -116,9 +107,9 @@ public class SkillBook : MonoBehaviour
 
         for (int i = 0; i < skillButtons.transform.childCount; i++)
         {
-            SetEquipSkill x = GameData.instance.userData.skillButtonInfo[i];
-            skillButtonInfo.Add(i, new SetEquipSkill(x.equipSkill, x.coolTime));
-            button[i].SetData();
+            SetEquipSkill loadSKill = GameData.instance.userData.skillButtonInfo[i];
+            skillButtonInfo.Add(i, new SetEquipSkill(loadSKill.equipSkill, loadSKill.coolTime));
+            button[i].LoadData();
         }
     }
 

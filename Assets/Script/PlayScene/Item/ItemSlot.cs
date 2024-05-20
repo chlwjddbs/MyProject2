@@ -80,6 +80,31 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         CheckUseSlot();
     }
 
+    public void LoadData(int _quantity = 1)
+    {
+        quantity = _quantity;
+
+        if (inven.items[slotNum].itemType == ItemType.Potion)
+        {
+            QuantityItem();
+
+            if (quantity == 1)
+            {
+                isOverlap = true;
+            }
+            else if (quantity >= (item as Potion).ownershipLimit)
+            {
+                invenUI.invenState = invenState.stay;
+                isOverlap = false;
+            }
+        }
+
+        item = inven.items[slotNum];
+        itemImage.gameObject.SetActive(true);
+        itemImage.sprite = item.itemImege;
+        CheckUseSlot();
+    }
+
     //플레이어가 획득하여 인벤토리에 등록된 아이템 정보를 아이템 슬롯과 연동해 준다.
     public void SetItemSlot()
     {

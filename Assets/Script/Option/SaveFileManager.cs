@@ -23,7 +23,7 @@ public class SaveFileManager : MonoBehaviour
     public GameObject NoticePopupUI;
 
     //현재 씬에 있는 objectManger : 인스펙터에서 직접 할당해준다.
-    public ObjectManager objectManager;
+    public StageManager stageManager;
 
     public static bool isMain = true;
 
@@ -150,7 +150,7 @@ public class SaveFileManager : MonoBehaviour
         Debug.Log(dataManager.userData.playerPos);      
         dataManager.userData.saveTime = DateTime.Now.ToString("yyyy-MM-dd [HH:mm]");
         dataManager.userData.sceneName = SceneManager.GetActiveScene().name;
-        objectManager?.SaveData();
+        stageManager?.SaveData();
         Debug.Log(GameData.instance.userData.userName);
         GameData.instance.CreateSaveData();
     }

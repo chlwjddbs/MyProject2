@@ -107,57 +107,34 @@ public class PlayerStatus : MonoBehaviour
         equipHealth = new float[equipItems];
         equipMana = new float[equipItems];
 
+        player.enabled = true;
+        GetComponent<NavMeshAgent>().enabled = true;
+        moveSpeed = baseMoveSpeed;
+        //처음 게임을 시작하면 시작 스텟이 현재 스텟이자 최대 스텟이다.
+        baseHealth = startHealth;
+        remainHealth = startHealth;
+        maxHealth = baseHealth;
+
+        baseMana = startMana;
+        remainMana = startMana;
+        maxMana = baseMana;
+
+        //basicDamage
+        //basicDefence
+
+        playerLv = 1;
+        currentExp = 0;
+        nextLvExp = 100;
+
+        RemainHPSound();
+
         if (GameData.instance.newGame)
         {
-            player.enabled = true;
-            GetComponent<NavMeshAgent>().enabled = true;
-            moveSpeed = baseMoveSpeed;
-            //처음 게임을 시작하면 시작 스텟이 현재 스텟이자 최대 스텟이다.
-            baseHealth = startHealth;
-            remainHealth = startHealth;           
-            maxHealth = baseHealth;
-
-            baseMana = startMana;
-            remainMana = startMana;
-            maxMana = baseMana;
-
-            //basicDamage
-            //basicDefence
-
-            playerLv = 1;
-            currentExp = 0;
-            nextLvExp = 100;           
-        }
-        else
-        {
-            GetComponent<NavMeshAgent>().enabled = false;
-            transform.position = dataManager.userData.playerPos;
-            player.enabled = true;
-            GetComponent<NavMeshAgent>().enabled = true;
-
-            baseMoveSpeed = dataManager.userData.moveSpeed;
-            moveSpeed = baseMoveSpeed;
-
-            remainHealth = dataManager.userData.remainHealth;
-            baseHealth = dataManager.userData.health;
-            maxHealth = baseHealth;
-
-            remainMana = dataManager.userData.remainMana;
-            baseMana = dataManager.userData.mana;
-            maxMana = baseMana;
-
-            basicDamage = dataManager.userData.basicDamage;
-            basicDefence = dataManager.userData.basicDefence;
-
-            playerLv = dataManager.userData.level;
-            nextLvExp = dataManager.userData.nextLvExp;
-            currentExp = dataManager.userData.currentExp;
+            SetUI();
+            SetCondition();
+            SetCombatStatus();
         }
 
-        SetUI();
-        SetCondition();
-        SetCombatStatus();
-        RemainHPSound();
     }
 
     public void SetUI()
@@ -190,6 +167,40 @@ public class PlayerStatus : MonoBehaviour
         dataManager.userData.level = playerLv;
         dataManager.userData.nextLvExp = nextLvExp;
         dataManager.userData.currentExp = currentExp;
+    }
+
+    public void LoadBaseData()
+    {
+        GetComponent<NavMeshAgent>().enabled = false;
+        transform.position = dataManager.userData.playerPos;
+        player.enabled = true;
+        GetComponent<NavMeshAgent>().enabled = true;
+
+        baseMoveSpeed = dataManager.userData.moveSpeed;
+        moveSpeed = baseMoveSpeed;
+
+        baseHealth = dataManager.userData.health;
+        //maxHealth = baseHealth;
+
+        baseMana = dataManager.userData.mana;
+        //maxMana = baseMana;
+
+        basicDamage = dataManager.userData.basicDamage;
+        basicDefence = dataManager.userData.basicDefence;
+
+        playerLv = dataManager.userData.level;
+        nextLvExp = dataManager.userData.nextLvExp;
+        currentExp = dataManager.userData.currentExp;
+    }
+
+    public void LoadRemainHpMp()
+    {
+        remainHealth = dataManager.userData.remainHealth;
+        remainMana = dataManager.userData.remainMana;
+
+        SetUI();
+        SetCondition();
+        SetCombatStatus();
     }
 
     public void ResetMoveSpeed()
@@ -316,6 +327,7 @@ public class PlayerStatus : MonoBehaviour
         }
         remainHealth += _hp;
         remainHealth = Math.Clamp(remainHealth, 0, maxHealth);
+        remainHealth = MathF.Round(remainHealth);
         playerStatusUI.SetHpBar();
         RemainHPSound();
         Debug.Log("남은 체력 : " + remainHealth);
@@ -329,6 +341,7 @@ public class PlayerStatus : MonoBehaviour
         }
         remainMana += _mp;
         remainMana = Math.Clamp(remainMana, 0, maxMana);
+        remainMana = MathF.Round(remainMana);
         playerStatusUI.SetMpBar();
         Debug.Log("남은 마나 : " + remainMana);
     }
@@ -353,6 +366,7 @@ public class PlayerStatus : MonoBehaviour
         _health = MathF.Round(_health * 10000) * 0.0001f;
         maxHealth = baseHealth + equipTotalHealth;
         remainHealth = _health * maxHealth;
+        remainHealth = MathF.Round(remainHealth);
         playerStatusUI.SetHpBar();
      
         float _mana;

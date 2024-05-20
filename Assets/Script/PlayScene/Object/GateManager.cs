@@ -22,7 +22,7 @@ public class GateManager : MonoBehaviour
 
     public static GateManager instence;
 
-    public List<GameObject> gateList;
+    public List<TeleportGate> gateList;
 
     public Dictionary<int, GateInfo> gateDic;
 
@@ -83,6 +83,7 @@ public class GateManager : MonoBehaviour
         teleportGateUIRect = teleportGateUI.GetComponent<RectTransform>();
         CloseUI();
 
+        /*
         if (GameData.instance.newGame)
         {
             
@@ -91,6 +92,7 @@ public class GateManager : MonoBehaviour
         {
             LoadData();
         }
+        */
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -98,11 +100,12 @@ public class GateManager : MonoBehaviour
             {
                 _gate.gateNumber = i;
                 _gate.SetData(this);
+                gateList.Add(_gate);
             }
         }
     }
 
-    private void LoadData()
+    public void LoadData()
     {
         foreach (var item in GameData.instance.userData.gateInfo)
         {
@@ -112,6 +115,7 @@ public class GateManager : MonoBehaviour
         {
             GateInfo gateInfo = GameData.instance.userData.gateInfo[i];
             ActiveGateSlot(GameData.instance.userData.gateNum[i], gateInfo.gateName, gateInfo.coordinate, gateInfo.isActive);
+            gateList[i].LoadData();
         }
     }
 

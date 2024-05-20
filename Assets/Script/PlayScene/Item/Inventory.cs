@@ -9,6 +9,8 @@ public class Inventory : MonoBehaviour
     [System.Serializable]
     public class InvenItem
     {
+        //Item을 ScriptableObject로 만들어져 있다.
+        //그렇기 때문에 직접적으로 수량등을 변경 할 수 없기 때문에 인벤토리 아이템으로 따로 정보를 만들어준다.
         public Item slotItem;
         public int quantity;
 
@@ -28,7 +30,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-
     public static Inventory instance;
 
     private void Awake()
@@ -42,6 +43,8 @@ public class Inventory : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private GameData gameData;
+
     //인벤토리 업데이트 시 실행될 액션 함수 등록
     //public UnityAction<int, Item> UpdateInventory;
     public UnityAction<int> AddUpdateUI;
@@ -52,12 +55,15 @@ public class Inventory : MonoBehaviour
     public int invenSize;
     //아이템이 들어온 슬롯번호
     public int slotNum = -1;
+
+    //딕셔너리는 하이어라키에서 볼 수 없으므로 현재 아이템 목록을 볼 수 있게 배열을 public으로 만들어준다.
+    //딕셔너리보다 편하게 접근할 수 있기 때문에 사용할 거면 사용해주자.  ex)items[slotNum] == inventiems[slotNum].slotItem;
     public Item[] items;
     //다량 아이템의 수량 배열
     //public int[] quantityCheck;
 
-    //인벤토리 소모율
-    private int spareSlot = 0;
+    //사용중인 인벤토리 슬롯의 갯수
+    private int useSlot = 0;
     //인벤토리에 아이템을 추가 할 수 있나요?
     public bool isAdd = true;
 
@@ -69,7 +75,10 @@ public class Inventory : MonoBehaviour
     public UnityAction<int, Item> GoodsOverlap;
     public bool isOverlap = false;
 
-    public UnityAction SetInvenData;
+    //inventoryUI의 set함수를 실행
+    public UnityAction SetUIData;
+    //Inventory load data를 ItemSlot과 연동
+    public UnityAction LoadSlot; 
 
     public Dictionary<int, InvenItem> invenItems = new Dictionary<int, InvenItem>();
 
@@ -102,105 +111,59 @@ public class Inventory : MonoBehaviour
 
     public void SetData()
     {
-        if(instance == null)
+        if (instance == null)
         {
+            SetData();
             Debug.Log("인벤토리 싱글톤 생성 대기중");
-            SetData();
             return;
         }
 
-        if (SetInvenData == null)
+        if (SetUIData == null)
         {
             SetData();
-            Debug.Log("UI 데이터 준비중");
+            Debug.Log("인벤토리 UI 데이터 준비중");
             return;
         }
 
-        SetInvenData?.Invoke();
+        gameData = GameData.instance;
 
-        if (GameData.instance.newGame)
+        SetUIData.Invoke();
+
+        if (gameData.newGame)
         {
-            //Debug.Log("new Game");
             invenSize = 25;
-            spareSlot = 0;
+            useSlot = 0;
             items = new Item[invenSize];
 
             for (int i = 0; i < invenSize; i++)
             {
                 invenItems.Add(i, new InvenItem(null));
             }
-        }
-        else
-        {
-            //LoadData();
-        }
 
-        InventorySpace();
+            InventorySpace();
+        }
     }
 
     public void LoadData()
     {
-        invenSize = GameData.instance.userData.invenSize;
-        spareSlot = GameData.instance.userData.spareSlot;
-        items = (Item[])(GameData.instance.userData.inventoryItem).Clone();
+        invenSize = gameData.userData.invenSize;
+        useSlot = gameData.userData.useSlot;
+        items = new Item[gameData.userData.invenItem.Count];
 
         for (int i = 0; i < invenSize; i++)
         {
-            invenItems.Add(i, new InvenItem(GameData.instance.userData.invenItem[i].slotItem));
-            /*
-            if(DataManager.instance.userData.slotNum.Contains(i))
-            {
-                Debug.Log(i);
-                int test1= 0;
-                for (int j = 0; j < DataManager.instance.userData.slotNum.Count; j++)
-                {
-                    if (DataManager.instance.userData.slotNum.Contains(i))
-                    {
-                        test1 = j;
-                        break;
-                    }    
-                }
-                invenItems.Add(i, DataManager.instance.userData.invenItem[test1]);
-            }
-            else
-            {
-                invenItems.Add(i, null);
-            }
-            */
+            invenItems.Add(i, new InvenItem(gameData.userData.invenItem[i].slotItem));
+            items[i] = invenItems[i].slotItem;
         }
+        LoadSlot.Invoke();
 
-        /*
-        for (int i = 0; i < invenSize; i++)
-        {
-            if (DataManager.instance.userData.invenItem != null) 
-            {              
-                invenItems.Add(i, DataManager.instance.userData.invenItem[i]);
-            }
-            else
-            {
-                invenItems.Add(i, null);
-            }
-        }
-        */
-
-        //Debug.Log(DataManager.instance.userData.invenItems[0].slotItem.itemName);
-        //invenItems = new Dictionary<int, InvenItem>(DataManager.instance.userData.invenItems);
-
-        /*
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (items[i] != null)
-            {
-                AddUpdateUI?.Invoke(i);
-            }
-        }
-        */
+        InventorySpace();
     }
     public void SaveData()
     {
-        GameData.instance.userData.inventoryItem = items;
+        //GameData.instance.userData.inventoryItem = items;
         GameData.instance.userData.invenSize = invenSize;
-        GameData.instance.userData.spareSlot = spareSlot;
+        GameData.instance.userData.useSlot = useSlot;
 
         for (int i = 0; i < invenSize; i++)
         {
@@ -230,13 +193,14 @@ public class Inventory : MonoBehaviour
         {
             if(items[i] == null)
             {
-                items[i] = _item;
+                //items[i] = _item;
                 slotNum = i;
                 invenItems[slotNum].slotItem = _item;
+                items[slotNum] = invenItems[slotNum].slotItem;
                 AddUpdateUI?.Invoke(slotNum);
 
                 //아이템이 들어오면 인벤토리의 소모율 증가
-                spareSlot += 1;
+                useSlot += 1;
                 InventorySpace();
                 break;
             }
@@ -291,13 +255,14 @@ public class Inventory : MonoBehaviour
             {
                 if (items[i] == null)
                 {
-                    items[i] = _potion;
+                    //items[i] = _potion;
                     slotNum = i;
                     invenItems[slotNum].slotItem = _potion;
+                    items[slotNum] = invenItems[slotNum].slotItem;
                     AddUpdateUI?.Invoke(slotNum);
 
                     //아이템이 들어오면 인벤토리의 소모율 증가
-                    spareSlot += 1;
+                    useSlot += 1;
                     InventorySpace();
 
                     Debug.Log("아이템 추가");
@@ -326,7 +291,7 @@ public class Inventory : MonoBehaviour
         slotNum = -1;
 
         //아이템을 제거하면 인벤토리 소모율 감소
-        spareSlot -= 1;
+        useSlot -= 1;
         InventorySpace();
         //items.Remove(_item);
         //UpdateInventory?.Invoke(slotNum, items[slotNum]);
@@ -335,7 +300,7 @@ public class Inventory : MonoBehaviour
     public void InventorySpace()
     {
         //인벤토리가 invenSize(인벤토리 한도)에 도달했는지 체크
-        if(spareSlot == invenSize)
+        if(useSlot == invenSize)
         {
             isAdd = false;
         }
@@ -364,3 +329,48 @@ public class Inventory : MonoBehaviour
     */
 }
 
+/*
+            if(DataManager.instance.userData.slotNum.Contains(i))
+            {
+                Debug.Log(i);
+                int test1= 0;
+                for (int j = 0; j < DataManager.instance.userData.slotNum.Count; j++)
+                {
+                    if (DataManager.instance.userData.slotNum.Contains(i))
+                    {
+                        test1 = j;
+                        break;
+                    }    
+                }
+                invenItems.Add(i, DataManager.instance.userData.invenItem[test1]);
+            }
+            else
+            {
+                invenItems.Add(i, null);
+            }
+
+        for (int i = 0; i < invenSize; i++)
+        {
+            if (DataManager.instance.userData.invenItem != null) 
+            {              
+                invenItems.Add(i, DataManager.instance.userData.invenItem[i]);
+            }
+            else
+            {
+                invenItems.Add(i, null);
+            }
+        }
+        */
+
+    //Debug.Log(DataManager.instance.userData.invenItems[0].slotItem.itemName);
+    //invenItems = new Dictionary<int, InvenItem>(DataManager.instance.userData.invenItems);
+
+    /*
+    for (int i = 0; i < items.Length; i++)
+    {
+        if (items[i] != null)
+         {
+         AddUpdateUI?.Invoke(i);
+         }
+    }
+    */

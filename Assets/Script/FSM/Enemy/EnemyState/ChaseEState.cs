@@ -46,6 +46,16 @@ public class ChaseEState : MoveEState
         base.OnExit();
         resetCount = 0;
     }
+
+    public float Save()
+    {
+        return resetCount;
+    }
+
+    public void Load(float _resetCount)
+    {
+        resetCount = _resetCount;
+    }
 }
 
         /*        
