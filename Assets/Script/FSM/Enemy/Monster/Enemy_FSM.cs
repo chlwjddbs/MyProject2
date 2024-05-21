@@ -45,7 +45,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     public Vector3 TargetDir { get { return searchPlayer.TargetDir; } }
 
     [SerializeField]protected Transform chaseTarget;
-    public Transform ChaseTarget { get { return chaseTarget; } }
+    [HideInInspector] public Transform ChaseTarget { get { return chaseTarget; } }
     [HideInInspector] public float chaseTargetDis;
     [HideInInspector] public Vector3 chaseTargetDir;
     #endregion

@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class LichBall : MonoBehaviour
 {
@@ -22,6 +21,8 @@ public class LichBall : MonoBehaviour
     private GameObject player;
 
     private float attackDamage;
+
+    public IObjectPool<LichBall> lichballPool;
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +48,8 @@ public class LichBall : MonoBehaviour
 
         if(complete > 1f)
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            DestroyPoolingObj();
         }
     }
 
@@ -60,6 +62,16 @@ public class LichBall : MonoBehaviour
         isTarget = true;
         attackDamage = _attackDamage;
         
+    }
+
+    public void RegisterPoolingManager(IObjectPool<LichBall> _poolingManager)
+    {
+        lichballPool = _poolingManager;
+    }
+
+    public void DestroyPoolingObj()
+    {
+        lichballPool.Release(this);
     }
 
     private void OnTriggerEnter(Collider other)

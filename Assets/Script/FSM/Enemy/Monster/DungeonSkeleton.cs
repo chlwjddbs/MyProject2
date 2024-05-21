@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class DungeonSkeleton : Enemy_FSM
 {
-    public override void SetData()
+
+    public override void SetState()
     {
-        base.SetData();
+        base.SetState();
         eStateMachine.RegisterEState(new ChaseEState());
         eStateMachine.RegisterEState(new RunawayEState());
     }
