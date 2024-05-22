@@ -91,7 +91,7 @@ public class Lich : Enemy
     public void Attack()
     {
         GameObject Lichball = Instantiate(lichballPrefab,lichballPoint);
-        Lichball.GetComponent<LichBall>().GetTargetPos(target.transform.position,target,attackDamage);
+        Lichball.GetComponent<LichBall>().GetTargetPos(target.transform.position,target.transform,attackDamage);
         isSkill = true;
     }
     public override void Die()

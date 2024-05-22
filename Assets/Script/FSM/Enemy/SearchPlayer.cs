@@ -71,7 +71,7 @@ public class SearchPlayer : MonoBehaviour
                 //범위 내의 Collider중에 Player가 있다면
                 if (searchEnemy.TryGetComponent<PlayerStatus>(out PlayerStatus _target))
                 {
-                    if(target != _target)
+                    if (target != _target)
                     {
                         target = _target.transform;
                     }

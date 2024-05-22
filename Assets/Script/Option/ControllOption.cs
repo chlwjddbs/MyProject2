@@ -191,7 +191,7 @@ public class ControllOption : MonoBehaviour
                         else
                         {
                             KeyCode code = optionData.bindKeyData.bindCode[optionNum];
-                            Debug.Log(code);
+                            //Debug.Log(code);
                             if (code == KeyCode.None)
                             {
                                 _keyOption.Bindkey(code, nobind_image, null);

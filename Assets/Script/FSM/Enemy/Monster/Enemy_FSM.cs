@@ -44,8 +44,8 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     public float TargetDis { get { return searchPlayer.TargetDis; } }
     public Vector3 TargetDir { get { return searchPlayer.TargetDir; } }
 
-    [SerializeField]protected Transform chaseTarget;
-    [HideInInspector] public Transform ChaseTarget { get { return chaseTarget; } }
+    protected Transform chaseTarget;
+    public Transform ChaseTarget { get { return chaseTarget; } }
     [HideInInspector] public float chaseTargetDis;
     [HideInInspector] public Vector3 chaseTargetDir;
     #endregion
@@ -152,6 +152,11 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     public void PlayEnemySound()
     {
 
+    }
+
+    public virtual void Attack()
+    {
+        //АјАн
     }
 
     public void LookRotate()

@@ -5,42 +5,51 @@ using UnityEngine.Pool;
 
 public class SkeletonLich : Enemy_FSM
 {
-    public IObjectPool<LichBall> lichballPool;
-    //public ObjectPoolingManager poolingManager;
+    public ObjectPoolingManager poolingManager;
+    public IObjectPool<GameObject> connectPool;
 
     public GameObject lichballprefab;
+    public Transform lichballPoint;
+    public int useLichballCount = 1;
 
-    private void Awake()
+    protected override void Start()
     {
-        //poolingManager = ObjectPoolingManager.instance;
-        lichballPool = new ObjectPool<LichBall>(CreatePoolObj,OnGet,OnRelease,OnDes,maxSize:3);
+        //poolingManager.test = new ObjectPool<GameObject>(CreatePoolObj, poolingManager.OnGet, poolingManager.OnRelease, poolingManager.OnDes, maxSize: 3);
+        SetData();
     }
 
-    public LichBall CreatePoolObj()
+    public override void SetData()
     {
-        LichBall lichball = Instantiate(lichballprefab).GetComponent<LichBall>();
-        lichball.RegisterPoolingManager(lichballPool);
+        base.SetData();
+        SetPoolingObj();
+    }
+
+    public GameObject CreatePool()
+    {
+        GameObject lichball = Instantiate(lichballprefab,lichballPoint);
+        //lichball.GetComponent<LichBall>().SetPooling(findPool);
         return lichball;
     }
 
-    public void OnGet(LichBall _lichBall)
+    public void SetPoolingObj()
     {
-        _lichBall.gameObject.SetActive(true);
+        poolingManager = ObjectPoolingManager.instance;
+        poolingManager.RegisetPoolObj(lichballprefab, new ObjectPool<GameObject>(CreatePool, poolingManager.OnGet, poolingManager.OnRelease, poolingManager.OnDes, maxSize: 3));
+        connectPool = poolingManager.FindPool(lichballprefab.name);
+
+        for (int i = 0; i < useLichballCount; i++)
+        {
+            GameObject lichballs = CreatePool();
+            //lichballs.GetComponent<LichBall>().SetPooling(findPool);
+            connectPool.Release(lichballs);
+        }
     }
 
-    public void OnRelease(LichBall _lichBall)
+    public void Attacks()
     {
-        _lichBall.gameObject.SetActive(false);
-    }
-
-    public void OnDes(LichBall _lichBall)
-    {
-        Destroy(_lichBall.gameObject);
-    }
-
-    public void Attack()
-    {
-        LichBall lichball = lichballPool.Get();
-        lichball.GetTargetPos(Target.position, Target.gameObject, attackDamage);
+        if (connectPool.Get().TryGetComponent<IProjectile>(out IProjectile value))
+        {
+            value.SetTarget(Target, lichballPoint.position, attackDamage);
+        }
     }
 }

@@ -38,7 +38,6 @@ public class ChaseEState : MoveEState
     public override void OnEnter()
     {
         base.OnEnter();
-        //chaseTarget = _chaseTaret;
     }
 
     public override void OnExit()

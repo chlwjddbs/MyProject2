@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class LichBall : MonoBehaviour
+public class LichBall : MonoBehaviour, IProjectile
 {
     //공격 시작 위치
     private Vector3 startPos;
@@ -18,17 +18,19 @@ public class LichBall : MonoBehaviour
 
     public float parabolaHeight;
 
-    private GameObject player;
+    private Transform target;
 
     private float attackDamage;
 
-    public IObjectPool<LichBall> lichballPool;
+    public IObjectPool<GameObject> objPool;
 
+    /*
     // Start is called before the first frame update
     void Start()
     {
         //player = GameObject.FindWithTag("Player");
     }
+    */
 
     // Update is called once per frame
     void Update()
@@ -37,7 +39,7 @@ public class LichBall : MonoBehaviour
         {
             return;
         }
-        targetPos = player.transform.position;
+        targetPos = target.position;
         center = (startPos + targetPos) * 0.5f;
         center -= new Vector3(0, 1f * parabolaHeight, 0);
         Vector3 startCenter = startPos - center;
@@ -46,16 +48,17 @@ public class LichBall : MonoBehaviour
         transform.position = Vector3.Slerp(startCenter, targetCenter, complete);
         transform.position += center;
 
+        /*
         if(complete > 1f)
         {
             //Destroy(gameObject);
-            DestroyPoolingObj();
         }
+        */
     }
 
-    public void GetTargetPos(Vector3 _targetPos,GameObject _target,float _attackDamage)
+    public void GetTargetPos(Vector3 _targetPos, Transform _target, float _attackDamage)
     {
-        player = _target;
+        target = _target;
         targetPos = _targetPos;      
         startTime = Time.time;
         startPos = transform.position;
@@ -64,14 +67,19 @@ public class LichBall : MonoBehaviour
         
     }
 
-    public void RegisterPoolingManager(IObjectPool<LichBall> _poolingManager)
+    public void SetTarget(Transform _target, Vector3 _startPos, float _attackDmg)
     {
-        lichballPool = _poolingManager;
+        target = _target;
+        transform.position = _startPos;
+        startPos = _startPos;
+        startTime = Time.time;
+        attackDamage = _attackDmg;
+        isTarget = true;
     }
 
-    public void DestroyPoolingObj()
+    public void SetPooling(IObjectPool<GameObject> _pooling)
     {
-        lichballPool.Release(this);
+        objPool = _pooling;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -79,6 +87,8 @@ public class LichBall : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.GetComponent<PlayerStatus>().TakeDamage(attackDamage);
+            //objPool.Release(gameObject);
+            ObjectPoolingManager.instance.FindPool("LichBall").Release(gameObject);
         }
     }
 }
