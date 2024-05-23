@@ -45,7 +45,7 @@ public class SkeletonLich : Enemy_FSM
         }
     }
 
-    public void Attacks()
+    public override void Attack()
     {
         if (connectPool.Get().TryGetComponent<IProjectile>(out IProjectile value))
         {

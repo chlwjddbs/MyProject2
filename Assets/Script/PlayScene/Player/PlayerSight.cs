@@ -94,7 +94,7 @@ public class PlayerSight : MonoBehaviour
                 //타겟이 시야거리 밖으로 나가면 타겟의 랜더러를 꺼준다.
                 if (targetdDis > sightRange)
                 {
-                    if (target.GetComponent<Enemy>().RenderBox.activeSelf == true)
+                    if (target.GetComponent<Enemy>()?.RenderBox.activeSelf == true)
                     {
                         target.GetComponent<Enemy>().RenderBox.SetActive(false);
                     }
@@ -113,7 +113,7 @@ public class PlayerSight : MonoBehaviour
                         //리스트에 추가되지 않은 타겟이면 리스트에 추가하고 랜더러를 켜준다.
                         if (!viewTarget.Contains(target))
                         {
-                            target.GetComponent<Enemy>().RenderBox.SetActive(true);
+                            target.GetComponent<Enemy>()?.RenderBox.SetActive(true);
                             viewTarget.Add(target);
                         }
                     }

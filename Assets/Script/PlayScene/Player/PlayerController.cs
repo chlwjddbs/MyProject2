@@ -110,13 +110,13 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case PlayerState.Walk:
-                transform.Translate(mouseDir.normalized * (playerStatus.moveSpeed / 2) * Time.deltaTime, Space.World);
+                transform.Translate(mouseDir.normalized * (playerStatus.MoveSpeed / 2) * Time.deltaTime, Space.World);
                 break;
 
             case PlayerState.Run:
                 //걷는 도중에는 달리기로 상태 전환이 가능하지만 달리는 중에는 걷는 상태로 전환 불가
                 isRun = true;
-                transform.Translate(mouseDir.normalized * playerStatus.moveSpeed * Time.deltaTime, Space.World);
+                transform.Translate(mouseDir.normalized * playerStatus.MoveSpeed * Time.deltaTime, Space.World);
                 break;
 
             case PlayerState.Attack:
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour
 
             case PlayerState.Jump:
                 //점프중엔 방향 변경 불가능
-                transform.Translate(mouseDir.normalized * playerStatus.moveSpeed * Time.deltaTime, Space.World);
+                transform.Translate(mouseDir.normalized * playerStatus.MoveSpeed * Time.deltaTime, Space.World);
                 break;
 
             case PlayerState.Action:

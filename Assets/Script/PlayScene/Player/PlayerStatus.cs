@@ -6,7 +6,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using TMPro;
 
-public class PlayerStatus : MonoBehaviour
+public class PlayerStatus : MonoBehaviour, IMovement
 {
     private GameData dataManager;
 
@@ -16,7 +16,15 @@ public class PlayerStatus : MonoBehaviour
     public float baseMoveSpeed = 14f;
 
     //플레이어의 현재 이동속도
-    public float moveSpeed;
+    [SerializeField]private float moveSpeed;
+    public float MoveSpeed { get { return moveSpeed; } }
+
+    public float SpeedRate { get { return 1 + plusRate - minusRate; } }
+    public float plusRate { get; set; }
+    public float minusRate { get; set; }
+    private float previusRate;
+    private float rateCount;
+
 
     //시작 체력
     public float startHealth = 150f;
@@ -203,9 +211,61 @@ public class PlayerStatus : MonoBehaviour
         SetCombatStatus();
     }
 
-    public void ResetMoveSpeed()
+    public void PlusMoveSpeed(float _rate, float _duration = 0)
     {
-        moveSpeed = baseMoveSpeed;
+        plusRate = _rate;
+        moveSpeed = baseMoveSpeed * Mathf.Clamp(SpeedRate,0,SpeedRate);
+        moveSpeedUI.text = moveSpeed.ToString();
+
+        //지속 시간이 있는 효과일때만 지속 시간 후에 변화 해체
+        if (_duration != 0)
+        {
+            StartCoroutine(SetRateCount(SpeedRateEnum.plusRate,plusRate, _duration));
+        }
+    }
+
+    public void MinusMoveSpeed(float _rate, float _duration = 0)
+    {
+        moveSpeed = baseMoveSpeed * Mathf.Clamp(SpeedRate, 0, SpeedRate);
+        moveSpeedUI.text = moveSpeed.ToString();
+
+        if (_duration != 0)
+        {
+            StartCoroutine(SetRateCount(SpeedRateEnum.minusRate, plusRate, _duration));
+        }
+    }
+
+    IEnumerator SetRateCount(SpeedRateEnum _spdEnum, float _rate, float _duration = 0)
+    {
+        yield return new WaitForSeconds(1f);
+        rateCount--;
+        if(rateCount >= 5)
+        {
+
+        }
+        else if(rateCount >= 2)
+        {
+
+        }
+        else
+        {
+            //ResetMoveSpeed
+        }
+        
+    }
+
+    public void ResetMoveSpeed(SpeedRateEnum _spdEnum, float _rate)
+    {
+        if(_spdEnum == SpeedRateEnum.plusRate)
+        {
+            plusRate -= _rate;
+        }
+        else
+        {
+            minusRate -= _rate;
+        }
+
+        moveSpeed = baseMoveSpeed * Mathf.Clamp(SpeedRate, 0, SpeedRate);
         moveSpeedUI.text = moveSpeed.ToString();
     }
 
