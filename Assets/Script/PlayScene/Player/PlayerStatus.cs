@@ -6,7 +6,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using TMPro;
 
-public class PlayerStatus : MonoBehaviour, IMovement
+public class PlayerStatus : MonoBehaviour , ISlow_StatusEffect
 {
     private GameData dataManager;
 
@@ -16,14 +16,17 @@ public class PlayerStatus : MonoBehaviour, IMovement
     public float baseMoveSpeed = 14f;
 
     //플레이어의 현재 이동속도
-    [SerializeField]private float moveSpeed;
+    [SerializeField] private float moveSpeed;
     public float MoveSpeed { get { return moveSpeed; } }
 
     public float SpeedRate { get { return 1 + plusRate - minusRate; } }
     public float plusRate { get; set; }
     public float minusRate { get; set; }
-    private float previusRate;
+    private Slow_StatusEffect previusRate;
     private float rateCount;
+    public Dictionary<string, Slow_StatusEffect> slowEffects = new Dictionary<string, Slow_StatusEffect>();
+
+    public Transform statusEffectPos;
 
 
     //시작 체력
@@ -209,64 +212,6 @@ public class PlayerStatus : MonoBehaviour, IMovement
         SetUI();
         SetCondition();
         SetCombatStatus();
-    }
-
-    public void PlusMoveSpeed(float _rate, float _duration = 0)
-    {
-        plusRate = _rate;
-        moveSpeed = baseMoveSpeed * Mathf.Clamp(SpeedRate,0,SpeedRate);
-        moveSpeedUI.text = moveSpeed.ToString();
-
-        //지속 시간이 있는 효과일때만 지속 시간 후에 변화 해체
-        if (_duration != 0)
-        {
-            StartCoroutine(SetRateCount(SpeedRateEnum.plusRate,plusRate, _duration));
-        }
-    }
-
-    public void MinusMoveSpeed(float _rate, float _duration = 0)
-    {
-        moveSpeed = baseMoveSpeed * Mathf.Clamp(SpeedRate, 0, SpeedRate);
-        moveSpeedUI.text = moveSpeed.ToString();
-
-        if (_duration != 0)
-        {
-            StartCoroutine(SetRateCount(SpeedRateEnum.minusRate, plusRate, _duration));
-        }
-    }
-
-    IEnumerator SetRateCount(SpeedRateEnum _spdEnum, float _rate, float _duration = 0)
-    {
-        yield return new WaitForSeconds(1f);
-        rateCount--;
-        if(rateCount >= 5)
-        {
-
-        }
-        else if(rateCount >= 2)
-        {
-
-        }
-        else
-        {
-            //ResetMoveSpeed
-        }
-        
-    }
-
-    public void ResetMoveSpeed(SpeedRateEnum _spdEnum, float _rate)
-    {
-        if(_spdEnum == SpeedRateEnum.plusRate)
-        {
-            plusRate -= _rate;
-        }
-        else
-        {
-            minusRate -= _rate;
-        }
-
-        moveSpeed = baseMoveSpeed * Mathf.Clamp(SpeedRate, 0, SpeedRate);
-        moveSpeedUI.text = moveSpeed.ToString();
     }
 
     public void TakeDamage(float _damage)
@@ -577,5 +522,102 @@ public class PlayerStatus : MonoBehaviour, IMovement
             AudioManager.instance.StopAm("hp50under");
         }
     }
+
+    public void TakeSlowEffect(Slow_StatusEffect _slowEfc)
+    {
+        if (!slowEffects.TryGetValue(_slowEfc.name, out Slow_StatusEffect value))
+        {
+            Slow_StatusEffect slowEfc = Instantiate(_slowEfc, statusEffectPos);
+            slowEfc.target = this;
+            slowEffects.Add(_slowEfc.name, slowEfc);
+            SetSlowEffect();
+        }
+        else
+        {
+            value.count = 0;
+            rateCount = _slowEfc.duration;
+            SetSlowEffect();
+        }
+    }
+
+    public void SetSlowEffect()
+    {
+        float bestRate = 0f;
+        foreach (var item in slowEffects)
+        {
+            if (bestRate < item.Value.slowRate)
+            {
+                bestRate = item.Value.slowRate;
+            }
+        }
+        minusRate = bestRate;
+
+        moveSpeed = baseMoveSpeed * SpeedRate;
+    }
+
+    public void RemoveStatusEffect(string _slowEfc)
+    {
+        slowEffects.Remove(_slowEfc);
+        SetSlowEffect();
+    }
+    /*
+
+public void PlusMoveSpeed(float _rate, float _duration = 0)
+{
+ plusRate = _rate;
+ moveSpeed = baseMoveSpeed * Mathf.Clamp(SpeedRate,0,SpeedRate);
+ moveSpeedUI.text = moveSpeed.ToString();
+
+ //지속 시간이 있는 효과일때만 지속 시간 후에 변화 해체
+ if (_duration != 0)
+ {
+     StartCoroutine(SetRateCount(SpeedRateEnum.plusRate,plusRate, _duration));
+ }
+}
+
+public void MinusMoveSpeed(float _rate, float _duration)
+{
+ moveSpeed = baseMoveSpeed * Mathf.Clamp(SpeedRate, 0, SpeedRate);
+ moveSpeedUI.text = moveSpeed.ToString();      
+
+ StartCoroutine(SetRateCount(SpeedRateEnum.minusRate, plusRate, _duration));
+}
+
+IEnumerator SetRateCount(SpeedRateEnum _spdEnum, float _rate, float _duration = 0)
+{
+ while (rateCount > 0)
+ {
+     yield return new WaitForSeconds(1f);
+     rateCount--;
+     if (rateCount <= 2)
+     {
+
+     }
+     else if (rateCount <= 5)
+     {
+
+     }
+ }
+
+ ResetMoveSpeed(_spdEnum, _rate);
+}
+
+public void ResetMoveSpeed()
+{
+
+  if(_spdEnum == SpeedRateEnum.plusRate)
+  {
+      plusRate -= _rate;
+  }
+  else
+  {
+      minusRate -= _rate;
+  }
+
+  moveSpeed = baseMoveSpeed * Mathf.Clamp(SpeedRate, 0, SpeedRate);
+  moveSpeedUI.text = moveSpeed.ToString();
+}
+
+*/
 }
 

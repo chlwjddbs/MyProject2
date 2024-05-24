@@ -28,6 +28,8 @@ public class TestScript : MonoBehaviour
 
     public Dictionary<string, int> testDic = new Dictionary<string, int>();
 
+    public IceElemental2 olf;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,14 +97,6 @@ public class TestScript : MonoBehaviour
         Debug.Log(_a + " " + _b + " " + _c);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("╬Нец");
-        }
-    }
-
     private void Num()
     {      
         for (int i = 0; i < 6; i++)
@@ -131,5 +125,14 @@ public class TestScript : MonoBehaviour
         }
         nums.Sort();
         Debug.Log(nums[0] + "," + nums[1]+ ","+ nums[2]+ "," + nums[3]+ "," + nums[4]+ "," + nums[5]);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            olf.SetAwake();
+            GetComponent<BoxCollider>().enabled = false;
+        }
     }
 }

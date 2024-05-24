@@ -14185,6 +14185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 150
+  coll: {fileID: 1979195709}
 --- !u!1 &8426141308674655158
 GameObject:
   m_ObjectHideFlags: 0

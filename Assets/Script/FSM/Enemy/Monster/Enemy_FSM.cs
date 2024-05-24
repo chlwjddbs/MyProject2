@@ -60,7 +60,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     #region Enmey 상태
     [Header("EnemyState")]
     public bool isDeath;
-    [SerializeField] private bool isAttackable = true;
+    [SerializeField] protected bool isAttackable = true;
     public bool chaseMode;
     public bool returnHome;
     
@@ -159,7 +159,12 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         //공격
     }
 
-    public void LookRotate()
+    public virtual void CastingStart() { }
+    public virtual void CastingAction() { }
+    public virtual void CastingEnd() { }
+    
+
+    public virtual void LookRotate()
     {
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(TargetDir), Time.deltaTime * rotateSpeed);
     }
@@ -170,51 +175,58 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         //죽은 상태에서는 더 이상 데미지를 받지 않는다.
         if (isDeath)
         {
+            Debug.Log($"{name}은 이미 죽었습니다.");
             return;
         }
 
         if (!isAttackable)
         {
-            _damage = 0;
+            Debug.Log("무적입니다.");
+            return;
         }
 
         if (_damage > 0)
         {
-            remainHealth -= _damage;
-            //Dagamed();
-            Debug.Log(remainHealth / maxHealth * 100 + " %");
-            //PlayEnemySound(damagedSound);
-
-            //Target이 null이 아니라는 것은 enemy의 DetectRange안에서 Target이 공격 한 상태이다.
-            if (Target != null)
-            {
-                //추후 Target이 Player 외에 더 생길 수 있다.
-                //그때 enemy가 공격 받을때마다 목표로 하는 Target을 바꾸지 않도록 가장 강한 공격을 한 Target만을 쫓도록 해준다.
-                if (Target == _attacker)
-                {
-                    if (previousDamage < _damage)
-                    {
-                        previousDamage = _damage;
-                        SetChaseTarget(_attacker);
-                    }
-                }
-                //enemy를 공격한 대상을 찾지 못했다면 주변의 다른 가까운 Target을 찾아 쫓아간다.
-                else
-                {
-                    SetChaseTarget(Target);
-                }
-            }
-            //enemy의 감지범위 내에 Target이 존재하지 않으면 enemy는 도망가는 상태가 된다.
-            else
-            {
-                ChangeState(new RunawayEState());
-                (eStateMachine.states[new RunawayEState().ToString()] as RunawayEState).SetDamagedDir(_damagedDir);
-            }
+            Damaged(_damage, _attacker, _damagedDir);
         }
 
         if (RemainHealth <= 0)
         {
             Die();
+        }
+    }
+
+    public virtual void Damaged(float _damage, Transform _attacker, Vector3 _damagedDir = new Vector3())
+    {
+        remainHealth -= _damage;
+        //Dagamed();
+        Debug.Log(remainHealth / maxHealth * 100 + " %");
+        //PlayEnemySound(damagedSound);
+
+        //Target이 null이 아니라는 것은 enemy의 DetectRange안에서 Target이 공격 한 상태이다.
+        if (Target != null)
+        {
+            //추후 Target이 Player 외에 더 생길 수 있다.
+            //그때 enemy가 공격 받을때마다 목표로 하는 Target을 바꾸지 않도록 가장 강한 공격을 한 Target만을 쫓도록 해준다.
+            if (Target == _attacker)
+            {
+                if (previousDamage < _damage)
+                {
+                    previousDamage = _damage;
+                    SetChaseTarget(_attacker);
+                }
+            }
+            //enemy를 공격한 대상을 찾지 못했다면 주변의 다른 가까운 Target을 찾아 쫓아간다.
+            else
+            {
+                SetChaseTarget(Target);
+            }
+        }
+        //enemy의 감지범위 내에 Target이 존재하지 않으면 enemy는 도망가는 상태가 된다.
+        else
+        {
+            ChangeState(new RunawayEState());
+            (eStateMachine.states[new RunawayEState().ToString()] as RunawayEState).SetDamagedDir(_damagedDir);
         }
     }
 
@@ -283,6 +295,8 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         eStateMachine.RegisterEState(new MoveEState());
         eStateMachine.RegisterEState(new AttackEState());
         eStateMachine.RegisterEState(new DeathEState());
+        eStateMachine.RegisterEState(new ChaseEState());
+        eStateMachine.RegisterEState(new RunawayEState());
 
         if (patrolUnit)
         {

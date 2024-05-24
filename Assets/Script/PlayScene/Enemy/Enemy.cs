@@ -646,7 +646,7 @@ public class Enemy : MonoBehaviour
 
         if (sound != null)
         {
-            sound.source.Play();
+            //sound.source.Play();
         }
         else
         {

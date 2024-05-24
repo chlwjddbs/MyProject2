@@ -15,7 +15,8 @@ public abstract class StateMachine
 
     public Dictionary<string, State> states = new Dictionary<string, State>();
 
-    protected float attackCoolTime;
+    //처음은 무조건 쿨타임이 충족된걸로 판정하기 위에 쿨타임을 다 채워주기 위에 인피니티를 기본값으로 넣어준다.
+    protected float attackCoolTime = Mathf.Infinity;
     public float AttackCoolTime { get { return attackCoolTime; } }
 
     //생성자를 통해 State의 초기값을 설정해 준다.

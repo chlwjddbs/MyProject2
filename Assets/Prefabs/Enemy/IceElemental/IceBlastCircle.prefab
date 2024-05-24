@@ -33730,6 +33730,7 @@ MonoBehaviour:
   magicCircle: {fileID: 3469934795774347434}
   light_1: {fileID: 3469934795774347432}
   light_2: {fileID: 3469934795774347436}
+  coll: {fileID: 3469934795755770311}
   audioSource: {fileID: 2636856940142106636}
 --- !u!82 &2636856940142106636
 AudioSource:

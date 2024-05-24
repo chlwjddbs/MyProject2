@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "new Posion", menuName = "Posion")]
+[CreateAssetMenu(fileName = "new Posion", menuName = "Item/Posion")]
 public class Potion : Item
 {
     public PotionTpye potionTpye;

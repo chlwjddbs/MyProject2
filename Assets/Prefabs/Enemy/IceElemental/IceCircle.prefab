@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2894567723774937502}
   - component: {fileID: 2894567723774937505}
   m_Layer: 0
-  m_Name: IcicleCircle
+  m_Name: IceCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

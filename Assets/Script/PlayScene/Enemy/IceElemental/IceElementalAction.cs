@@ -58,8 +58,6 @@ public class IceElementalAction : MonoBehaviour
             CancelInvoke("TripleIcicleBoom");
             StopCoroutine("Blast");
         }
-
-        
     }
 
     public void StartAttack()
@@ -70,10 +68,12 @@ public class IceElementalAction : MonoBehaviour
 
     public void EndAttack()
     {
+        /*
         iceElemental.isAttack = false;
         iceElemental.eState = EnemyState.Idle;
         iceElemental.enemyAnime.SetInteger("eState", (int)iceElemental.eState);
         AttackPoint.enabled = false;
+        */
     }
 
     IEnumerator IcicleBoom()
@@ -169,7 +169,7 @@ public class IceElementalAction : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        iceBlastCircle.GetComponent<IceBlast>().stopSound();
+        iceBlastCircle.GetComponent<IceBlast>().StopSound();
         iceBlastCircle.GetComponent<IceBlast>().iceBlast.SetActive(true);
 
         yield return new WaitForSeconds(.5f);

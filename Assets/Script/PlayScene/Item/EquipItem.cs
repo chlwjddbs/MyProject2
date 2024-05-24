@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Equip", menuName = "Equip")]
+[CreateAssetMenu(fileName = "New Equip", menuName = "Item/Equip")]
 public class EquipItem : Item
 {
     //장비의 타입 (무기, 방패, 갑옷 등)

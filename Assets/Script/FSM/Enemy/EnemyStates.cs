@@ -30,4 +30,9 @@ public class EnemyStates : State
     {
         eAnim.SetInteger("eState", (int)enemyState);
     }
+
+    public virtual void ChangeEAnime(EnemyState _enemyState)
+    {
+        eAnim.SetInteger("eState", (int)_enemyState);
+    }
 }

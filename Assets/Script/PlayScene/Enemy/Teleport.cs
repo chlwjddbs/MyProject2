@@ -5,6 +5,8 @@ using UnityEngine;
 public class Teleport : MonoBehaviour
 {
     private float countDown = 3f;
+
+    /*
     // Start is called before the first frame update
     void Start()
     {
@@ -19,5 +21,17 @@ public class Teleport : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    */
+
+    public void SetTeleport()
+    {
+        gameObject.SetActive(true);
+        Invoke("EndTeleport", countDown);
+    }
+
+    public void EndTeleport()
+    {
+        gameObject.SetActive(false);
     }
 }

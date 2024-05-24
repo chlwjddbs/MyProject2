@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "new Skill", menuName = "Skill")]
+[CreateAssetMenu(fileName = "new Skill", menuName = "Item/Skill")]
 public class SkillItem : Item
 {
     public string skillName;
