@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class Stage_1stFloor : StageManager
 {   
     public Enemy Olaf;
-    public Enemy Gubne;
+    public Enemy_FSM Gubne;
 
     public Area_C_Gimmick c_Gimmick;
 

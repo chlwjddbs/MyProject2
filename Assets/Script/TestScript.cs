@@ -33,6 +33,7 @@ public class TestScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        olf.SetData();
         /*
         a = new Vector3(0, 0, 0);
         a1 = new Vector3(1, 0, 1);
@@ -131,6 +132,7 @@ public class TestScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            olf.gameObject.SetActive(true);
             olf.SetAwake();
             GetComponent<BoxCollider>().enabled = false;
         }

@@ -12,12 +12,18 @@ public class CastEState : EnemyStates
 
     public override void OnUpdate()
     {
-        enemy.CastingAction();
+        //enemy.CastingAction();
     }
 
     public override void OnEnter()
     {
         base.OnEnter();
         enemy.CastingStart();
+    }
+
+    public override void OnExit()
+    {
+        base.OnExit();
+        enemy.isCasting = false;
     }
 }

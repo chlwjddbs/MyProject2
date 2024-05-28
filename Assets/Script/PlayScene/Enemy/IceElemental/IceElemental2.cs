@@ -27,7 +27,6 @@ public class IceElemental2 : Enemy_FSM
 
     public void SetAwake()
     {
-        SetData();
         isAttackable = true;
         iceEffect.SetActive(true);
         enabled = true;
@@ -68,9 +67,8 @@ public class IceElemental2 : Enemy_FSM
         iceBlast.StopParticle();
     }
 
-    public override void Damaged(float _damage, Transform _attacker, Vector3 _damagedDir = default)
+    public override void Damaged()
     {
-        base.Damaged(_damage, _attacker, _damagedDir);
         #region 남은 HP에 따라 iceBoom 갯수 추가 하기
         if (remainHealth / maxHealth * 100 > 70)
         {
@@ -136,6 +134,7 @@ public class IceElemental2 : Enemy_FSM
         Debug.Log(blastGauge);
         if (blastGauge >= MaxGauge)
         {
+            isCasting = true;
             ChangeState(new CastEState());
         }
     }
@@ -147,7 +146,7 @@ public class IceElemental2 : Enemy_FSM
 
     public override void CastingStart()
     {
-        //(eStateMachine.CurrentState as CastEState).ChangeEAnime(EnemyState.Idle);
+        (eStateMachine.CurrentState as CastEState).ChangeEAnime(EnemyState.Idle);
         StartCoroutine(IceBlast());
     }
 
@@ -188,7 +187,7 @@ public class IceElemental2 : Enemy_FSM
         yield return new WaitForSeconds(.5f);
 
         iceBlast.coll.enabled = true;
-
+        (eStateMachine.CurrentState as CastEState).ChangeEAnime(EnemyState.Idle);
         yield return new WaitForSeconds(1f);
 
         iceBlast.coll.enabled = false;

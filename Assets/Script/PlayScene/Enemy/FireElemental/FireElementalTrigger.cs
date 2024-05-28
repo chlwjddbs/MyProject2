@@ -7,7 +7,7 @@ public class FireElementalTrigger : MonoBehaviour
     public Animator FireRoad;
     public ParticleSystem SpawnFireElementalEffect;
     public ParticleSystem FireAura;
-    public FireElemental FireElemental;
+    public FireElemental fireElemental;
     public SetCursorImage cursorAction;
 
     public List<BoxCollider> gate;
@@ -27,16 +27,10 @@ public class FireElementalTrigger : MonoBehaviour
     }
 
     private void Update()
-    {     
-        if (FireElemental.isDeath && !isDeath)
-        {
-            isDeath = true;
-            FireRoad.SetBool("Offtrigger", true);
-            Obstacle.SetActive(false);
-            OpenTheGate();
-        }
+    {
+        FireElementalDeath();
 
-        if (!FireElemental.isDeath)
+        if (!fireElemental.isDeath)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -49,7 +43,9 @@ public class FireElementalTrigger : MonoBehaviour
                     {
                         if (cursorAction.theDistance < cursorAction.actionDis)
                         {
-                            FireElemental.FireAura.SetActive(true);
+                            //fireElemental.FireAura.SetActive(true);
+                            fireElemental.FireAura.Play();
+                            fireElemental.enabled = true;
                             Destroy(cursorAction.gameObject, .3f);
                             StartCoroutine("SpawnFireElemental");
                         }
@@ -78,7 +74,7 @@ public class FireElementalTrigger : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         AudioManager.instance.PlayBGM("Fight_Gubne",1f);
-        FireElemental.gameObject.SetActive(true); 
+        fireElemental.gameObject.SetActive(true); 
         FireAura.Play();
         yield return new WaitForSeconds(1f);
 
@@ -87,8 +83,9 @@ public class FireElementalTrigger : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Destroy(SpawnFireElementalEffect);
 
-        FireElemental.isActive = true;
-        FireElemental.GetComponent<CapsuleCollider>().enabled = true;
+        //fireElemental.isActive = true;
+        fireElemental.enabled = true;
+        fireElemental.HitBox.enabled = true;
     }
 
     void LockTheGate()
@@ -107,4 +104,15 @@ public class FireElementalTrigger : MonoBehaviour
         }
     }
 
+    public void FireElementalDeath()
+    {
+        if (fireElemental.isDeath && !isDeath)
+        {
+            isDeath = true;
+            FireRoad.SetBool("Offtrigger", true);
+            Obstacle.SetActive(false);
+            OpenTheGate();
+            enabled = false;
+        }
+    }
 }

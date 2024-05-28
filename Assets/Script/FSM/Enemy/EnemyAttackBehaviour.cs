@@ -21,6 +21,11 @@ public class EnemyAttackBehaviour : StateMachineBehaviour
     {
         if (animator.TryGetComponent<Enemy_FSM>(out Enemy_FSM enemy))
         {
+            if (enemy.isDeath || enemy.isCasting)
+            {
+                return;
+            }
+
             enemy.ChangeState(new IdleEState());
         }
     }

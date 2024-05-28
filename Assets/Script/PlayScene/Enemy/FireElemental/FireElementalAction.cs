@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FireElementalAction : MonoBehaviour
 {
-    public FireElemental fireElemental;
+    public OldFireElemental fireElemental;
     
     public Transform treepleBurn;
     public GameObject burnCirclePrefab;
@@ -46,7 +46,7 @@ public class FireElementalAction : MonoBehaviour
         if (!fireElemental.isPase_2)
         {
             GameObject _burn = Instantiate(burnPrefab, burnpos, Quaternion.identity, treepleBurn);
-            _burn.GetComponent<RotateAroundBurn>().attackDamage = GetComponent<FireElemental>().attackDamage;
+            _burn.GetComponent<RotateAroundBurn>().attackDamage = GetComponent<OldFireElemental>().attackDamage;
         }
         //페이즈 2
         else
@@ -54,13 +54,12 @@ public class FireElementalAction : MonoBehaviour
             //소횐되는 burn의 속도가 1.5배 증가
             GameObject _burn = Instantiate(burnPrefab, burnpos, Quaternion.identity, treepleBurn);
             _burn.GetComponent<RotateAroundBurn>().turnSpeed *= 1.5f;
-            _burn.GetComponent<RotateAroundBurn>().attackDamage = GetComponent<FireElemental>().attackDamage * 1.5f;
+            _burn.GetComponent<RotateAroundBurn>().attackDamage = GetComponent<OldFireElemental>().attackDamage * 1.5f;
             //_burn.GetComponent<RotateAroundBurn>().burnLifetime *= 1.5f;
         }
 
         //burn의 스텍 카운트 증가
-        burnCount++;
-       
+        burnCount++;    
     }
 
     public void RotateBurn()
@@ -74,6 +73,7 @@ public class FireElementalAction : MonoBehaviour
         //burn이 소환되는 스텍 저장소 (treepleBurn) 의 자식(burn)이 3개(3스텍)가 되면 TreepleBurn 시작
         for (int i = 0; i < treepleBurn.childCount; i++)
         {
+            Debug.Log("???");
             //RotateAroundBurn의 isTrun이 true가 되면 TreeplBurn 발동
             treepleBurn.GetChild(i).GetComponent<RotateAroundBurn>().isTurn = true;    
         }
@@ -84,8 +84,10 @@ public class FireElementalAction : MonoBehaviour
 
     public void endAttack()
     {
+        /*
         fireElemental.isAttack = false;
         fireElemental.eState = EnemyState.Idle;
         fireElemental.enemyAnime.SetInteger("eState", (int)fireElemental.eState);  
+        */
     }
 }

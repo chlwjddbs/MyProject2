@@ -63,6 +63,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     [SerializeField] protected bool isAttackable = true;
     public bool chaseMode;
     public bool returnHome;
+    public bool isCasting;
     
     public bool VisibleTarget { get { return searchPlayer.visibelTarget; } }
     #endregion
@@ -87,7 +88,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     [SerializeField] protected float defencePoint;
     [SerializeField] protected CapsuleCollider hitBox;
 
-    private float previousDamage;
+    protected float previousDamage;
 
     public bool IsAttackable { get { return isAttackable; } }
     public float StartHealth { get { return startHealth; } }
@@ -187,7 +188,36 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
 
         if (_damage > 0)
         {
-            Damaged(_damage, _attacker, _damagedDir);
+            remainHealth -= _damage;
+            Damaged();
+            Debug.Log(remainHealth / maxHealth * 100 + " %");
+            //PlayEnemySound(damagedSound);
+
+            //Target이 null이 아니라는 것은 enemy의 DetectRange안에서 Target이 공격 한 상태이다.
+            if (Target != null)
+            {
+                //추후 Target이 Player 외에 더 생길 수 있다.
+                //그때 enemy가 공격 받을때마다 목표로 하는 Target을 바꾸지 않도록 가장 강한 공격을 한 Target만을 쫓도록 해준다.
+                if (Target == _attacker)
+                {
+                    if (previousDamage < _damage)
+                    {
+                        previousDamage = _damage;
+                        SetChaseTarget(_attacker);
+                    }
+                }
+                //enemy를 공격한 대상을 찾지 못했다면 주변의 다른 가까운 Target을 찾아 쫓아간다.
+                else
+                {
+                    SetChaseTarget(Target);
+                }
+            }
+            //enemy의 감지범위 내에 Target이 존재하지 않으면 enemy는 도망가는 상태가 된다.
+            else
+            {
+                ChangeState(new RunawayEState());
+                (eStateMachine.states[new RunawayEState().ToString()] as RunawayEState).SetDamagedDir(_damagedDir);
+            }
         }
 
         if (RemainHealth <= 0)
@@ -196,38 +226,9 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         }
     }
 
-    public virtual void Damaged(float _damage, Transform _attacker, Vector3 _damagedDir = new Vector3())
+    public virtual void Damaged()
     {
-        remainHealth -= _damage;
-        //Dagamed();
-        Debug.Log(remainHealth / maxHealth * 100 + " %");
-        //PlayEnemySound(damagedSound);
-
-        //Target이 null이 아니라는 것은 enemy의 DetectRange안에서 Target이 공격 한 상태이다.
-        if (Target != null)
-        {
-            //추후 Target이 Player 외에 더 생길 수 있다.
-            //그때 enemy가 공격 받을때마다 목표로 하는 Target을 바꾸지 않도록 가장 강한 공격을 한 Target만을 쫓도록 해준다.
-            if (Target == _attacker)
-            {
-                if (previousDamage < _damage)
-                {
-                    previousDamage = _damage;
-                    SetChaseTarget(_attacker);
-                }
-            }
-            //enemy를 공격한 대상을 찾지 못했다면 주변의 다른 가까운 Target을 찾아 쫓아간다.
-            else
-            {
-                SetChaseTarget(Target);
-            }
-        }
-        //enemy의 감지범위 내에 Target이 존재하지 않으면 enemy는 도망가는 상태가 된다.
-        else
-        {
-            ChangeState(new RunawayEState());
-            (eStateMachine.states[new RunawayEState().ToString()] as RunawayEState).SetDamagedDir(_damagedDir);
-        }
+        
     }
 
     #region ChaseTarget
@@ -287,6 +288,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
 
         SetState();
         SetValue();
+        SetPool();
     }
 
     public virtual void SetState()
@@ -310,6 +312,11 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         remainHealth = maxHealth;
         StartPoint = transform.position;
         agent.speed = moveSpeed;
+    }
+
+    public virtual void SetPool()
+    {
+
     }
 
     public virtual Enemy_FSM.EnemyData SaveData()

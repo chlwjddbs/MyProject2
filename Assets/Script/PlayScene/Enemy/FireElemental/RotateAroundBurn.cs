@@ -14,6 +14,8 @@ public class RotateAroundBurn : MonoBehaviour
 
     //burn의 지속 시간
     public float burnLifetime = 5f;
+    //burn의 지속 시간을 초기화
+    private float burnLifeReset = 5f;
 
     //burn의 공격력
     public float attackDamage = 20f;
@@ -29,9 +31,6 @@ public class RotateAroundBurn : MonoBehaviour
 
     private void Start()
     {
-        fireElemental = FindObjectOfType<FireElemental>();
-        aroundPoint = fireElemental.transform.position;
-
         foreach (var s in burnSound)
         {
             AudioManager.instance.AddExternalSound(s);
@@ -45,10 +44,24 @@ public class RotateAroundBurn : MonoBehaviour
         if (fireElemental.isDeath)
         {
             ExplosionEffect();
-            Destroy(gameObject);
+            fireElemental.burnPool.Release(gameObject);
+            //Destroy(gameObject);
             return;
         }
         BurnRotate();
+    }
+
+    public void SetBurn(FireElemental _fireElemental)
+    {
+        fireElemental = _fireElemental;
+        aroundPoint = fireElemental.transform.position;
+    }
+
+    public void ResetBurn(float _burnLifeTiem)
+    {
+        burnLifetime = _burnLifeTiem;
+        countdown = resetcount;
+        isTurn = false;
     }
 
     public void BurnRotate()
@@ -63,16 +76,25 @@ public class RotateAroundBurn : MonoBehaviour
             if (burnLifetime <= 0)
             {
                 ExplosionEffect();
-                Destroy(gameObject);
+                ResetBurn(burnLifeReset);
+                fireElemental.burnPool.Release(gameObject);
+                //Destroy(gameObject);
             }
         }
-
     }
 
     public void ExplosionEffect()
     {
-        GameObject explosionEffect = Instantiate(explosionEffectPrefab, new Vector3(transform.position.x, transform.position.y+0.5f, transform.position.z) ,Quaternion.identity);
-        Destroy(explosionEffect, 2f);
+        GameObject explosionEffect = fireElemental.burnEffectPool.Get();
+        explosionEffect.transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+        Invoke("DisableEffect", 2f);
+
+        //Destroy(explosionEffect, 2f);
+    }
+
+    public void DisableEffect(GameObject _explosionEffect)
+    {
+        fireElemental.burnEffectPool.Release(_explosionEffect);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -80,8 +102,12 @@ public class RotateAroundBurn : MonoBehaviour
         if (other.transform.CompareTag("Player"))
         {
             AudioManager.instance.PlayExSound("burnHit");
-            other.GetComponent<PlayerStatus>().TakeDamage(attackDamage);
-            ExplosionEffect();
+            if(other.TryGetComponent<PlayerStatus>(out PlayerStatus value))
+            {
+                value.TakeDamage(attackDamage);
+                //other.GetComponent<IAttackable>().TakeDamage(attackDamage, null);
+                ExplosionEffect();
+            }
         }
     }
 

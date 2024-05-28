@@ -14,24 +14,15 @@ public class SkeletonLich : Enemy_FSM
 
     protected override void Start()
     {
-        //poolingManager.test = new ObjectPool<GameObject>(CreatePoolObj, poolingManager.OnGet, poolingManager.OnRelease, poolingManager.OnDes, maxSize: 3);
         SetData();
     }
 
     public override void SetData()
     {
         base.SetData();
-        SetPoolingObj();
     }
 
-    public GameObject CreatePool()
-    {
-        GameObject lichball = Instantiate(lichballprefab,lichballPoint);
-        //lichball.GetComponent<LichBall>().SetPooling(findPool);
-        return lichball;
-    }
-
-    public void SetPoolingObj()
+    public override void SetPool()
     {
         poolingManager = ObjectPoolingManager.instance;
         poolingManager.RegisetPoolObj(lichballprefab, new ObjectPool<GameObject>(CreatePool, poolingManager.OnGet, poolingManager.OnRelease, poolingManager.OnDes, maxSize: 3));
@@ -43,6 +34,13 @@ public class SkeletonLich : Enemy_FSM
             //lichballs.GetComponent<LichBall>().SetPooling(findPool);
             connectPool.Release(lichballs);
         }
+    }
+
+    public GameObject CreatePool()
+    {
+        GameObject lichball = Instantiate(lichballprefab, lichballPoint);
+        //lichball.GetComponent<LichBall>().SetPooling(findPool);
+        return lichball;
     }
 
     public override void Attack()
