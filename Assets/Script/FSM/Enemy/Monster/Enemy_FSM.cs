@@ -122,7 +122,6 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         if (!isDeath)
         {
             eStateMachine.Update(Time.deltaTime);
-
             if (eStateMachine.AttackCoolTime <= AttackDelay)
             {
                 eStateMachine.AttackTimeCount();

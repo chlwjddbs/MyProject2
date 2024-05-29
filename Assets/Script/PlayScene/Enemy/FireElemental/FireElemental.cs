@@ -25,6 +25,8 @@ public class FireElemental : Enemy_FSM
     public IObjectPool<GameObject> burnPool;
     public IObjectPool<GameObject> burnEffectPool;
 
+    public AudioClip test1;
+
     public override void SetState()
     {
         eStateMachine = new EnemyStateMachine(this, new IdleEState());
@@ -121,7 +123,7 @@ public class FireElemental : Enemy_FSM
         StartCoroutine(RotateBurn());
 
         ChangeState(new CastEState());
-        attackDelay = attackDelay / 2;
+        attackDelay = 0;
 
         yield return new WaitForSeconds(4f);
 
@@ -147,7 +149,7 @@ public class FireElemental : Enemy_FSM
         DeathEffect.SetActive(true);
         //PlayEnemySound("gn_explosion");
 
-        //yield return new WaitForSeconds((enemySound[3].clip.length) - 0.3f);
+        yield return new WaitForSeconds(1.3f);
         gameObject.SetActive(false);
         AudioManager.instance.PlayBGM("PlayScene_Floor_1", 1f);
     }

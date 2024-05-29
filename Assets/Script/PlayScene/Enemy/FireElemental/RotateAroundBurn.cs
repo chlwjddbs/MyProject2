@@ -86,16 +86,27 @@ public class RotateAroundBurn : MonoBehaviour
     public void ExplosionEffect()
     {
         GameObject explosionEffect = fireElemental.burnEffectPool.Get();
-        explosionEffect.transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
-        Invoke("DisableEffect", 2f);
-
+        if(explosionEffect.TryGetComponent<ReleasePool>(out ReleasePool value))
+        {
+            value.transform.position = transform.position;
+            value.SetPool(fireElemental.burnEffectPool, 2f);
+        }
+        //StartCoroutine(DisableEffect(explosionEffect));
         //Destroy(explosionEffect, 2f);
     }
 
+    /*
+    IEnumerator DisableEffect(GameObject _explosionEffect)
+    {
+        yield return new WaitForSeconds(2f);
+        fireElemental.burnEffectPool.Release(_explosionEffect);
+    }
+    
     public void DisableEffect(GameObject _explosionEffect)
     {
         fireElemental.burnEffectPool.Release(_explosionEffect);
     }
+    */
 
     private void OnTriggerEnter(Collider other)
     {

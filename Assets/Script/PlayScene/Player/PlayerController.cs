@@ -241,8 +241,7 @@ public class PlayerController : MonoBehaviour
                 //그렇지 않으면 거리 초기화
                 CheckDistance = 100f;
             }
-        }    
-
+        }   
     }
 
 

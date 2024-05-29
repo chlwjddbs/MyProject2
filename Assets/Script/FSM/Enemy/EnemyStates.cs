@@ -16,6 +16,7 @@ public class EnemyStates : State
         //stateMachine에 enemy 클래스로부터 받은 _stateMachine을 등록;
         base.SetStateMachine(_stateMachine);
     }
+
     public override void Initialize()
     {
         eAnim = enemy.CallEnemyAnime();
