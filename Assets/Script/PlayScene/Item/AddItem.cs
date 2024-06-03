@@ -53,7 +53,7 @@ public class AddItem : Interaction
     {
         if (cursor.isDraw)
         {
-            if (PlayerController.isUI | PlayerController.isAction)
+            if (player.isUI | player.isAction)
             {
                 DontAction();
                 return;
@@ -128,7 +128,7 @@ public class AddItem : Interaction
                     AudioManager.instance.PlayeSound("getItem");
                     Inventory.instance.AddItem(item);
                     Debug.Log(item.name + " : 아이템 획득");
-                    player.SetState(PlayerState.Idle);
+                    //player.SetState(PlayerState.Idle);
                     Destroy(itemObject);
                     //player.isItem = false;
                 }
@@ -157,7 +157,7 @@ public class AddItem : Interaction
                 //아이템 추가
                 Inventory.instance.AddPotion(item);
                 //Inventory.instance.
-                player.SetState(PlayerState.Idle);
+                //player.SetState(PlayerState.Idle);
 
                 //아이템이 추가되었기 때문에 현재 남은 수량 감소
                 quantity -= 1;
@@ -175,7 +175,7 @@ public class AddItem : Interaction
             {
                 Inventory.instance.AddPotion(item);
                 //Debug.Log(item.name + " : 아이템 획득");
-                player.SetState(PlayerState.Idle);
+                //player.SetState(PlayerState.Idle);
                 quantity -= 1;
                 SetItemName();
 

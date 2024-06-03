@@ -106,10 +106,12 @@ public class EquipmentUI : MonoBehaviour
 
     public void SortingUI()
     {
-        RectTransform[] rec = levelTitle.GetComponentsInChildren<RectTransform>();
+        RectTransform[] rec = levelTitle.GetComponentsInChildren<RectTransform>();       
         for (int i = 0; i < rec.Length; i++)
         {
+            //언어 변경이나 스펙 변경 등 layout이 변경하여 리프레시가 필요할때 사용한다.
             LayoutRebuilder.ForceRebuildLayoutImmediate(rec[i]);
+            //Debug.Log(rec[i].name);
         }
     }
 

@@ -25,4 +25,13 @@ public class PlayerStateMachine : StateMachine
 
         states[setState.ToString()] = setState;
     }
+
+    public override State ChangeState(State newState)
+    {
+        if (player.isDeath) 
+        {
+            return new DeathPState();        
+        }
+        return base.ChangeState(newState);
+    }
 }

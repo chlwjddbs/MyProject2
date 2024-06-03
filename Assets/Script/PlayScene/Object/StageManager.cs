@@ -98,13 +98,12 @@ public class StageManager : MonoBehaviour
     }
 
     public virtual void LoadPlayer()
-    {
-        player.GetComponent<PlayerStatus>().LoadBaseData();
+    { 
         Inventory.instance.LoadData();
         Equipment.instance.LoadData();
         SkillBook.instance.LoadData();
         GateManager.instence.LoadData();
-
+        player.GetComponent<PlayerStatus>().LoadBaseData();
         player.GetComponent<PlayerStatus>().LoadRemainHpMp();
     }
 

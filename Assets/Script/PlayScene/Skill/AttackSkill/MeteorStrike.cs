@@ -29,19 +29,12 @@ public class MeteorStrike : SkillManager
     public AudioSource startCasting;
 
 
-    private void Update()
+    protected override void Update()
     {
-        if (!isUse)
-        {
-            remainingTime -= Time.deltaTime;
-            if (remainingTime <= 0)
-            {
-                isUse = true;
-            }
-        }
+        base.Update();
 
         //스킬이 사용되어 캐스팅 중일 때
-        if (PlayerController.isCasting)
+        if (player.isCasting)
         {
             RaycastHit hit;
             Vector3 hitpos;
@@ -75,12 +68,11 @@ public class MeteorStrike : SkillManager
                                 //메테오 시전
                                 {
                                     castingSound.loop = false;
-
-                                    PlayerController.isCasting = false;
+                                    player.isAction = true;
                                     //블랜드된 캐스팅 모션 실행
-                                    player.GetComponentInChildren<Animator>().SetFloat("MotionProccess", 1);
+                                    player.playerAnime.SetFloat("MotionProccess", 1);
                                     //블랜드 중이기 때문에 모션을 처음부터 실행하여 자연스러운 연출 부여
-                                    player.GetComponentInChildren<Animator>().Play("Player_Cast_Tree", -1, 0);
+                                    player.playerAnime.Play("Player_Cast_Tree", -1, 0);
 
                                     //블랜드 트리를 사용하지 않았을 때 애니메이션 구간 반복을 넘어가기 위해
                                     //addEvent가 등록된 구간 보다 앞구간(0.41f)을 실행 시켜준다.
@@ -91,7 +83,7 @@ public class MeteorStrike : SkillManager
 
                                     GameObject _meteor = Instantiate(meteorPrefab, new Vector3(hitpos.x, 0, hitpos.z), Quaternion.identity);
                                     _meteor.GetComponent<Meteor>().SetMeor(new Vector3(hitpos.x, 0, hitpos.z));
-                                    float _skillDamage = player.playerStatus.currentDamage * skillDamage;
+                                    float _skillDamage = player.AttackDamage * skillDamage;
                                     _meteor.GetComponent<Meteor>().SetDagage(_skillDamage ,player.transform);
                                 }
                             }
@@ -102,9 +94,13 @@ public class MeteorStrike : SkillManager
 
             if (Input.GetMouseButtonDown(1) /*| Input.GetKeyDown(KeyCode.Escape)*/)
             {
-                PlayerController.isCasting = false;
-                player.SetState(PlayerState.Idle);
-                player.GetComponentInChildren<Animator>().SetFloat("MotionProccess", 0);
+                //PlayerController.isCasting = false;
+                //player.SetState(PlayerState.Idle);
+                if(player.CheckState() != new CastPState().ToString() || player.isAction)
+                {
+                    return;
+                }
+                player.ChangeState(new IdlePState());
 
                 Cursor.visible = true;
                 Destroy(meteorCIrcle.gameObject);
@@ -117,13 +113,11 @@ public class MeteorStrike : SkillManager
 
     public void LateUpdate()
     {
-        if (PlayerController.isCasting)
+        if (player.isCasting)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                PlayerController.isCasting = false;
-                player.SetState(PlayerState.Idle);
-                player.GetComponentInChildren<Animator>().SetFloat("MotionProccess", 0);
+                player.ChangeState(new IdlePState());
 
                 Cursor.visible = true;
                 Destroy(meteorCIrcle.gameObject);
@@ -135,25 +129,20 @@ public class MeteorStrike : SkillManager
     }
 
 
-    public override void UseSkill(PlayerController _player)
+    public override void UseSkill()
     {
+        base.UseSkill();
+
         if (isUse)
         {
-            player = _player;
-            player.GetComponent<PlayerStatus>().UseMana(cunsumeMana);
-            player.GetComponentInChildren<Weapon>().SetSkillDage(skillDamage,true);
-            player.SetState(PlayerState.Casting);
+            player.UseMana(cunsumeMana);
+            player.playerAnime.SetFloat("MotionProccess", 0);
+            player.ChangeState(new CastPState());
             player.SetCastMotion(castMotionSelect);
-            /*
-            player.SetState(PlayerState.Action);
-            player.SetAnime(skillMotion);
-            player.SetActionSpeed(actionSpeed);
-            */
 
-            PlayerController.isAction = true;
-
+            //player.SetActionSpeed(actionSpeed);
+            
             isUse = false;
-            PlayerController.isCasting = true;
             remainingTime = coolTime;
 
             Cursor.visible = false;
@@ -163,10 +152,10 @@ public class MeteorStrike : SkillManager
             castingSound.loop = true;
 
             //스킬 마법진 생성
-            ParticleSystem _meteorCircle = Instantiate(meteorCirclePrefab, _player.effectPos);          
+            ParticleSystem _meteorCircle = Instantiate(meteorCirclePrefab, player.effectPos);          
             meteorCIrcle = _meteorCircle;
 
-            ParticleSystem _castAura = Instantiate(castAuraPrefab, new Vector3(_player.transform.position.x,0.5f,_player.transform.position.z), Quaternion.identity);
+            ParticleSystem _castAura = Instantiate(castAuraPrefab, new Vector3(player.transform.position.x,0.5f, player.transform.position.z), Quaternion.identity);
             castAura = _castAura;
         }
     }

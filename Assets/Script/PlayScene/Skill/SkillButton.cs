@@ -60,8 +60,9 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     //버튼 사용 가능 여부
     public bool isUse = true;
 
-    public PlayerController playerController;
+    public Player player;
 
+    //알림창을 사용한 가능한 상태인지 체크
     private bool usetext = true;
 
     private ControllOption controlOption;
@@ -79,6 +80,8 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
                 //플레이어가 액션을 취하지 않거나 쿨타임이 찼을 경우
                 if (UseButton())
                 {
+                    skill.UseSkill();
+                    /*
                     //남은 마나가 있을 경우
                     if (playerController.playerStatus.CheckMana(skill.cunsumeMana))
                     {
@@ -86,6 +89,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
                         skill.UseSkill(playerController);
                         AudioManager.instance.PlayerSkillSound(buttonNum);
                     }
+                    */
                 }
                 else
                 {
@@ -185,6 +189,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
             skillItem = _skillItem;
             GameObject _skill = Instantiate(skillItem.skill, skillPos);
             skill = _skill.GetComponent<SkillManager>();
+            skill.SetSkill(player);
             skillImage.sprite = skillItem.itemImege;
             skillImage.enabled = true;
             CheckButtonState();
@@ -233,11 +238,11 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     public bool UseButton()
     {
         //플레이어가 다른 액션을 취하지 않아 스킬을 사용가능하고 스킬이 쿨타임이 회복된 등 사용 가능한 상태일때 True 반환
-        if (!PlayerController.isAction && isUse)
+        if (!player.isAction && isUse)
         {
             return true;
         }
-        else if (PlayerController.isAction)
+        else if (player.isAction)
         {
             if (usetext)
             {

@@ -12,13 +12,12 @@ public class PlayerStates : State
     {
         player = _player;
         base.SetStateMachine(_stateMachine);
-
-        //Initialize()
+        //Initialize();
     }
 
     public override void Initialize()
     {
-        //pAnim = enemy.CallEnemyAnime();
+        pAnim = player.CallPlayerAnime();
     }
 
     public override void OnUpdate()

@@ -73,11 +73,14 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     [SerializeField] protected float attackDelay;
     [SerializeField] protected float attackRange = 3.5f;
     [SerializeField] protected Collider attackCollider;
+    [SerializeField] protected bool multiAttackAble;
+
     protected List<GameObject> attackedTargets = new List<GameObject>();
 
     public float AttackDamage { get { return attackDamage; } }
     public float AttackDelay { get { return attackDelay; } }
     public Collider AttackCollider { get { return attackCollider; } }
+    public bool MultiAttackAble { get { return multiAttackAble; } }
     public List<GameObject> AttackedTargets { get { return attackedTargets; } }
     #endregion
     #region Attackable data

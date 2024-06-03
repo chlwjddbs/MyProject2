@@ -14,6 +14,12 @@ public class GameSceneMenu : MainMenu
     public GameObject gameMenuCanvasObj;
     public static bool isMenuOpen = false;
 
+    private Player player;
+
+    private void Awake()
+    {
+        player = GameObject.Find("ThePlayer").GetComponent<Player>();
+    }
 
     public override void Update()
     {
@@ -103,7 +109,7 @@ public class GameSceneMenu : MainMenu
         if (GetComponent<InventoryUI>().UIOpenCheck()) return true;
         if (GetComponent<EquipmentUI>().UIOpenCheck()) return true;
         if (GetComponent<SkillBookUI>().UIOpenCheck()) return true;
-        if (PlayerController.isCasting) return true;
+        if (player.isCasting) return true;
         if (ControllOption.isChanging) return true;
         return false;
     }

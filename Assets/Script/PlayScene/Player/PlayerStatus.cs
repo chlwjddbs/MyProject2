@@ -141,9 +141,9 @@ public class PlayerStatus : MonoBehaviour , ISlow_StatusEffect
 
         if (GameData.instance.newGame)
         {
-            SetUI();
-            SetCondition();
-            SetCombatStatus();
+            //SetUI();
+            //SetCondition();
+            //SetCombatStatus();
         }
 
     }

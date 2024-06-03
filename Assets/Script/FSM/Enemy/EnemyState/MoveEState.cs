@@ -15,11 +15,6 @@ public class MoveEState : EnemyStates
         agent = enemy.GetComponent<NavMeshAgent>();
     }
 
-    public override void OnEnter()
-    {
-        base.OnEnter();
-    }
-
     public override void OnUpdate()
     {
         ChaseMode();

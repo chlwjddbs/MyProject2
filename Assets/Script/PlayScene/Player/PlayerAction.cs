@@ -73,6 +73,7 @@ public class PlayerAction : MonoBehaviour
     public void ResetCastMotion()
     {
         GetComponent<Animator>().SetFloat("MotionProccess", 0f);
+        GetComponentInParent<Player>().ChangeState(new IdlePState());
     }
 
     public void Replay(float _point)
@@ -87,6 +88,6 @@ public class PlayerAction : MonoBehaviour
 
     public void PlayerSound(string _playerSound)
     {
-        audioManager.PlayExSound(_playerSound);
+        //audioManager.PlayExSound(_playerSound);
     }
 }

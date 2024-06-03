@@ -36,6 +36,8 @@ public class Equipment : MonoBehaviour
     public Shield shield;
     public PlayerStatus playerStatus;
 
+    public Player player;
+
     public UnityAction SetEquipData;
 
     
@@ -99,6 +101,7 @@ public class Equipment : MonoBehaviour
         playerStatus.Equip(newEquipType, equipItems[newEquipType]);
         //UpdateDamage 이벤트를 통한 무기 정보 업데이트는 Equip으로 통합됌.
         //UpdateDamage?.Invoke();
+        player.Equip(equipItems[newEquipType]);
     }
 
     public void UnEquipItem(int _slotNum)
@@ -113,8 +116,10 @@ public class Equipment : MonoBehaviour
 
         //장비의 스텟을 빼주어야 하기 때문에 기본 값인 0을 받을 수 있도록 장비 정보는 넘겨주지 않는다.
         playerStatus.Unequip(_slotNum, equipItems[_slotNum]);
+        player.UnEquip(equipItems[_slotNum]);
         equipItems[_slotNum] = null;
         //UpdateDamage?.Invoke();
+        
     }
     
     public void LoadEquip()

@@ -707,7 +707,7 @@ public class PlayerSight : MonoBehaviour
     //아이템 버리기
     public bool Dropable(Vector3 DropPos)
     {
-        DropPos.y = 0.5f;
+        DropPos.y = 0.0f;
         //DropPos까지의 거리를 구함
         float DropDis = Vector3.Distance(transform.position + sigthOffset, DropPos);
 

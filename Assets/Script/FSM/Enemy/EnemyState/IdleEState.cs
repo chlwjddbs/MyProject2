@@ -13,11 +13,6 @@ public class IdleEState : EnemyStates
         resetTime = 2f;
     }
 
-    public override void OnEnter()
-    {
-        base.OnEnter();
-    }
-
     public override void OnUpdate()
     {
         if (enemy.chaseMode)

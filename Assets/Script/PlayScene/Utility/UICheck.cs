@@ -5,6 +5,12 @@ using UnityEngine.EventSystems;
 
 public class UICheck : MonoBehaviour//, IPointerExitHandler, IPointerEnterHandler
 {
+    private Player player;
+    private void Awake()
+    {
+        player = GameObject.Find("ThePlayer").GetComponent<Player>();
+    }
+    
     private void Update()
     {
         if (!GameData.instance.isSet)
@@ -12,13 +18,13 @@ public class UICheck : MonoBehaviour//, IPointerExitHandler, IPointerEnterHandle
             return;
         }
 
-        if (PlayerController.isUI && !EventSystem.current.IsPointerOverGameObject())
+        if (player.isUI && !EventSystem.current.IsPointerOverGameObject())
         {
-            PlayerController.isUI = false;
+            player.isUI = false;
         }
-        else if(!PlayerController.isUI && EventSystem.current.IsPointerOverGameObject())
+        else if(!player.isUI && EventSystem.current.IsPointerOverGameObject())
         {
-            PlayerController.isUI = true;
+            player.isUI = true;
         }
     }
 

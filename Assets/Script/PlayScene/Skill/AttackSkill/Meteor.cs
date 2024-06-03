@@ -29,6 +29,8 @@ public class Meteor : MonoBehaviour
     public AudioSource spawnMeteor;
     public AudioSource explosion;
 
+    public Collider meteorCollider;
+
     private void Start()
     {
         targetDIs = 10f;
@@ -52,12 +54,12 @@ public class Meteor : MonoBehaviour
             meteorExplosion.Play();
             explosion.Play();
             CheckLifetime.Play();
-            GetComponent<CapsuleCollider>().enabled = true;
+            meteorCollider.enabled = true;
         }
 
         if (!CheckLifetime.gameObject.activeSelf)
         {
-            GetComponent<CapsuleCollider>().enabled = false;
+            meteorCollider.enabled = false;
         }
 
         if (!meteorExplosion.gameObject.activeSelf)

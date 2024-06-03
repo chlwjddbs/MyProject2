@@ -7,6 +7,8 @@ public interface ICombatable
     float AttackDamage { get; }
     float AttackDelay { get; }
 
+    bool MultiAttackAble { get; }
+
     Collider AttackCollider { get;}
 
     List<GameObject> AttackedTargets { get;}

@@ -29070,6 +29070,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f18e1b7c62748a4ba2a728da594b3c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  caster: {fileID: 0}
   meteorEffect: {fileID: 5410218382840202487}
   meteorExplosion: {fileID: 7498832824072954851}
   dropPosEffect: {fileID: 6085363768223004332}
@@ -29078,6 +29079,7 @@ MonoBehaviour:
   enemies: []
   spawnMeteor: {fileID: 6044230556227491891}
   explosion: {fileID: 3393399578707014785}
+  meteorCollider: {fileID: 2688139647504615794}
 --- !u!136 &2688139647504615794
 CapsuleCollider:
   m_ObjectHideFlags: 0

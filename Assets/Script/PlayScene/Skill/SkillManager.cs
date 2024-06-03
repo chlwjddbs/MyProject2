@@ -12,12 +12,14 @@ public class SkillManager : MonoBehaviour
 
     //소모마나
     public float cunsumeMana;
-    protected PlayerController player;
+    protected Player player;
     public bool isUse;
     public AnimationClip skillMotion;
     public float actionSpeed;
 
-    private void Update()
+    protected bool useSequenceText;
+
+    protected virtual void Update()
     {
         if (!isUse)
         {
@@ -29,15 +31,27 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    protected virtual void SetSkill()
+    public virtual void SetSkill(Player _player)
     {
+        player = _player;
         isUse = true;
-        remainingTime = coolTime;
+        remainingTime = 0;
     }
 
-    public virtual void UseSkill(PlayerController _player)
+    public virtual void UseSkill()
     {
+        if (player.RemainMana < cunsumeMana)
+        {
+            useSequenceText = false;
+            SequenceText.instance.SetSequenceText(null, "NotEnoughMana");
+            Invoke("SequenceTextAble", .5f);
+            return;
+        }
+    }
 
+    public void SequenceTextAble()
+    {
+        useSequenceText = true;
     }
 
     public void SwapSkill(float _remainingTIme)

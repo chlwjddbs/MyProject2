@@ -7,29 +7,30 @@ public class NomalHeal : SkillManager
     public float recoveryPoint;
     public ParticleSystem effect;
 
-    public override void UseSkill(PlayerController _player)
+    public override void UseSkill()
     {
+        base.UseSkill();
         if (isUse)
         {
             //마나소모
-            _player.GetComponent<PlayerStatus>().UseMana(cunsumeMana);
+            player.UseMana(cunsumeMana);
             //스킬 모션 등록
-            _player.SetAnime(skillMotion);
+            player.SetAnime(skillMotion);
             //스킬 모션 실행
-            _player.SetState(PlayerState.Action);
-            _player.SetActionSpeed(actionSpeed);
-            PlayerController.isAction = true;
-                      
+            player.ChangeState(new ActionPState());
+            player.SetActionSpeed(actionSpeed);
+            player.isAction = true;
+
             //recoveryPoint = Mathf.Round(player.maxHealth * (15 / 100));
             //HP회복
-            _player.playerStatus.RecoveryHP(recoveryPoint);
+            player.RecoveryHP(recoveryPoint);
 
             isUse = false;
             remainingTime = coolTime;
 
             //스킬 이펙트
-            ParticleSystem _effect = Instantiate(effect,_player.effectPos);
-            Vector3 effectOffset = _player.effectPos.position;
+            ParticleSystem _effect = Instantiate(effect, player.effectPos);
+            Vector3 effectOffset = player.effectPos.position;
             effectOffset.y = 2f;
             _effect.transform.position = effectOffset;
             

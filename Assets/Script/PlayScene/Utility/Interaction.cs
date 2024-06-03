@@ -8,12 +8,12 @@ public class Interaction : MonoBehaviour
     public float theDistance;
     public float actionDis = 5f;
 
-    protected PlayerController player;
+    protected Player player;
 
 
     private void OnEnable()
     {
-        player = FindObjectOfType<PlayerController>();
+        player = FindObjectOfType<Player>();
     }
 
 
@@ -23,7 +23,7 @@ public class Interaction : MonoBehaviour
         
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            theDistance = PlayerController.CheckDistance;
+            theDistance = player.checkObjectDis;
         }
         else
         {
