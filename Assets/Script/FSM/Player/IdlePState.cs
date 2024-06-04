@@ -8,15 +8,25 @@ public class IdlePState : PlayerStates
     {
         base.Initialize();
         pState = PlayerState.Idle;
-        Debug.Log("idle");
     }
 
     public override void OnUpdate()
     {
         player.LookAtMouse(Input.mousePosition);
-        if (Input.GetMouseButton(1))
+
+        player.Attack();
+
+        if (player.CheckBehavior())
         {
-            player.ChangeState(new MovePState());
+            if (Input.GetMouseButton(1))
+            {
+                player.ChangeState(new MovePState());
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                player.ChangeState(new JumpPState());
+            }
         }
     }
 }

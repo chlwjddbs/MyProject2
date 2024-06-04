@@ -13,7 +13,8 @@ public class AttackPState : PlayerStates
     public override void OnEnter()
     {
         base.OnEnter();
-        player.AttackCollider.enabled = true;
+        player.SetDamage();
+        player.AttackCollider.enabled = true; 
     }
 
     public override void OnExit()

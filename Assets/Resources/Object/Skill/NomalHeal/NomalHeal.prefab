@@ -50,13 +50,5 @@ MonoBehaviour:
   isUse: 0
   skillMotion: {fileID: 7400000, guid: 442e9712d42eaee46a78e9c9f6ebaa89, type: 2}
   actionSpeed: 2
-  skillSound:
-    name: nomalHealSound
-    clip: {fileID: 8300000, guid: f02f50cc83d0f4042847ca94bd23e628, type: 3}
-    volume: 0.2
-    pitch: 1
-    loop: 0
-    soundType: 1
-    source: {fileID: 0}
   recoveryPoint: 30
   effect: {fileID: 4501735790486083419, guid: 90187daf2c1d6d04b863f9cce718b2e2, type: 3}

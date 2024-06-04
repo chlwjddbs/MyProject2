@@ -28,10 +28,18 @@ public class MeteorStrike : SkillManager
     public AudioSource castingSound;
     public AudioSource startCasting;
 
+    //메테오 사용후 낙하 시키거나 취소 시키는 동작은 한번만 들어가야 된다. 
+    //처음 시전시 castState를 true로 해주고 낙하나 취소 동작 후 false로 바꿔 추가 동작하지 않도록 방어코드를 설계한다.
+    private bool castState;
+
 
     protected override void Update()
     {
         base.Update();
+        if (!castState)
+        {
+            return;
+        }
 
         //스킬이 사용되어 캐스팅 중일 때
         if (player.isCasting)
@@ -52,62 +60,14 @@ public class MeteorStrike : SkillManager
                 //마우스 좌클릭시
                 if (Input.GetMouseButtonDown(0))
                 {
-                    RaycastHit _hit;
-                    Vector3 _hitpos;
-
-                    //해당 위치의 오브젝트를 판별하여
-                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out _hit, Mathf.Infinity))
-                    {
-                        //히트된 오브젝트가 water, obstacle , object가 아니고
-                        if (/*!_hit.transform.CompareTag("Water") &&*/ !_hit.transform.CompareTag("Obstacle") && !_hit.transform.CompareTag("Object"))
-                        {
-                            //시야가 확보된 공간이면
-                            _hitpos = _hit.point;
-                            if (player.GetComponentInChildren<PlayerSight>().Dropable(hitpos))
-                            {
-                                //메테오 시전
-                                {
-                                    castingSound.loop = false;
-                                    player.isAction = true;
-                                    //블랜드된 캐스팅 모션 실행
-                                    player.playerAnime.SetFloat("MotionProccess", 1);
-                                    //블랜드 중이기 때문에 모션을 처음부터 실행하여 자연스러운 연출 부여
-                                    player.playerAnime.Play("Player_Cast_Tree", -1, 0);
-
-                                    //블랜드 트리를 사용하지 않았을 때 애니메이션 구간 반복을 넘어가기 위해
-                                    //addEvent가 등록된 구간 보다 앞구간(0.41f)을 실행 시켜준다.
-                                    //player.GetComponentInChildren<Animator>().Play("Footman_Action", -1, 0.41f);
-                                    Cursor.visible = true;
-                                    Destroy(meteorCIrcle.gameObject);
-                                    Destroy(castAura.gameObject, 2f);
-
-                                    GameObject _meteor = Instantiate(meteorPrefab, new Vector3(hitpos.x, 0, hitpos.z), Quaternion.identity);
-                                    _meteor.GetComponent<Meteor>().SetMeor(new Vector3(hitpos.x, 0, hitpos.z));
-                                    float _skillDamage = player.AttackDamage * skillDamage;
-                                    _meteor.GetComponent<Meteor>().SetDagage(_skillDamage ,player.transform);
-                                }
-                            }
-                        }
-                    }
+                    FallingMeteor();
                 }
             }
+        }
 
-            if (Input.GetMouseButtonDown(1) /*| Input.GetKeyDown(KeyCode.Escape)*/)
-            {
-                //PlayerController.isCasting = false;
-                //player.SetState(PlayerState.Idle);
-                if(player.CheckState() != new CastPState().ToString() || player.isAction)
-                {
-                    return;
-                }
-                player.ChangeState(new IdlePState());
-
-                Cursor.visible = true;
-                Destroy(meteorCIrcle.gameObject);
-                Destroy(castAura.gameObject);
-
-                castingSound.loop = false;
-            }
+        if (Input.GetMouseButtonDown(1) /*| Input.GetKeyDown(KeyCode.Escape)*/)
+        {
+            CancelMeteor();
         }
     }
 
@@ -135,6 +95,8 @@ public class MeteorStrike : SkillManager
 
         if (isUse)
         {
+            castState = true;
+
             player.UseMana(cunsumeMana);
             player.playerAnime.SetFloat("MotionProccess", 0);
             player.ChangeState(new CastPState());
@@ -158,6 +120,65 @@ public class MeteorStrike : SkillManager
             ParticleSystem _castAura = Instantiate(castAuraPrefab, new Vector3(player.transform.position.x,0.5f, player.transform.position.z), Quaternion.identity);
             castAura = _castAura;
         }
+    }
+
+    private void FallingMeteor()
+    {
+        RaycastHit _hit;
+        Vector3 _hitpos;
+
+        //해당 위치의 오브젝트를 판별하여
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out _hit, Mathf.Infinity))
+        {
+            //히트된 오브젝트가 water, obstacle , object가 아니고
+            if (/*!_hit.transform.CompareTag("Water") &&*/ !_hit.transform.CompareTag("Obstacle") && !_hit.transform.CompareTag("Object"))
+            {
+                //시야가 확보된 공간이면
+                _hitpos = _hit.point;
+                if (player.GetComponentInChildren<PlayerSight>().Dropable(_hitpos))
+                {
+                    //메테오 시전
+                    {
+                        castState = false;
+                        castingSound.loop = false;
+                        player.isAction = true;
+                        //블랜드된 캐스팅 모션 실행
+                        player.playerAnime.SetFloat("MotionProccess", 1);
+                        //블랜드 중이기 때문에 모션을 처음부터 실행하여 자연스러운 연출 부여
+                        player.playerAnime.Play("Player_Cast_Tree", -1, 0);
+
+                        //블랜드 트리를 사용하지 않았을 때 애니메이션 구간 반복을 넘어가기 위해
+                        //addEvent가 등록된 구간 보다 앞구간(0.41f)을 실행 시켜준다.
+                        //player.GetComponentInChildren<Animator>().Play("Footman_Action", -1, 0.41f);
+                        Cursor.visible = true;
+                        Destroy(meteorCIrcle.gameObject);
+                        Destroy(castAura.gameObject, 2f);
+
+                        GameObject _meteor = Instantiate(meteorPrefab, new Vector3(_hitpos.x, 0, _hitpos.z), Quaternion.identity);
+                        _meteor.GetComponent<Meteor>().SetMeor(new Vector3(_hitpos.x, 0, _hitpos.z));
+                        float _skillDamage = player.AttackDamage * skillDamage;
+                        _meteor.GetComponent<Meteor>().SetDagage(_skillDamage, player.transform);
+                    }
+                }
+            }
+        }
+    }
+
+    private void CancelMeteor()
+    {
+        castState = false;
+
+        if (player.CheckState() != new CastPState().ToString() || player.isAction)
+        {
+            return;
+        }
+        player.ChangeState(new IdlePState());
+
+        Cursor.visible = true;
+        Destroy(meteorCIrcle.gameObject);
+        Destroy(castAura.gameObject);
+
+        castingSound.loop = false;
     }
 }
 

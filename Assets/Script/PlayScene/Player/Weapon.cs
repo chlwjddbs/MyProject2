@@ -8,6 +8,8 @@ public class Weapon : MonoBehaviour
     public PlayerStatus playerStatus;
     public PlayerController playerController;
 
+    public Player player;
+
     //공격 시 타격 판정을 할 MeshCollider
     private MeshCollider attackPoint;
 
@@ -32,11 +34,12 @@ public class Weapon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GetComponentInParent<Player>();
         //기본 Mesh로 초기화
         attackPoint = GetComponent<MeshCollider>();
-        attackPoint.sharedMesh = basicMesh;
-        isDamage = true;
-        Equipment.instance.UpdateDamage += SetAttackDamage;
+        attackPoint.sharedMesh = basicMesh;     
+        //isDamage = true;
+        //Equipment.instance.UpdateDamage += SetAttackDamage;
     }
 
     //아이템 장착시
@@ -47,7 +50,7 @@ public class Weapon : MonoBehaviour
         //장착한 아이템의 Mesh로 변경
         attackPoint.sharedMesh = equipWeapon.mesh;
         
-        playerController.SetAttackAnime(equipWeapon.attackClip);
+        //playerController.SetAttackAnime(equipWeapon.attackClip);
         
         //장착한 아이템의 공격력 추가
         //playerStatus.equipDamage = equipWeapon.attack;
@@ -64,7 +67,7 @@ public class Weapon : MonoBehaviour
         //공격 Mesh 기본 Mesh로 변경
         attackPoint.sharedMesh = basicMesh;
 
-        playerController.SetAttackAnime(backAttackClip);
+        //playerController.SetAttackAnime(backAttackClip);
         
         //SetAttackDamage();
     }
@@ -88,6 +91,7 @@ public class Weapon : MonoBehaviour
         attackDamage = playerStatus.currentDamage;
     }
 
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Obstacle"))
@@ -150,4 +154,7 @@ public class Weapon : MonoBehaviour
             }
         }
     }
+    */
 }
+
+    

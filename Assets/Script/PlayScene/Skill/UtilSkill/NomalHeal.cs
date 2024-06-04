@@ -19,7 +19,6 @@ public class NomalHeal : SkillManager
             //스킬 모션 실행
             player.ChangeState(new ActionPState());
             player.SetActionSpeed(actionSpeed);
-            player.isAction = true;
 
             //recoveryPoint = Mathf.Round(player.maxHealth * (15 / 100));
             //HP회복

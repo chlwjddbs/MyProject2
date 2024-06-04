@@ -145,8 +145,7 @@ public class PlayerController : MonoBehaviour
 
             case PlayerState.Death:
                 break;
-        }
-        
+        }  
     }
 
     public void ResetState()

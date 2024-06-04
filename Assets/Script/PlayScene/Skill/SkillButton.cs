@@ -238,7 +238,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     public bool UseButton()
     {
         //플레이어가 다른 액션을 취하지 않아 스킬을 사용가능하고 스킬이 쿨타임이 회복된 등 사용 가능한 상태일때 True 반환
-        if (!player.isAction && isUse)
+        if (player.CheckBehavior() && isUse)
         {
             return true;
         }

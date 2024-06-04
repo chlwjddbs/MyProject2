@@ -23,7 +23,6 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
     public bool isDeath = false;
     public bool isAction = false;
     public bool isCasting = false;
-    public bool isUI = false;
     public bool isAttackable;
     
     #endregion
@@ -125,8 +124,9 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
     public Vector3 mousePos;
     
     
-    public bool isObject = false;     //마우스 포인터가 Object에 있는지 판정
-    public float checkObjectDis;                             //player와 object의 거리
+    [HideInInspector] public bool isObject = false;         //마우스 포인터가 Object에 있는지 판정
+    [HideInInspector] public bool isUI = false;             //마우스 포인터가 UI에 있는지 판정
+    public float checkObjectDis;                            //player와 object의 거리
 
     private float moveSpeed;
     [SerializeField] private float baseMoveSpeed = 14f;
@@ -134,9 +134,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
 
     public Transform body;
     public Transform effectPos;
-
-    
-
+  
     // Start is called before the first frame update
     void Start()
     {
@@ -200,40 +198,20 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
         }
     }
 
-    public void Move(Vector3 mouseDir)
+    public void Attack()
     {
-        //마우스 포인트가 UI 일때 이동 금지
-        if (isUI)
+        if (CheckBehavior())
         {
-            //SetState(PlayerState.Idle);
-            return;
-        }
-
-        /*
-        //마우스 우클릭 유지시
-        if (Input.GetMouseButton(1))
-        {
-            //마우스와 플레이어의 거리가 runRange미만이고 달리지 않고 있을때
-            //달리는 도중에는 걷기로 모션 전환 불가
-            if (mouseDir.magnitude < runRange && !isRun)
+            if (Input.GetMouseButtonDown(0))
             {
-                //걷는다.
-                SetState(PlayerState.Walk);
-            }
-
-            //마우스와 플레이어의 거리가 runRange이상 일때 달린다.
-            else
-            {
-                SetState(PlayerState.Run);
+                ChangeState(new AttackPState());
             }
         }
-        */
+    }
 
-        //우클릭을 끝낼시 그자리에서 멈춘다.
-        if (Input.GetMouseButtonUp(1))
-        {
-            //SetState(PlayerState.Idle);
-        }
+    public void SetDamage(float _damageCoefiicient = 1f)
+    {
+        attackDamage = (baseDamage + equipDamage) * _damageCoefiicient;
     }
 
     public void TakeDamage(float _damage, Transform _attacker)
@@ -289,14 +267,21 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
         StartCoroutine("GotoGameOverScene");
     }
 
-  
-
     private bool CheckTag(string hitTag)
     {
         if (hitTag == "Item") return true;
         if (hitTag == "Npc") return true;
         if (hitTag == "Object") return true;
         return false;
+    }
+
+    public bool CheckBehavior()
+    {
+        if (isAction == true) return false;
+        if (isObject == true) return false;
+        if (isCasting == true) return false;
+        if (isUI == true) return false;
+        return true;
     }
 
     public string CheckState()
@@ -524,9 +509,11 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
     {
         pStateMachine = new PlayerStateMachine(this, new IdlePState());
         pStateMachine.RegisterPState(new MovePState());
+        pStateMachine.RegisterPState(new JumpPState());
         pStateMachine.RegisterPState(new AttackPState());
         pStateMachine.RegisterPState(new CastPState());
         pStateMachine.RegisterPState(new ActionPState());
+        
     }
 
     public void SetValue()

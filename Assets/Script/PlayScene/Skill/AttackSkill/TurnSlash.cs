@@ -14,11 +14,11 @@ public class TurnSlash : SkillManager
         if (isUse)
         {
             player.UseMana(cunsumeMana);
-            //_player.GetComponentInChildren<Weapon>().SetSkillDage(skillDamage,true);
             player.SetAnime(skillMotion);
+            player.SetDamage(skillDamage);
             player.ChangeState(new ActionPState());
             player.SetActionSpeed(actionSpeed);
-            player.isAction = true;     
+            //player.isAction = true;     
             
             isUse = false;
             remainingTime = coolTime;

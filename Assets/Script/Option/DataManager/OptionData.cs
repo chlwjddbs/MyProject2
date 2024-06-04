@@ -100,7 +100,7 @@ public class OptionData : DataManager
             //저장된 정보가 있으면 데이터를 불러화 저장된 정보로 세팅해준다.
             string data = File.ReadAllText(path + fileName);
             bindKeyData = JsonUtility.FromJson<BindKeyData>(data);
-            Debug.Log("값 로드");
+            //Debug.Log("값 로드");
             return true;
         }
     }

@@ -34,7 +34,7 @@ public class Equipment : MonoBehaviour
 
     public Weapon weapon;
     public Shield shield;
-    public PlayerStatus playerStatus;
+    //public PlayerStatus playerStatus;
 
     public Player player;
 
@@ -95,13 +95,14 @@ public class Equipment : MonoBehaviour
             //shield.EquipShield(newEquipItem);
         }
 
+        player.Equip(equipItems[newEquipType]);
         //playerStatus.equipDamage += newEquipItem.attack;
         //playerStatus.equipDefence += newEquipItem.defence;
         //playerStatus.CurrentStatus();
-        playerStatus.Equip(newEquipType, equipItems[newEquipType]);
+        //playerStatus.Equip(newEquipType, equipItems[newEquipType]);
         //UpdateDamage 이벤트를 통한 무기 정보 업데이트는 Equip으로 통합됌.
         //UpdateDamage?.Invoke();
-        player.Equip(equipItems[newEquipType]);
+
     }
 
     public void UnEquipItem(int _slotNum)
@@ -111,17 +112,17 @@ public class Equipment : MonoBehaviour
         {
             weapon.UnequipWeapon();
         }
-        //playerStatus.equipDamage -= equipItems[_slotNum].attack;
-        //playerStatus.equipDefence -= equipItems[_slotNum].defence;
-
-        //장비의 스텟을 빼주어야 하기 때문에 기본 값인 0을 받을 수 있도록 장비 정보는 넘겨주지 않는다.
-        playerStatus.Unequip(_slotNum, equipItems[_slotNum]);
+        
+        //장비의 스텟을 빼주어야 하기 때문에 기본 값인 0을 받을 수 있도록 장비 정보는 넘겨주지 않는다.    
         player.UnEquip(equipItems[_slotNum]);
         equipItems[_slotNum] = null;
+
+        //playerStatus.equipDamage -= equipItems[_slotNum].attack;
+        //playerStatus.equipDefence -= equipItems[_slotNum].defence;
+        //playerStatus.Unequip(_slotNum, equipItems[_slotNum]);
         //UpdateDamage?.Invoke();
-        
     }
-    
+
     public void LoadEquip()
     {
         for (int i = 0; i < equipItems.Length; i++)
@@ -145,7 +146,7 @@ public class Equipment : MonoBehaviour
 
                 //playerStatus.equipDamage += equipItems[i].attack;
                 //playerStatus.equipDefence += equipItems[i].defence;
-                playerStatus.Equip(i, equipItems[i]);
+                player.Equip(equipItems[i]);
             }
         }
     }
@@ -159,6 +160,6 @@ public class Equipment : MonoBehaviour
     {
         equipItems = GameData.instance.userData.equipmentItem;
         LoadEquip();
-        playerStatus.SetUI();
+        //playerStatus.SetUI();
     }
 }

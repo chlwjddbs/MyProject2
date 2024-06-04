@@ -35,11 +35,14 @@ public class PlayerSight : MonoBehaviour
 
     public List<Transform> visibleWalls = new List<Transform>();
 
+    public GameObject sceneView;
+
     private void Start()
     {
         viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;
+        sceneView.SetActive(false);
     }
 
     // Update is called once per frame

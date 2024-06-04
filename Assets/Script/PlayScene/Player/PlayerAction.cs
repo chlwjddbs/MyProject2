@@ -6,6 +6,8 @@ using UnityEngine.Audio;
 public class PlayerAction : MonoBehaviour
 {
     public PlayerController player;
+
+    public Player Player;
     public GameObject weaponSlot;
     private int actionState;
 
@@ -43,13 +45,13 @@ public class PlayerAction : MonoBehaviour
 
     public void CheckAttack()
     {
-        weaponSlot.GetComponent<Weapon>().SetAttackDamage();
+        //weaponSlot.GetComponent<Weapon>().SetAttackDamage();
     }
 
     public void CheckAction()
     {
         PlayerController.isAction = false;
-        player.SetState(PlayerState.Idle);
+        //player.SetState(PlayerState.Idle);
         Debug.Log("??");
     }
 
@@ -89,5 +91,10 @@ public class PlayerAction : MonoBehaviour
     public void PlayerSound(string _playerSound)
     {
         //audioManager.PlayExSound(_playerSound);
+    }
+
+    public void ChangeState(State _newState)
+    {
+        Player.ChangeState(_newState);
     }
 }

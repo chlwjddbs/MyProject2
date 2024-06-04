@@ -8,7 +8,7 @@ public class StageManager : MonoBehaviour
 {
     protected Fader fader;
 
-    public GameObject player;
+    public Player player;
     protected string startStage;
     public string currentStage;
 
@@ -74,7 +74,7 @@ public class StageManager : MonoBehaviour
 
     public virtual void SetPlayer()
     {
-        player.GetComponent<PlayerStatus>().SetData();
+        player.SetData();
         Inventory.instance.SetData();
         Equipment.instance.SetData();
         SkillBook.instance.SetData();
@@ -103,8 +103,9 @@ public class StageManager : MonoBehaviour
         Equipment.instance.LoadData();
         SkillBook.instance.LoadData();
         GateManager.instence.LoadData();
-        player.GetComponent<PlayerStatus>().LoadBaseData();
-        player.GetComponent<PlayerStatus>().LoadRemainHpMp();
+        player.LoadData();
+        //player.GetComponent<PlayerStatus>().LoadBaseData();
+        //player.GetComponent<PlayerStatus>().LoadRemainHpMp();
     }
 
     public virtual void LoadEnemy()
@@ -130,7 +131,7 @@ public class StageManager : MonoBehaviour
 
     public virtual void SavePlayer()
     {
-        player.GetComponent<PlayerStatus>().SaveData();
+        player.SaveData();
         Inventory.instance.SaveData();
         Equipment.instance.SaveData();
         SkillBook.instance.SaveData();
