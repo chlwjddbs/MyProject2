@@ -5,16 +5,15 @@ using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
 
-public class Player : MonoBehaviour , ICombatable , IAttackable
+public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEffect
 {
     private GameData dataManager;
     private PlayerStatusUI playerStatusUI;
     private PlayerStateMachine pStateMachine;
     
-
     private Camera cameraView;
 
-    public Animator playerAnime;
+    public PlayerAnimControl playerAnimeControl;
     public AnimatorOverrideController myOverrideAnim;   //장착된 스킬 변경시 변경될 ActionClip을 적용할 overrideAinme
     private string ActionState = "ActionState";         //변경된 clip이 적용될 트렌지션 이름
 
@@ -24,7 +23,6 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
     public bool isAction = false;
     public bool isCasting = false;
     public bool isAttackable;
-    
     #endregion
 
     #region Player Level
@@ -123,7 +121,6 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
     [Header("Etc Data")]
     public Vector3 mousePos;
     
-    
     [HideInInspector] public bool isObject = false;         //마우스 포인터가 Object에 있는지 판정
     [HideInInspector] public bool isUI = false;             //마우스 포인터가 UI에 있는지 판정
     public float checkObjectDis;                            //player와 object의 거리
@@ -134,12 +131,20 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
 
     public Transform body;
     public Transform effectPos;
-  
-    // Start is called before the first frame update
-    void Start()
-    {
-        SetData();
-    }
+
+    public Sound[] playerSounds;
+
+    #region StatusEffect
+    [Header("StatusEffect")]
+    public Dictionary<string, Slow_StatusEffect> slowEffects = new Dictionary<string, Slow_StatusEffect>();
+    [SerializeField]private Transform statusEffectPos;
+    private Slow_StatusEffect previusRate;
+
+    public Transform StatusEffectPos { get { return statusEffectPos; } }
+    public float plusRate { get; set; }
+    public float minusRate { get; set; }
+    public float SpeedRate { get { return 1 + plusRate - minusRate; } }
+    #endregion
 
     // Update is called once per frame
     void Update()
@@ -149,21 +154,22 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
             return;
         }
 
-        if (!GameData.instance.isSet)
+        if (!dataManager.isSet)
         {
             return;
         }
 
-        //if (playerStatus.isDeath)
         if (isDeath)
         {
             return;
         }
 
-        if (!isDeath)
-        {
-            pStateMachine.Update(Time.deltaTime);
-        }
+        pStateMachine.Update(Time.deltaTime);
+    }
+
+    public virtual State ChangeState(State newState)
+    {
+        return pStateMachine.ChangeState(newState);
     }
 
     public void LookAtMouse(Vector3 _mousePos)
@@ -200,7 +206,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
 
     public void Attack()
     {
-        if (CheckBehavior())
+        if (AttackRestriction())
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -246,19 +252,20 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
         {
             if (_damage / maxHealth > 0.5f)
             {
-                AudioManager.instance.PlayExSound("Damaged3");
+                AudioManager.instance.PlayExternalSound("Damaged3");
             }
             else if (_damage / maxHealth > 0.3f)
             {
-                AudioManager.instance.PlayExSound("Damaged2");
+                AudioManager.instance.PlayExternalSound("Damaged2");
             }
             else
             {
                 int ran = UnityEngine.Random.Range(0, 2);
-                AudioManager.instance.PlayExSound("Damaged" + ran);
+                AudioManager.instance.PlayExternalSound("Damaged" + ran);
             }
         }
     }
+
     public void Die()
     {
         ChangeState(new DeathPState());
@@ -267,6 +274,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
         StartCoroutine("GotoGameOverScene");
     }
 
+    #region Check : Tag State Restriction
     private bool CheckTag(string hitTag)
     {
         if (hitTag == "Item") return true;
@@ -275,10 +283,25 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
         return false;
     }
 
-    public bool CheckBehavior()
+    public bool AttackRestriction()
     {
         if (isAction == true) return false;
         if (isObject == true) return false;
+        if (isCasting == true) return false;
+        if (isUI == true) return false;
+        return true;
+    }
+
+    public bool ActionRestriction()
+    {
+        if (isAction == true) return false;
+        if (isCasting == true) return false;
+        return true;
+    }
+
+    public bool MoveRestriction()
+    {
+        if (isAction == true) return false;
         if (isCasting == true) return false;
         if (isUI == true) return false;
         return true;
@@ -289,10 +312,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
         return pStateMachine.CurrentState.ToString();
     }
 
-    public virtual State ChangeState(State newState)
-    {
-        return pStateMachine.ChangeState(newState);
-    }
+    #endregion
 
     #region 장비 장착
     public void Equip(EquipItem _equipItem)
@@ -354,6 +374,43 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
     }
     #endregion
 
+    #region Level
+    public void AddExp(float _exp)
+    {
+        currentExp += _exp;
+        playerStatusUI.SetExpUI();
+
+        LevelUp();
+    }
+
+    public void LevelUp()
+    {
+        if (currentExp >= nextLvExp)
+        {
+            LevelUPEffect.LevelUpEffect();
+
+            currentExp -= nextLvExp;
+            nextLvExp += playerLv * addExpCoefficient;
+
+            baseHealth += playerLv * healthCoefficient;
+            baseMana += playerLv * manaCoefficient;
+
+            baseDamage += playerLv * attackCoefficient;
+            baseDefence += defenceCoefficient;
+
+            //시작 레벨 1 -> 레벨업 -> (1레벨 * 성장 계수) 만큼 성장 -> 레벨업(레벨2)
+            //레벨업부터 하게되면 1레벨에서 2레벨에 넘어가는 성장 계수가 2가 된다. -> 시작 레벨1 -> 레벨업 -> (2레벨 * 성장 계수)가 되기 때문에 레벨업을 성정 후 한다.
+            playerLv++;
+
+            RecoveryHP(maxHealth);
+            RecoveryMP(maxMana);
+
+            playerStatusUI.SetAllUI();
+            LevelUp();
+        }
+    }
+    #endregion
+
     #region Hp, Mp 관리
     public void SetHP()
     {
@@ -411,40 +468,41 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
     }
     #endregion
 
-    #region Level
-    public void AddExp(float _exp)
+    #region StatusEffect
+    public void TakeSlowEffect(Slow_StatusEffect _slowEfc)
     {
-        currentExp += _exp;
-        playerStatusUI.SetExpUI();
-
-        LevelUp();
+        if (!slowEffects.TryGetValue(_slowEfc.name, out Slow_StatusEffect value))
+        {
+            Slow_StatusEffect slowEfc = Instantiate(_slowEfc, statusEffectPos);
+            slowEfc.target = this;
+            slowEffects.Add(_slowEfc.name, slowEfc);
+            SetSlowEffect();
+        }
+        else
+        {
+            value.count = 0;
+            SetSlowEffect();
+        }
     }
 
-    public void LevelUp()
+    public void SetSlowEffect()
     {
-        if (currentExp >= nextLvExp)
+        float rateHigh = 0f;
+        foreach (var item in slowEffects)
         {
-            LevelUPEffect.LevelUpEffect();
-          
-            currentExp -= nextLvExp;
-            nextLvExp += playerLv * addExpCoefficient;
-
-            baseHealth += playerLv * healthCoefficient;
-            baseMana += playerLv * manaCoefficient;
-
-            baseDamage += playerLv * attackCoefficient;
-            baseDefence += defenceCoefficient;
-
-            //시작 레벨 1 -> 레벨업 -> (1레벨 * 성장 계수) 만큼 성장 -> 레벨업(레벨2)
-            //레벨업부터 하게되면 1레벨에서 2레벨에 넘어가는 성장 계수가 2가 된다. -> 시작 레벨1 -> 레벨업 -> (2레벨 * 성장 계수)가 되기 때문에 레벨업을 성정 후 한다.
-            playerLv++;
-
-            RecoveryHP(maxHealth);
-            RecoveryMP(maxMana);
-
-            playerStatusUI.SetAllUI();
-            LevelUp();
+            if (rateHigh < item.Value.slowRate)
+            {
+                rateHigh = item.Value.slowRate;
+            }
         }
+        minusRate = rateHigh;
+        moveSpeed = baseMoveSpeed * SpeedRate;
+    }
+
+    public void RemoveStatusEffect(string _effect)
+    {
+        slowEffects.Remove(_effect);
+        SetSlowEffect();
     }
     #endregion
 
@@ -459,39 +517,40 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
 
             //ovrride controller로 바뀌지 않았을 때만 실행
             //현재 애니메이터컨트롤러가 변경 될 애니메이터 컨트롤러가 아닐때만 바꿔준다. 애니메이션이 변경될 때 마다 바꿔주지 않기 위함.
-            if (playerAnime.runtimeAnimatorController != myOverrideAnim)
+            if (playerAnimeControl.playerAnime.runtimeAnimatorController != myOverrideAnim)
             {
-                playerAnime.runtimeAnimatorController = myOverrideAnim;
+                playerAnimeControl.playerAnime.runtimeAnimatorController = myOverrideAnim;
             }
         }
     }
 
+    //무기에 따른 attack Clip 변경해주기
     public void SetAttackAnime(AnimationClip _clip)
     {
         myOverrideAnim["Player_Attack"] = _clip;
 
-        if (playerAnime.runtimeAnimatorController != myOverrideAnim)
+        if (playerAnimeControl.playerAnime.runtimeAnimatorController != myOverrideAnim)
         {
-            playerAnime.runtimeAnimatorController = myOverrideAnim;
+            playerAnimeControl.playerAnime.runtimeAnimatorController = myOverrideAnim;
         }
 
     }
 
     public void SetCastMotion(float _motionSlect)
     {
-        playerAnime.SetFloat("MotionSelect", _motionSlect);
+        playerAnimeControl.playerAnime.SetFloat("MotionSelect", _motionSlect);
     }
 
     public void SetActionSpeed(float _acSpeed)
     {
-        playerAnime.SetFloat("ActionSpeed", _acSpeed);
+        playerAnimeControl.playerAnime.SetFloat("ActionSpeed", _acSpeed);
     }
     #endregion
 
     #region Data Manager
     public Animator CallPlayerAnime()
     {
-        return playerAnime;
+        return playerAnimeControl.playerAnime;
     }
 
     public void SetData()
@@ -499,7 +558,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
         dataManager = GameData.instance;
         cameraView = Camera.main;
         playerStatusUI = GameObject.Find("UIManager").GetComponent<PlayerStatusUI>();
-        playerAnime = GetComponentInChildren<Animator>();
+        playerAnimeControl = GetComponentInChildren<PlayerAnimControl>();
 
         SetState();
         SetValue();
@@ -633,4 +692,17 @@ public class Player : MonoBehaviour , ICombatable , IAttackable
             }
         }
     }
+}
+
+public enum PlayerState
+{
+    Idle,               //0
+    Walk,
+    Run,
+    Attack,
+    Jump,
+    Action,             //5
+    Casting,
+    Death = 100,
+
 }

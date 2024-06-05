@@ -98,7 +98,7 @@ public class MeteorStrike : SkillManager
             castState = true;
 
             player.UseMana(cunsumeMana);
-            player.playerAnime.SetFloat("MotionProccess", 0);
+            player.playerAnimeControl.playerAnime.SetFloat("MotionProccess", 0);
             player.ChangeState(new CastPState());
             player.SetCastMotion(castMotionSelect);
 
@@ -143,9 +143,9 @@ public class MeteorStrike : SkillManager
                         castingSound.loop = false;
                         player.isAction = true;
                         //블랜드된 캐스팅 모션 실행
-                        player.playerAnime.SetFloat("MotionProccess", 1);
+                        player.playerAnimeControl.playerAnime.SetFloat("MotionProccess", 1);
                         //블랜드 중이기 때문에 모션을 처음부터 실행하여 자연스러운 연출 부여
-                        player.playerAnime.Play("Player_Cast_Tree", -1, 0);
+                        player.playerAnimeControl.playerAnime.Play("Player_Cast_Tree", -1, 0);
 
                         //블랜드 트리를 사용하지 않았을 때 애니메이션 구간 반복을 넘어가기 위해
                         //addEvent가 등록된 구간 보다 앞구간(0.41f)을 실행 시켜준다.

@@ -31,7 +31,7 @@ public class DrawOutline : Interaction
         if (isDraw)
         {
             //아이템이 UI와 겹치거나 플레이어가 액션 중일 때 outline 미표시
-            if (PlayerController.isUI | PlayerController.isAction)
+            if (player.isUI | player.isAction)
             {
                 DontAction();
                 return;

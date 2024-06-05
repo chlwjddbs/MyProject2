@@ -58,7 +58,7 @@ public class SkillBookUI : MonoBehaviour
             if (isOpen)
             {
                 CloseUI();
-                AudioManager.instance.PlayExSound("closeSkillbook");
+                AudioManager.instance.PlayExternalSound("closeSkillbook");
             }
         }
         
@@ -69,12 +69,12 @@ public class SkillBookUI : MonoBehaviour
             if (isOpen)
             {
                 skillBookUIrect.anchoredPosition = new Vector3(0, 0, 0);
-                AudioManager.instance.PlayExSound("openSkillbook");
+                AudioManager.instance.PlayExternalSound("openSkillbook");
             }
             else
             {
                 skillBookUIrect.anchoredPosition = new Vector3(-1920f, 0, 0);
-                AudioManager.instance.PlayExSound("closeSkillbook");
+                AudioManager.instance.PlayExternalSound("closeSkillbook");
             }
         }
     }

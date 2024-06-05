@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class Weapon : MonoBehaviour
 {
     public PlayerStatus playerStatus;
-    public PlayerController playerController;
+    //public PlayerController playerController;
 
     public Player player;
 
@@ -50,7 +50,7 @@ public class Weapon : MonoBehaviour
         //장착한 아이템의 Mesh로 변경
         attackPoint.sharedMesh = equipWeapon.mesh;
         
-        //playerController.SetAttackAnime(equipWeapon.attackClip);
+        player.SetAttackAnime(equipWeapon.attackClip);
         
         //장착한 아이템의 공격력 추가
         //playerStatus.equipDamage = equipWeapon.attack;
@@ -66,8 +66,7 @@ public class Weapon : MonoBehaviour
         equipWeapon = null;
         //공격 Mesh 기본 Mesh로 변경
         attackPoint.sharedMesh = basicMesh;
-
-        //playerController.SetAttackAnime(backAttackClip);
+        player.SetAttackAnime(backAttackClip);
         
         //SetAttackDamage();
     }

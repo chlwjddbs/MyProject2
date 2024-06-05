@@ -306,18 +306,7 @@ public class PlayerController : MonoBehaviour
 }
 
 //플레이어 상태를 나타내는 enum
-public enum PlayerState
-{
-    Idle,               //0
-    Walk,
-    Run,
-    Attack,
-    Jump,
-    Action,             //5
-    Casting,
-    Death = 100,
 
-}
 
 //클릭한 곳으로 이동
 /*

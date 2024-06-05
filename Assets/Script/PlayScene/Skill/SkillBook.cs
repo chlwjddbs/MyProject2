@@ -281,7 +281,7 @@ public class SkillBook : MonoBehaviour
             transform.GetChild(int.Parse(pageText.text)-1).gameObject.SetActive(false);
             pageText.text = (int.Parse(pageText.text) - 1).ToString();
             transform.GetChild(int.Parse(pageText.text)-1).gameObject.SetActive(true);
-            AudioManager.instance.PlayExSound("pageChage");
+            AudioManager.instance.PlayExternalSound("pageChage");
         }
     }
 
@@ -292,7 +292,7 @@ public class SkillBook : MonoBehaviour
             transform.GetChild(int.Parse(pageText.text)-1).gameObject.SetActive(false);
             pageText.text = (int.Parse(pageText.text) + 1).ToString();
             transform.GetChild(int.Parse(pageText.text)-1).gameObject.SetActive(true);
-            AudioManager.instance.PlayExSound("pageChage");
+            AudioManager.instance.PlayExternalSound("pageChage");
         }
     }
 }

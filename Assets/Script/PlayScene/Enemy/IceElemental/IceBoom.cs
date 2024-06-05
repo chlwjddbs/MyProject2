@@ -62,7 +62,7 @@ public class IceBoom : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Slowly");
-            AudioManager.instance.PlayExSound("iceBoom");
+            AudioManager.instance.PlayExternalSound("iceBoom");
             coll.enabled = false;
             other.GetComponent<PlayerStatus>().TakeDamage(attackDamage);
 

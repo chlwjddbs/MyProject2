@@ -14,7 +14,8 @@ public class AttackPState : PlayerStates
     {
         base.OnEnter();
         player.SetDamage();
-        player.AttackCollider.enabled = true; 
+        //PlayerAnimecontrol에서 켜준다.
+        //player.AttackCollider.enabled = true; 
     }
 
     public override void OnExit()

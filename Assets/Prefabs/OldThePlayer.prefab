@@ -804,9 +804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17dceb778919abd49811bdd268a92c50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 8964795853285110057}
-  Player: {fileID: 0}
-  weaponSlot: {fileID: 8964795852997030720}
+  player: {fileID: 0}
   playerSound:
   - name: Footstep
     clip: {fileID: 8300000, guid: 6b982c10469cd5b4184db0d231dffd3f, type: 3}
@@ -896,6 +894,7 @@ MonoBehaviour:
     soundType: 1
     playOnAwake: 0
     source: {fileID: 0}
+  playerAnime: {fileID: 8117794975226390897}
 --- !u!1 &8410667391743668297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1509,6 +1508,7 @@ MonoBehaviour:
   sigthOffset: {x: 0, y: 2.5, z: 0}
   drawOffset: {x: 0, y: 0.1, z: 0}
   visibleWalls: []
+  sceneView: {fileID: 0}
 --- !u!1 &8964795852997030720
 GameObject:
   m_ObjectHideFlags: 0
@@ -1570,6 +1570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStatus: {fileID: 8964795853285110050}
   playerController: {fileID: 8964795853285110057}
+  player: {fileID: 0}
   basicMesh: {fileID: 4300000, guid: 42389be93a122d64bbb0b0e4d4dd1cfd, type: 2}
   equipWeapon: {fileID: 0}
   attackDamage: 0

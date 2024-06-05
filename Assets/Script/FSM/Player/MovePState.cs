@@ -22,7 +22,7 @@ public class MovePState : PlayerStates
         player.LookAtMouse(Input.mousePosition);
         Move();
 
-        if (player.CheckBehavior())
+        if (player.MoveRestriction())
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -38,7 +38,7 @@ public class MovePState : PlayerStates
 
     private void Move()
     {
-        if (player.CheckBehavior())
+        if (player.MoveRestriction())
         {
             //player.mousePoint.normalized == player.transform.forward
             //LookAtMouse에서 마우스 방향을 player의 forward로 설정해줬음.

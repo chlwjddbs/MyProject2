@@ -16,7 +16,7 @@ public class IdlePState : PlayerStates
 
         player.Attack();
 
-        if (player.CheckBehavior())
+        if (player.MoveRestriction())
         {
             if (Input.GetMouseButton(1))
             {

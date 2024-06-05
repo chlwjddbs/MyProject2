@@ -21,7 +21,7 @@ public class SetCursorImage : Interaction
         if (isDraw)
         {
             //마우스가 UI를 가르킬 때
-            if (PlayerController.isUI | PlayerController.isAction)
+            if (player.isUI | player.isAction)
             {
                 //마우스가 나갔다고 판정한다.
                 DontAction();
@@ -29,9 +29,9 @@ public class SetCursorImage : Interaction
             }
             else
             {
-                player.isObject = true;
                 if (theDistance < actionDis)
-                {
+                { 
+                    player.isObject = true;
                     CursorManager.instance.SetCursurImage(enableCursor);
                 }
                 else

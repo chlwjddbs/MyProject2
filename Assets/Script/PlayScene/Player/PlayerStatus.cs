@@ -27,6 +27,7 @@ public class PlayerStatus : MonoBehaviour , ISlow_StatusEffect
     public Dictionary<string, Slow_StatusEffect> slowEffects = new Dictionary<string, Slow_StatusEffect>();
 
     public Transform statusEffectPos;
+    public Transform StatusEffectPos { get { return statusEffectPos; } }
 
 
     //시작 체력
@@ -240,16 +241,16 @@ public class PlayerStatus : MonoBehaviour , ISlow_StatusEffect
         {
             if (_damage / maxHealth > 0.5f)
             {
-                AudioManager.instance.PlayExSound("Damaged3");
+                AudioManager.instance.PlayExternalSound("Damaged3");
             }
             else if (_damage / maxHealth > 0.3f)
             {
-                AudioManager.instance.PlayExSound("Damaged2");
+                AudioManager.instance.PlayExternalSound("Damaged2");
             }
             else
             {
                 int ran = UnityEngine.Random.Range(0, 2);
-                AudioManager.instance.PlayExSound("Damaged" + ran);
+                AudioManager.instance.PlayExternalSound("Damaged" + ran);
             }
         }
     }

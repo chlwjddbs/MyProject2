@@ -19,13 +19,13 @@ public class PlayerJumpBehaviour : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (animator.TryGetComponent<PlayerAction>(out PlayerAction player))
+        if (animator.TryGetComponent<PlayerAnimControl>(out PlayerAnimControl player))
         {
-            if (player.Player.isDeath)
+            if (player.player.isDeath)
             {
                 return;
             }
-            player.Player.ChangeState(new IdlePState());
+            player.player.ChangeState(new IdlePState());
         }
     }
 

@@ -69,7 +69,7 @@ public class FireElementalTrigger : MonoBehaviour
         FireRoad.SetBool("Ontrigger", true);
         LockTheGate();
         SpawnFireElementalEffect.Play();
-        AudioManager.instance.PlayExSound("gn_awake");
+        AudioManager.instance.PlayExternalSound("gn_awake");
 
         yield return new WaitForSeconds(1f);
 

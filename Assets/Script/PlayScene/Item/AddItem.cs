@@ -72,10 +72,10 @@ public class AddItem : Interaction
 
     public override void DoAction()
     {
-        player.isObject = true;
-        if (Input.GetMouseButtonDown(0))
+        if (theDistance < actionDis)
         {
-            if (theDistance < actionDis)
+            player.isObject = true;
+            if (Input.GetMouseButtonDown(0))
             {
                 //인벤토리가 가득찬 상태이지만 중첩 가능한 소모품일 경우 갯수 추가는 가능하기 때문에 체크한다.
                 if (Inventory.instance.isAdd == false)

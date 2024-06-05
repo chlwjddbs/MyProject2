@@ -144,7 +144,7 @@ public class InventoryUI : MonoBehaviour
                 //InvenUI.SetActive(false);
                 DeSelectAllSlots();
                 CloseUI();
-                AudioManager.instance.PlayExSound("InvenClose");
+                AudioManager.instance.PlayExternalSound("InvenClose");
             }
         }
         if (Input.GetKeyDown(KeyCode.I))
@@ -161,13 +161,13 @@ public class InventoryUI : MonoBehaviour
             if (isOpen)
             {
                 InvenUIrect.anchoredPosition = new Vector3(0, 0, 0);
-                AudioManager.instance.PlayExSound("InvenOpen");
+                AudioManager.instance.PlayExternalSound("InvenOpen");
             }
             else
             {
                 DeSelectAllSlots();
                 InvenUIrect.anchoredPosition = new Vector3(1920f, 0, 0);
-                AudioManager.instance.PlayExSound("InvenClose");
+                AudioManager.instance.PlayExternalSound("InvenClose");
             }
         }
     }

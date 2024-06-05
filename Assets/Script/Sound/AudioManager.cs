@@ -319,7 +319,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlayExSound(string _soundName)
+    public void PlayExternalSound(string _soundName)
     {
         Sound sound = null;
         foreach (var s in externalSound)
