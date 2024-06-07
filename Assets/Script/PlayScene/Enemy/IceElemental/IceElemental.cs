@@ -135,10 +135,14 @@ public class IceElemental : Enemy
         {
             return;
         }
+
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<PlayerStatus>().TakeDamage(attackDamage);
-            PlayEnemySound("olf_hit");
+            if (other.TryGetComponent<IAttackable>(out IAttackable target))
+            {
+                target.TakeDamage(attackDamage, null);
+                PlayEnemySound("olf_hit");
+            }
         }
     }
 }

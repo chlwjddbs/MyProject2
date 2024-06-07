@@ -20,8 +20,7 @@ public class Sound
 
     public bool playOnAwake = false;
 
-    [HideInInspector]
-    public AudioSource source;
+    public AudioSource source = new AudioSource();
 }
 
 public enum SoundType

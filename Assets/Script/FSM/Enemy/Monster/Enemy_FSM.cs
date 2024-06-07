@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 
 
-public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
+public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IRenderer
 {
     [System.Serializable]
     public struct EnemyData
@@ -49,6 +49,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     [HideInInspector] public float chaseTargetDis;
     [HideInInspector] public Vector3 chaseTargetDir;
     #endregion
+
     #region Enemy 범위 정보
 
     public float AttackRange { get { return attackRange; } }
@@ -57,6 +58,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
 
     public float DetectRange { get { return searchPlayer.DetectRange; } } //30f;
     #endregion  
+
     #region Enmey 상태
     [Header("EnemyState")]
     public bool isDeath;
@@ -67,6 +69,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     
     public bool VisibleTarget { get { return searchPlayer.visibelTarget; } }
     #endregion
+
     #region Combatable
     [Header("Combat Data")]
     [SerializeField] protected float attackDamage;
@@ -83,6 +86,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     public bool MultiAttackAble { get { return multiAttackAble; } }
     public List<GameObject> AttackedTargets { get { return attackedTargets; } }
     #endregion
+
     #region Attackable data
     [Header("Attackable Data")]
     [SerializeField] protected float remainHealth;
@@ -106,13 +110,23 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     public Transform[] PatrolPoint;
     public Vector3 StartPoint { get; set; }
 
+    #region 기타 정보
     [Header("Etc Data")]
     //Enemy가 Target을 향해 회전하는 속도
     [SerializeField] protected float rotateSpeed = 7f;
     [SerializeField] protected float moveSpeed = 3.5f;
     [SerializeField] int exp;
+    [SerializeField] protected GameObject renderBox;
     public GameObject enemyMark;
+    
     public int Exp { get { return exp; } }
+    public GameObject RenderBox { get { return renderBox; } }
+    #endregion
+
+    [Header("Sound Data")]
+    public Sound[] sounds;
+    [SerializeField]protected GameObject audios;
+    protected Dictionary<string, Sound> soundDic = new Dictionary<string, Sound>();
    
     protected virtual void Start()
     {
@@ -147,31 +161,49 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         return eStateMachine.ChangeState(newState);
     }
 
-    public void EndAttack()
-    {
-
-    }
-
-    public void PlayEnemySound()
-    {
-
-    }
-
-    public virtual void Attack()
-    {
-        //공격
-    }
-
-    public virtual void CastingStart() { }
-    public virtual void CastingAction() { }
-    public virtual void CastingEnd() { }
-    
-
+    #region 행동
     public virtual void LookRotate()
     {
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(TargetDir), Time.deltaTime * rotateSpeed);
     }
+    public virtual void CastingStart() { }
+    public virtual void CastingAction() { }
+    public virtual void CastingEnd() { }
+    public virtual void Attack()
+    {
+        //공격
+    }
+    public void EndAttack()
+    {
 
+    }
+    #endregion
+
+    public void PlayESound(string soundName)
+    {
+        if(soundDic.TryGetValue(soundName, out Sound s))
+        {
+            s.source.Play();
+        }
+        else
+        {
+            Debug.Log($"{soundName} 사운드는 존재하지 않습니다.");
+        }
+    }
+
+    public void StopESound(string soundName)
+    {
+        if (soundDic.TryGetValue(soundName, out Sound s))
+        {
+            s.source.Stop();
+        }
+        else
+        {
+            Debug.Log($"{soundName} 사운드는 존재하지 않습니다.");
+        }
+    }
+
+    #region attackable
     //_attacker는 enemy를 공격한 대상이다. 현재는 enemy를 공격할 대상이 Player 밖에 없지만 추후 대상을 확장 됐을때를 대비해 미리 만들어둔다.
     public virtual void TakeDamage(float _damage , Transform _attacker, Vector3 _damagedDir = new Vector3())
     {
@@ -233,6 +265,29 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         
     }
 
+    public virtual void Die()
+    {
+        isDeath = true;
+        eStateMachine.ChangeState(new DeathEState());
+        searchPlayer.StopSearch();
+        enemyMark.SetActive(false);
+        hitBox.enabled = false;
+        attackCollider.enabled = false;
+        //자신을 죽인 타겟에게 경험치를 주도록 구현
+        //ex) Die로부터 자신을 죽은 타겟을 받아와 해당 타겟의 경험치를 상승시키도록 한다.
+    }
+
+    public void OnRenderBox()
+    {
+        renderBox.SetActive(true);
+    }
+
+    public void OffRenderBox()
+    {
+        renderBox.SetActive(false);
+    }
+    #endregion
+
     #region ChaseTarget
     public void SetChaseTarget(Transform _attacker)
     {
@@ -269,18 +324,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     }
     #endregion
 
-    public virtual void Die()
-    {
-        isDeath = true;
-        eStateMachine.ChangeState(new DeathEState());
-        searchPlayer.StopSearch();
-        enemyMark.SetActive(false);
-        hitBox.enabled = false;
-        attackCollider.enabled = false;
-        //자신을 죽인 타겟에게 경험치를 주도록 구현
-        //ex) Die로부터 자신을 죽은 타겟을 받아와 해당 타겟의 경험치를 상승시키도록 한다.
-    }
-
+    #region Data Manager
     public virtual void SetData()
     {
         eAnime = GetComponent<Animator>();
@@ -291,6 +335,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         SetState();
         SetValue();
         SetPool();
+        SetSound();
     }
 
     public virtual void SetState()
@@ -301,7 +346,6 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
         eStateMachine.RegisterEState(new DeathEState());
         eStateMachine.RegisterEState(new ChaseEState());
         eStateMachine.RegisterEState(new RunawayEState());
-
         if (patrolUnit)
         {
             eStateMachine.RegisterEState(new PatrolEState());
@@ -319,6 +363,50 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
     public virtual void SetPool()
     {
 
+    }
+
+    public void SetSound()
+    {
+        if (sounds == null)
+        {
+            return;
+        }
+
+        foreach (var s in sounds)
+        {
+            s.source = audios.AddComponent<AudioSource>();
+            //Sound 클래스를 통해 만든 사운드 정보를 가져와 AudioSource에 세팅해 준다.
+            //Sound 클래스에는 재생할 오디오 clip과 
+            //그 클립에 접근할 오디오 이름, 처음 설정될 volume과 pitch값과 반복 여부를 가져와 세팅해준다.
+            s.source.clip = s.clip;
+            s.source.volume = s.volume;
+            s.source.pitch = s.pitch;
+            s.source.loop = s.loop;
+            s.source.playOnAwake = s.playOnAwake;
+            s.source.spatialBlend = 1;
+            s.source.rolloffMode = AudioRolloffMode.Custom;
+            s.source.maxDistance = 50;
+
+            //사운드마다 사용할 용도가 다르기 때문에 용도에 따라 구분하여 믹서 그룹에 저장해 준다.
+
+            //bgm은 bgm 믹서에 저장
+            if (s.soundType == SoundType.BGM)
+            {
+                s.source.outputAudioMixerGroup = AudioManager.instance.audioGroups[1];
+            }
+            //효과음은 sfx에 저장
+            else if (s.soundType == SoundType.SFX)
+            {
+                s.source.outputAudioMixerGroup = AudioManager.instance.audioGroups[2];
+            }
+            //나머지(현재는 환경음) Ambience에 저장
+            else
+            {
+                s.source.outputAudioMixerGroup = AudioManager.instance.audioGroups[3];
+            }
+
+            soundDic[s.name] = s;
+        }
     }
 
     public virtual Enemy_FSM.EnemyData SaveData()
@@ -395,6 +483,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable
             (eStateMachine.states[new PatrolEState().ToString()] as PatrolEState).LoadData(enemyData.patrolNum);
         }
     }
+    #endregion
 
     private void OnCollisionEnter(Collision collision)
     {

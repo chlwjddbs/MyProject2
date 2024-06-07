@@ -76,7 +76,6 @@ public class PlayerSight : MonoBehaviour
         //targetView = 감지된 타겟의 배열
         for (int i = 0; i < targetView.Length; i++)
         {
-
             //감지된 타겟 구하기
             Transform target = targetView[i].transform;
 
@@ -97,10 +96,11 @@ public class PlayerSight : MonoBehaviour
                 //타겟이 시야거리 밖으로 나가면 타겟의 랜더러를 꺼준다.
                 if (targetdDis > sightRange)
                 {
-                    if (target.GetComponent<Enemy>()?.RenderBox.activeSelf == true)
+                    if (target.TryGetComponent<IRenderer>(out IRenderer value))
                     {
-                        target.GetComponent<Enemy>().RenderBox.SetActive(false);
+                        value.OffRenderBox();
                     }
+                    
                     //보여지고 있는 목록에 있는 적이면 삭제
                     if (viewTarget.Contains(target))
                     {
@@ -116,7 +116,11 @@ public class PlayerSight : MonoBehaviour
                         //리스트에 추가되지 않은 타겟이면 리스트에 추가하고 랜더러를 켜준다.
                         if (!viewTarget.Contains(target))
                         {
-                            target.GetComponent<Enemy>()?.RenderBox.SetActive(true);
+                            if(target.TryGetComponent<IRenderer>(out IRenderer value))
+                            {
+                                value.OnRenderBox();
+                            }
+                            //target.GetComponent<IRenderer>().RenderBox.SetActive(true);
                             viewTarget.Add(target);
                         }
                     }
@@ -127,7 +131,10 @@ public class PlayerSight : MonoBehaviour
                         //리스트에 타겟이 있다면 타겟에서 삭제하고 랜더러를 꺼준다.
                         if (viewTarget.Contains(target))
                         {
-                            target.GetComponent<Enemy>().RenderBox.SetActive(false);
+                            if (target.TryGetComponent<IRenderer>(out IRenderer value))
+                            {
+                                value.OffRenderBox();
+                            }
                             viewTarget.Remove(target);
                         }
                     }

@@ -86,7 +86,10 @@ public class LichBall : MonoBehaviour, IProjectile
     {     
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<PlayerStatus>().TakeDamage(attackDamage);
+            if(other.TryGetComponent<IAttackable>(out IAttackable target))
+            {
+                target.TakeDamage(attackDamage, null);
+            }
             //objPool.Release(gameObject);
             ObjectPoolingManager.instance.FindPool("LichBall").Release(gameObject);
         }

@@ -50,8 +50,8 @@ public class SearchPlayer : MonoBehaviour
     IEnumerator UpdateTarget(float delay)
     {
         var wfs = new WaitForSeconds(delay);
-        //플레이어가 죽지 않았을때 계속해서 플레이어를 찾는다.
-        while (!PlayerStatus.isDeath)
+
+        while (true)
         {
             //updateTargetTime 매개변수로 받아 updateTargetTime(현재 0.1초) 마다 플레이어 위치를 갱신한다.
             yield return wfs;
@@ -69,7 +69,7 @@ public class SearchPlayer : MonoBehaviour
             foreach (var searchEnemy in enemies)
             {
                 //범위 내의 Collider중에 Player가 있다면
-                if (searchEnemy.TryGetComponent<PlayerStatus>(out PlayerStatus _target))
+                if (searchEnemy.TryGetComponent<Player>(out Player _target))
                 {
                     if (target != _target)
                     {
@@ -116,6 +116,9 @@ public class SearchPlayer : MonoBehaviour
         }
         else
         {
+            //target이 보이는지 안보이는지에 대한 판정은 레이캐스트를 쐈을때 레이가 벽에 닿으면 시야가 막힌걸로 판정하여 플레이어가 보이지 않게하고 있다.
+            //플레이어가 레이를 맞았을때 보인다고 판정할수도 있지만 그런 경우 플레이어가 순간적으로 빠르게 움직이거나 레이를 피하는 경우
+            //시야내에 장애물이 없음에도 플레이어가 보이지 않는다고 판정 할 수 있기 때문에 현재 방식을 채택.
             visibelTarget = true;
             return true;
         }

@@ -5,7 +5,8 @@ using UnityEngine.Pool;
 
 public class SkeletonLich : Enemy_FSM
 {
-    public ObjectPoolingManager poolingManager;
+    [Header("SkeletonLich Data")]
+    private ObjectPoolingManager poolingManager;
     public IObjectPool<GameObject> connectPool;
 
     public GameObject lichballprefab;

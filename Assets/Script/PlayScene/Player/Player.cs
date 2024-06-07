@@ -220,7 +220,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
         attackDamage = (baseDamage + equipDamage) * _damageCoefiicient;
     }
 
-    public void TakeDamage(float _damage, Transform _attacker)
+    public void TakeDamage(float _damage, Transform _attacker = null, Vector3 _damagedDir = new Vector3())
     {
         //죽은 상태에서는 더 이상 데미지를 받지 않는다.
         if (isDeath)
@@ -235,7 +235,6 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
 
         //_damage = _damage - currentDefence;
         _damage = Mathf.Clamp(_damage, 1, _damage);
-
 
         remainHealth -= _damage;
         remainHealth = Mathf.Clamp(remainHealth, 0, maxHealth);
@@ -606,6 +605,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
             playerStatusUI.SetAllUI();
 
             enabled = true;
+            isAttackable = true;
         }
     }
 
@@ -614,6 +614,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
         GetComponent<NavMeshAgent>().enabled = false;
         transform.position = dataManager.userData.playerPos;
         enabled = true;
+        isAttackable = true;
         GetComponent<NavMeshAgent>().enabled = true;
 
         baseMoveSpeed = dataManager.userData.moveSpeed;
