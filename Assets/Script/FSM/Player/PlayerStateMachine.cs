@@ -28,7 +28,7 @@ public class PlayerStateMachine : StateMachine
 
     public override State ChangeState(State newState)
     {
-        if (player.isDeath) 
+        if (Player.isDeath) 
         {
             return new DeathPState();        
         }

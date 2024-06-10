@@ -40,7 +40,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1011969397}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.1, z: 2}
@@ -421,6 +421,7 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     soundType: 1
+    playOnAwake: 0
     source: {fileID: 0}
   - name: sk_attack
     clip: {fileID: 8300000, guid: d99c7596a5ed936468d3fbbda27f454a, type: 3}
@@ -428,6 +429,7 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     soundType: 1
+    playOnAwake: 0
     source: {fileID: 0}
   - name: sk_move
     clip: {fileID: 8300000, guid: 23684c2373aa34787b0d7b3349bdd2e6, type: 3}
@@ -435,6 +437,7 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     soundType: 1
+    playOnAwake: 0
     source: {fileID: 0}
   - name: sk_death
     clip: {fileID: 8300000, guid: 98ddbe1f3febd59448b2f3d58d3141be, type: 3}
@@ -442,6 +445,7 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     soundType: 1
+    playOnAwake: 0
     source: {fileID: 0}
   attackSound: sk_attack
   moveSound: sk_move

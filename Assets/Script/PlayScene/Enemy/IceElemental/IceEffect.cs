@@ -9,11 +9,13 @@ public class IceEffect : MonoBehaviour
     //public GameObject onwer;
 
     //public float slowRate = 0.4f;
-    
+
     //private float slowTime = 2f;
     //private float count;
 
     //private bool isStay = false;
+
+    public IceElemental olf;
 
     public Slow_StatusEffect iceEffect;
 
@@ -46,6 +48,7 @@ public class IceEffect : MonoBehaviour
         {
             if (other.TryGetComponent<ISlow_StatusEffect>(out ISlow_StatusEffect value))
             {
+                olf.PlayESound("freeze");
                 value.TakeSlowEffect(iceEffect);
             }
         }

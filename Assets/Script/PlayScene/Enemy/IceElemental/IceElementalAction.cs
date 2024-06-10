@@ -5,7 +5,7 @@ using UnityEngine;
 public class IceElementalAction : MonoBehaviour
 {
     //테일즈위버 Dive 브금
-    public IceElemental iceElemental;
+    public OldIceElemental iceElemental;
     //몬스터의 공격 히트박스
     public CapsuleCollider AttackPoint;
 

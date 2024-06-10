@@ -16,16 +16,11 @@ public class PlayerAnimControl : MonoBehaviour
 
     public Animator playerAnime;
 
-    private void Start()
+    public void SetData()
     {
         audioManager = AudioManager.instance;
 
         actionState = Animator.StringToHash("Base Layer.Footman_Action");
-
-        foreach (var s in player.playerSounds)
-        {
-            audioManager.AddExternalSound(s);
-        }
     }
 
     public void StartAttack()

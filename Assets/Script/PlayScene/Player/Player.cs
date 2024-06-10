@@ -19,7 +19,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
 
     #region Player 상태
     [Header("PlayerState")]
-    public bool isDeath = false;
+    public static bool isDeath = false;
     public bool isAction = false;
     public bool isCasting = false;
     public bool isAttackable;
@@ -559,6 +559,13 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
         playerStatusUI = GameObject.Find("UIManager").GetComponent<PlayerStatusUI>();
         playerAnimeControl = GetComponentInChildren<PlayerAnimControl>();
 
+        //사용할 사운드 등록
+        foreach (var s in playerSounds)
+        {
+            AudioManager.instance.AddExternalSound(s);
+        }
+
+        playerAnimeControl.SetData();
         SetState();
         SetValue();
     }

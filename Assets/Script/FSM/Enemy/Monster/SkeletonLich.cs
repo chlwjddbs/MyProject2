@@ -5,17 +5,32 @@ using UnityEngine.Pool;
 
 public class SkeletonLich : Enemy_FSM
 {
-    [Header("SkeletonLich Data")]
     private ObjectPoolingManager poolingManager;
     public IObjectPool<GameObject> connectPool;
-
+    [Header("Lich Ball")]
     public GameObject lichballprefab;
     public Transform lichballPoint;
     public int useLichballCount = 1;
 
+    [Header("Spawn Skeleton")]
+    public GameObject spawnskeleonsPrefab;
+    public GameObject spawnskeleonsAuraPrefab;
+    public Transform spawnPoint;
+
+    public float spawnCooltime = 100f;
+    private float remainCooltime = 0f;
+    private bool spawnable = true;
+    [SerializeReference] protected string spawnSound;
+
     protected override void Start()
     {
         SetData();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        SpawnSkelton();
     }
 
     public override void SetData()
@@ -49,6 +64,32 @@ public class SkeletonLich : Enemy_FSM
         if (connectPool.Get().TryGetComponent<IProjectile>(out IProjectile value))
         {
             value.SetTarget(Target, lichballPoint.position, attackDamage);
+        }
+    }
+
+    public void SpawnSkelton()
+    {
+        if (remainCooltime > 0)
+        {
+            remainCooltime -= Time.deltaTime;          
+        }
+        else
+        {
+            spawnable = true;
+        }
+
+        if(spawnable)
+        {
+            if (TargetDis < attackRange)
+            {
+                spawnable = false;
+                PlayESound("spawnSkeleton");
+                SpawnEnemyManager spawnManager = Instantiate(spawnskeleonsPrefab, spawnPoint.position, Quaternion.identity).GetComponent<SpawnEnemyManager>();
+                spawnManager.SetData();
+                GameObject spawnskeleonsAura = Instantiate(spawnskeleonsAuraPrefab, spawnPoint.position, Quaternion.identity);
+                remainCooltime = spawnCooltime;
+                Destroy(spawnskeleonsAura, 2f);
+            }
         }
     }
 }

@@ -98,7 +98,7 @@ public class FireElemental : Enemy_FSM
             remainHealth -= _damage;
             Damaged();
             Debug.Log(remainHealth / maxHealth * 100 + " %");
-            //PlayEnemySound(damagedSound);
+            PlayESound(damagedSound);
         }
 
         if (RemainHealth <= 0)
@@ -110,7 +110,7 @@ public class FireElemental : Enemy_FSM
     {
         if (remainHealth <= maxHealth / 2 && !isPase2nd)
         {
-            //PlayEnemySound("page2");
+            PlayESound("page2");
             StartCoroutine("ChangePase");
         }
     }
@@ -142,12 +142,12 @@ public class FireElemental : Enemy_FSM
         ChangeState(new DeathEState());
         FireAura.Stop();
         AudioManager.instance.StopBGM(1f);
-        //PlayEnemySound(deadSound);
+        PlayESound(deathSound);
 
         yield return new WaitForSeconds(0.3f);
 
         DeathEffect.SetActive(true);
-        //PlayEnemySound("gn_explosion");
+        PlayESound("gn_explosion");
 
         yield return new WaitForSeconds(1.3f);
         gameObject.SetActive(false);

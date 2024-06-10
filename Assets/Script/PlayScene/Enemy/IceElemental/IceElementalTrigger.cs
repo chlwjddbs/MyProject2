@@ -8,27 +8,32 @@ public class IceElementalTrigger : MonoBehaviour
     public ParticleSystem Snow;
     //전투 시작시 플레이어를 못 돌아가게 막음
     public GameObject obstacleWall;
-    private bool isDeath = false;
-  
+
+    [SerializeField] private Collider awakeTrigger;
+
+    private void Awake()
+    {
+        IceElemental.deathAction += IceElementalDeath;
+        obstacleWall.SetActive(false);
+    }
+
     // Update is called once per frame
     void Update()
-    {
-        if(IceElemental.isDeath == true & !isDeath)
+    {      
+        if(Player.isDeath)
         {
-            isDeath = true;
-            Snow.Stop();
             AudioManager.instance.StopAm("Snow");
-            obstacleWall.SetActive(false);
-            GetComponent<BoxCollider>().enabled = false;
-            AudioManager.instance.StopBGM(1f);
-            AudioManager.instance.PlayBGM("PlayScene_Floor_1");
         }
+    }
 
-        //if (IceElemental.target.GetComponent<PlayerStatus>().isDeath)
-        if(PlayerStatus.isDeath)
-        {
-            AudioManager.instance.StopAm("Snow");
-        }
+    public void IceElementalDeath()
+    {
+        Snow.Stop();
+        AudioManager.instance.StopAm("Snow");
+        obstacleWall.SetActive(false);
+        awakeTrigger.enabled = false;
+        AudioManager.instance.StopBGM(1f);
+        AudioManager.instance.PlayBGM("PlayScene_Floor_1");
     }
 
     public void OnTriggerEnter(Collider other)
@@ -41,14 +46,15 @@ public class IceElementalTrigger : MonoBehaviour
         Debug.Log(other.name);
         if (other.CompareTag("Player"))
         {
+            IceElemental.SetAwake();
             StartCoroutine(ChangeBGM());
             obstacleWall.SetActive(true);
-            IceElemental.IceEffect.SetActive(true);
-            IceElemental.isActive = true;
-            IceElemental.PlayEnemySound("encounterOlf");
-            IceElemental.GetComponent<IceElementalAction>().enabled = true;
+            IceElemental.iceEffect.SetActive(true);
+            //IceElemental.isActive = true;
+            IceElemental.PlayESound("encounterOlf");
+            //IceElemental.GetComponent<IceElementalAction>().enabled = true;
             Snow.Play();
-            GetComponent<BoxCollider>().enabled = false;
+            awakeTrigger.enabled = false;
         }
     }
 

@@ -28,7 +28,7 @@ public class TestScript : MonoBehaviour
 
     public Dictionary<string, int> testDic = new Dictionary<string, int>();
 
-    public IceElemental2 olf;
+    public IceElemental olf;
 
     // Start is called before the first frame update
     void Start()
@@ -84,6 +84,16 @@ public class TestScript : MonoBehaviour
             OptionalParameterTest(test_a, test_b);
             OptionalParameterTest(test_a, test_b, test_c);
             OptionalParameterTest(test_a, test:test_c);
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Num();
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Nums();
         }
 
     }

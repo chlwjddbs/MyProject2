@@ -78,7 +78,7 @@ public class GameData : DataManager
         string data = JsonUtility.ToJson(userData);
         File.WriteAllText(path + autoSave, data);
         autoSaveSlot?.SetSlot();
-        Debug.Log(path);
+        //Debug.Log(path);
     }
 
     public void LoadData(string _slotName, SaveSlot _saveSlot)

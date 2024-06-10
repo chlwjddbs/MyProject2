@@ -6,13 +6,12 @@ public class IceBoom : MonoBehaviour
 {
     private float countdown = 1.5f;
     public float attackDamage = 10f;
-    private GameObject iceElemental;
     [SerializeField]private Collider coll;
     private int iceBlastGaugePoint = 10;
     private Queue<GameObject> bfsQueue = new Queue<GameObject>();
     private List<GameObject> visitSequence = new List<GameObject>();
 
-    private IceElemental2 iceElemental2;
+    private IceElemental iceElemental;
 
     /*
     // Start is called before the first frame update
@@ -23,6 +22,8 @@ public class IceBoom : MonoBehaviour
     */
 
     // Update is called once per frame
+
+    /*
     void Update()
     {
         countdown -= Time.deltaTime;
@@ -31,6 +32,7 @@ public class IceBoom : MonoBehaviour
             coll.enabled = false;
         }
     }
+    */
 
     public bool Search(GameObject researchTest)
     {
@@ -40,9 +42,9 @@ public class IceBoom : MonoBehaviour
         while (bfsQueue.Count > 0)
         {
             GameObject nowObj = bfsQueue.Dequeue();
-            if(nowObj.TryGetComponent<IceElemental2>(out IceElemental2 value))
+            if(nowObj.TryGetComponent<IceElemental>(out IceElemental value))
             {
-                iceElemental2 = value;
+                iceElemental = value;
                 return true;
             }
             
@@ -53,8 +55,13 @@ public class IceBoom : MonoBehaviour
                 visitSequence.Add(nowObj.transform.GetChild(i).gameObject);
             }
         }
-
         return false;
+    }
+
+    public void SetData(IceElemental _iceElemental)
+    {
+        iceElemental = _iceElemental;
+        coll.enabled = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -62,23 +69,31 @@ public class IceBoom : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("Slowly");
-            AudioManager.instance.PlayExternalSound("iceBoom");
+            iceElemental.PlayESound("iceBoom");
             coll.enabled = false;
-            other.GetComponent<PlayerStatus>().TakeDamage(attackDamage);
+            other.GetComponent<IAttackable>().TakeDamage(attackDamage,null);
 
-            int searchInt = GetComponentsInParent<Transform>().Length - 1;
-            //GetComponentInParent<IceElemental2>().AddBlastGauge(iceBlastGaugePoint);
-            if (Search(GetComponentsInParent<Transform>()[searchInt].gameObject))
+            if (iceElemental == null)
             {
-                iceElemental2.AddBlastGauge(iceBlastGaugePoint);
-                bfsQueue.Clear();
-                visitSequence.Clear();
+                int searchInt = GetComponentsInParent<Transform>().Length - 1;
+                //GetComponentInParent<IceElemental2>().AddBlastGauge(iceBlastGaugePoint);
+                if (Search(GetComponentsInParent<Transform>()[searchInt].gameObject))
+                {
+                    iceElemental.AddBlastGauge(iceBlastGaugePoint);
+                    bfsQueue.Clear();
+                    visitSequence.Clear();
+                }
+                else
+                {
+                    Debug.Log("IceElemental을 찾을 수 없습니다.");
+                }
+                //iceElemental.GetComponent<IceElementalAction>().AddBlastGauge(iceBlastGaugePoint);
             }
-            else
-            {
-                Debug.Log("IceElemental2를 찾을 수 없습니다.");
-            }
-            //iceElemental.GetComponent<IceElementalAction>().AddBlastGauge(iceBlastGaugePoint);
         }
+    }
+
+    private void OnEnable()
+    {
+        coll.enabled = true;
     }
 }

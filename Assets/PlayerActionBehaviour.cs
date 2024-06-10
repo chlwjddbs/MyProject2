@@ -21,7 +21,7 @@ public class PlayerActionBehaviour : StateMachineBehaviour
     {      
         if (animator.TryGetComponent<PlayerAnimControl>(out PlayerAnimControl player))
         {
-            if (player.player.isDeath)
+            if (Player.isDeath)
             {
                 return;
             }

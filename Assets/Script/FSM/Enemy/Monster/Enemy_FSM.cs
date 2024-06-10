@@ -127,7 +127,11 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     public Sound[] sounds;
     [SerializeField]protected GameObject audios;
     protected Dictionary<string, Sound> soundDic = new Dictionary<string, Sound>();
-   
+    [SerializeReference] protected string attackSound;
+    [SerializeReference] protected string moveSound;
+    [SerializeReference] protected string damagedSound;
+    [SerializeReference] protected string deathSound;
+
     protected virtual void Start()
     {
         //SetInitData();
@@ -136,18 +140,20 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
 
     protected virtual void Update()
     {
-        if (!isDeath)
+        if (isDeath)
         {
-            eStateMachine.Update(Time.deltaTime);
-            if (eStateMachine.AttackCoolTime <= AttackDelay)
-            {
-                eStateMachine.AttackTimeCount();
-            }
+            return;
+        }
 
-            if (chaseMode)
-            {
-                SearchChaseTarget();
-            }
+        eStateMachine.Update(Time.deltaTime);
+        if (eStateMachine.AttackCoolTime <= AttackDelay)
+        {
+            eStateMachine.AttackTimeCount();
+        }
+
+        if (chaseMode)
+        {
+            SearchChaseTarget();
         }
     }
 
@@ -160,8 +166,30 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     {
         return eStateMachine.ChangeState(newState);
     }
+    public void PlayESound(string soundName)
+    {
+        if (soundDic.TryGetValue(soundName, out Sound s))
+        {
+            s.source.Play();
+        }
+        else
+        {
+            Debug.Log($"{soundName} 사운드는 존재하지 않습니다.");
+        }
+    }
+    public void StopESound(string soundName)
+    {
+        if (soundDic.TryGetValue(soundName, out Sound s))
+        {
+            s.source.Stop();
+        }
+        else
+        {
+            Debug.Log($"{soundName} 사운드는 존재하지 않습니다.");
+        }
+    }
 
-    #region 행동
+    #region 행동 : LookRotate, Attack, Casting
     public virtual void LookRotate()
     {
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(TargetDir), Time.deltaTime * rotateSpeed);
@@ -178,30 +206,6 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
 
     }
     #endregion
-
-    public void PlayESound(string soundName)
-    {
-        if(soundDic.TryGetValue(soundName, out Sound s))
-        {
-            s.source.Play();
-        }
-        else
-        {
-            Debug.Log($"{soundName} 사운드는 존재하지 않습니다.");
-        }
-    }
-
-    public void StopESound(string soundName)
-    {
-        if (soundDic.TryGetValue(soundName, out Sound s))
-        {
-            s.source.Stop();
-        }
-        else
-        {
-            Debug.Log($"{soundName} 사운드는 존재하지 않습니다.");
-        }
-    }
 
     #region attackable
     //_attacker는 enemy를 공격한 대상이다. 현재는 enemy를 공격할 대상이 Player 밖에 없지만 추후 대상을 확장 됐을때를 대비해 미리 만들어둔다.
@@ -225,7 +229,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
             remainHealth -= _damage;
             Damaged();
             Debug.Log(remainHealth / maxHealth * 100 + " %");
-            //PlayEnemySound(damagedSound);
+            PlayESound(damagedSound);
 
             //Target이 null이 아니라는 것은 enemy의 DetectRange안에서 Target이 공격 한 상태이다.
             if (Target != null)
@@ -269,6 +273,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     {
         isDeath = true;
         eStateMachine.ChangeState(new DeathEState());
+        PlayESound(deathSound);
         searchPlayer.StopSearch();
         enemyMark.SetActive(false);
         hitBox.enabled = false;
@@ -485,7 +490,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     }
     #endregion
 
-    private void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         //Player와 충돌을 감지한 collider가 
         if (collision.transform.CompareTag("Player"))
@@ -500,15 +505,15 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
                 {
                     //처음 중돌한 대상은 저장하고 데미지를 준다.
                     attackedTargets.Add(collision.gameObject);
-                    if (collision.transform.TryGetComponent<PlayerStatus>(out PlayerStatus value))
+                    if (collision.transform.TryGetComponent<IAttackable>(out IAttackable value))
                     {
-                        value.TakeDamage(attackDamage);
-                        Debug.Log(value.remainHealth);
+                        value.TakeDamage(attackDamage,null);
                     }
                 }
             }
         }
-        else if (collision.transform.CompareTag("Obstacle"))
+
+        if (collision.transform.CompareTag("Obstacle"))
         {
             if (eStateMachine.CurrentState.GetType() == new RunawayEState().GetType())
             {
