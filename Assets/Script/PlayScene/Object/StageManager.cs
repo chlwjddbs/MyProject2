@@ -20,7 +20,7 @@ public class StageManager : MonoBehaviour
     public DropItemManager dropItemManager;
     public List<GameObject> startFieldItems;
 
-    public List<Enemy> stageEnemy;
+    public List<Enemy_FSM> stageEnemy;
     public List<Enemy> spawnEnemy;
 
     
@@ -45,6 +45,7 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    #region SetData
     public virtual void SetData()
     {
         SetPlayer();
@@ -85,7 +86,7 @@ public class StageManager : MonoBehaviour
     {
         //StageEnemy의 기본 세팅
     }
-
+    #endregion
     #region LoadData
     public virtual void LoadData()
     {
@@ -147,7 +148,7 @@ public class StageManager : MonoBehaviour
     {
         //StageItem 저장
     }
-    #endregion
+
     public void AutoSave()
     {
         gameData.userData.saveTime = DateTime.Now.ToString("yyyy-MM-dd [HH:mm]");
@@ -155,42 +156,43 @@ public class StageManager : MonoBehaviour
         SaveData();
         gameData.AutoSaveData();
     }
+    #endregion
 }
 
 
-        /*       
-        void SetData
-        if (GameData.instance.newGame)
-        {
-            StartStage();
-        }
-        else
-        {
-            LoadData();
-        }
+/*       
+void SetData
+if (GameData.instance.newGame)
+{
+    StartStage();
+}
+else
+{
+    LoadData();
+}
 
-        //플레이어 정보를 먼저 불러오고 아이템을 불러와야 플레이어 정보 세팅에 지장이 없음
-        player.GetComponent<PlayerStatus>().SetData();
-        Inventory.instance.SetData();
-        Equipment.instance.SetData();
-        SkillBook.instance.SetData();
-        GateManager.instence.SetData();
+//플레이어 정보를 먼저 불러오고 아이템을 불러와야 플레이어 정보 세팅에 지장이 없음
+player.GetComponent<PlayerStatus>().SetData();
+Inventory.instance.SetData();
+Equipment.instance.SetData();
+SkillBook.instance.SetData();
+GateManager.instence.SetData();
 
-        //로드시 남은 HP,MP를 불러오고 장비가 장착 되기 때문에 저장전보다 많은 HP가 생긴다.
-        //장비 장착이 끝나고 저장된 HP,MP로 돌려준다.
-        //코드 정렬 더 생각해보기.
-        if (!GameData.instance.newGame)
-        {
-            player.GetComponent<PlayerStatus>().remainHealth = dataManager.userData.remainHealth;
-            player.GetComponent<PlayerStatus>().playerStatusUI.SetHpBar();
-            player.GetComponent<PlayerStatus>().remainMana = dataManager.userData.remainMana;
-            player.GetComponent<PlayerStatus>().playerStatusUI.SetMpBar();        
-        }
-        else
-        {
-            AutoSave();
-        }
+//로드시 남은 HP,MP를 불러오고 장비가 장착 되기 때문에 저장전보다 많은 HP가 생긴다.
+//장비 장착이 끝나고 저장된 HP,MP로 돌려준다.
+//코드 정렬 더 생각해보기.
+if (!GameData.instance.newGame)
+{
+    player.GetComponent<PlayerStatus>().remainHealth = dataManager.userData.remainHealth;
+    player.GetComponent<PlayerStatus>().playerStatusUI.SetHpBar();
+    player.GetComponent<PlayerStatus>().remainMana = dataManager.userData.remainMana;
+    player.GetComponent<PlayerStatus>().playerStatusUI.SetMpBar();        
+}
+else
+{
+    AutoSave();
+}
 
-        Time.timeScale = 1;
-        dataManager.isSet = true;     
-        */
+Time.timeScale = 1;
+dataManager.isSet = true;     
+*/

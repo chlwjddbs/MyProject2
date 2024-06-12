@@ -28,98 +28,32 @@ public class IceElemental : Enemy_FSM
     [Header("iceBlast")]
     public IceBlast iceBlast;
     private Vector3 castingPos;
-    private int MaxGauge = 10;
+    private int MaxGauge = 100;
     private int blastGauge;
     public Teleport teleport;
-
-    protected override void Start()
-    {
-        SetData();
-    }
-
-    public override void LoadData(EnemyData _enemyData)
-    {
-        base.LoadData(_enemyData);
-        if (isDeath)
-        {
-            deathAction?.Invoke();
-        }
-    }
 
     public void SetAwake()
     {
         isAttackable = true;
         iceEffect.SetActive(true);
         enabled = true;
-        StartCoroutine(MutipleBoom());
+        StartCoroutine("MutipleBoom");
         castingPos = transform.position;
-    }
-
-    public override void SetData()
-    {
-        base.SetData();
-    }
-
-    public override void SetState()
-    {
-        base.SetState();
-        eStateMachine.RegisterEState(new CastEState());
-    }
-    public override void SetPool()
-    {
-        poolingManager = ObjectPoolingManager.instance;
-        poolingManager.RegisetPoolObj(iceBoom, new ObjectPool<GameObject>(CreateIceBoomPool, poolingManager.OnGet, poolingManager.OnRelease, poolingManager.OnDes));
-        poolingManager.RegisetPoolObj(iceBoomCircle, new ObjectPool<GameObject>(CreateIceBoomCirclePool, poolingManager.OnGet, poolingManager.OnRelease, poolingManager.OnDes));
-        iceBoomPool = poolingManager.FindPool(iceBoom.name);
-        iceBoomCirclePool = poolingManager.FindPool(iceBoomCircle.name);
-
-        for (int i = 0; i < 12; i++)
-        {
-            GameObject _iceBoom = CreateIceBoomPool();
-            iceBoomPool.Release(_iceBoom);
-            GameObject _iceBoomCircle = CreateIceBoomCirclePool();
-            iceBoomCirclePool.Release(_iceBoomCircle);
-        }
-    }
-
-    public GameObject CreateIceBoomPool()
-    {
-        GameObject _iceboom = Instantiate(iceBoom, support);
-        if(_iceboom.TryGetComponent<IceBoom>(out IceBoom boom))
-        {
-            boom.SetData(this);
-        }
-        return _iceboom;
-    }
-
-    public GameObject CreateIceBoomCirclePool()
-    {
-        GameObject _iceBoomCircle = Instantiate(iceBoomCircle, support);
-        return _iceBoomCircle;
-    }
-
-    public override void LookRotate()
-    {
-        //공격중에는 방향을 바꾸지 않는다.
-        if (eStateMachine.CurrentState.ToString() != new AttackEState().ToString())
-        {
-            base.LookRotate();
-        }
     }
 
     public override void Die()
     {
         base.Die();
+
         deathEffect.SetActive(true);
         iceEffect.SetActive(false);
         Destroy(deathEffect, 3f);
-        if (teleportGate != null)
-        {
-            teleportGate.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-            teleportGate.gateCoordinate = teleportGate.transform.position;
-            teleportGate.gameObject.SetActive(true);
-            teleportGate.OpenGate();
-        }
+
+        teleportGate.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        teleportGate.gateCoordinate = teleportGate.transform.position;
+        teleportGate.gameObject.SetActive(true);
+        teleportGate.OpenGate();
+
         StopAllCoroutines();
         iceBlast.StopSound();
         iceBlast.StopParticle();
@@ -146,6 +80,7 @@ public class IceElemental : Enemy_FSM
             iceBoolCount = 6;
         }
         #endregion
+
         if (eStateMachine.CurrentState.ToString() != new ChaseEState().ToString())
         {
             //캐스팅 도중 맞으면 아이스블라스트의 크기가 줄어든다.
@@ -153,6 +88,7 @@ public class IceElemental : Enemy_FSM
         }
     }
 
+    #region olaf spell : iceBoom, iceBlast
     IEnumerator MutipleBoom()
     {
         var wfs = new WaitForSeconds(.8f);
@@ -167,7 +103,7 @@ public class IceElemental : Enemy_FSM
             }
             yield return wfs;
 
-            PlayESound("olf_spawniceboom");
+            PlayESound("olaf_spawniceboom");
             yield return wfs1;
         }
     }
@@ -205,36 +141,25 @@ public class IceElemental : Enemy_FSM
         }
     }
 
-    public override void CastingAction()
-    {
-        //eStateMachine.ElapsedTime
-    }
-
-    public override void CastingStart()
-    {
-        (eStateMachine.CurrentState as CastEState).ChangeEAnime(EnemyState.Idle);
-        StartCoroutine(IceBlast());
-    }
-
     IEnumerator IceBlast()
     {
         teleport.SetTeleport();
 
         AttackCollider.enabled = false;
 
-        PlayESound("olf_telpoin");
+        PlayESound("olaf_telpoin");
 
         body.SetActive(false);
 
         yield return new WaitForSeconds(1.25f);
 
-        PlayESound("olf_telpoout");
+        PlayESound("olaf_telpoout");
 
         yield return new WaitForSeconds(0.9f);
 
         transform.position = castingPos;
         body.SetActive(true);
-        
+
         (eStateMachine.CurrentState as CastEState).ChangeEAnime(EnemyState.Casting);
 
         iceBlast.SetBlast();
@@ -261,6 +186,78 @@ public class IceElemental : Enemy_FSM
         yield return new WaitForSeconds(2f);
         iceBlast.gameObject.SetActive(false);
     }
+    #endregion
+
+    #region enemy actcion
+    public override void LookRotate()
+    {
+        //공격중에는 방향을 바꾸지 않는다.
+        if (eStateMachine.CurrentState.ToString() != new AttackEState().ToString())
+        {
+            base.LookRotate();
+        }
+    }
+    public override void CastingAction()
+    {
+        //eStateMachine.ElapsedTime
+    }
+    public override void CastingStart()
+    {
+        (eStateMachine.CurrentState as CastEState).ChangeEAnime(EnemyState.Idle);
+        StartCoroutine(IceBlast());
+    }
+    #endregion
+
+    #region Data Manager : set, save, load, pool
+    public override void LoadData(EnemyData _enemyData)
+    {
+        base.LoadData(_enemyData);
+        if (isDeath)
+        {
+            deathAction?.Invoke();
+        }
+    }
+    public override void SetData()
+    {
+        base.SetData();
+    }
+    public override void SetState()
+    {
+        base.SetState();
+        eStateMachine.RegisterEState(new CastEState());
+    }
+    public override void SetPool()
+    {
+        poolingManager = ObjectPoolingManager.instance;
+        poolingManager.RegisetPoolObj(iceBoom, new ObjectPool<GameObject>(CreateIceBoomPool, poolingManager.OnGet, poolingManager.OnRelease, poolingManager.OnDes));
+        poolingManager.RegisetPoolObj(iceBoomCircle, new ObjectPool<GameObject>(CreateIceBoomCirclePool, poolingManager.OnGet, poolingManager.OnRelease, poolingManager.OnDes));
+        iceBoomPool = poolingManager.FindPool(iceBoom.name);
+        iceBoomCirclePool = poolingManager.FindPool(iceBoomCircle.name);
+
+        for (int i = 0; i < 12; i++)
+        {
+            GameObject _iceBoom = CreateIceBoomPool();
+            iceBoomPool.Release(_iceBoom);
+            GameObject _iceBoomCircle = CreateIceBoomCirclePool();
+            iceBoomCirclePool.Release(_iceBoomCircle);
+        }
+    }
+    public GameObject CreateIceBoomPool()
+    {
+        GameObject _iceboom = Instantiate(iceBoom, support);
+        if (_iceboom.TryGetComponent<IceBoom>(out IceBoom boom))
+        {
+            boom.SetData(this);
+        }
+        return _iceboom;
+    }
+
+    public GameObject CreateIceBoomCirclePool()
+    {
+        GameObject _iceBoomCircle = Instantiate(iceBoomCircle, support);
+        return _iceBoomCircle;
+    }
+    #endregion
 
     protected override void OnCollisionEnter(Collision collision)
     {
@@ -280,7 +277,7 @@ public class IceElemental : Enemy_FSM
                     if (collision.transform.TryGetComponent<IAttackable>(out IAttackable value))
                     {
                         value.TakeDamage(attackDamage,null);
-                        PlayESound("olf_hit");
+                        PlayESound("olaf_hit");
                     }
                 }
             }

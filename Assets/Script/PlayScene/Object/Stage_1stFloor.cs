@@ -5,12 +5,12 @@ using UnityEngine.AI;
 
 public class Stage_1stFloor : StageManager
 {   
-    public Enemy Olaf;
-    public Enemy_FSM Gubne;
+    //public Enemy_FSM Olaf;
+    //public Enemy_FSM Gubne;
 
     public Area_C_Gimmick c_Gimmick;
 
-    public List<Enemy_FSM> testSaveLoad = new List<Enemy_FSM>();
+    //public List<Enemy_FSM> testSaveLoad = new List<Enemy_FSM>();
 
     public override void NewStage()
     {
@@ -27,10 +27,14 @@ public class Stage_1stFloor : StageManager
             stageEnemy[i].SetData();
         }
 
+        /*
         for (int i = 0; i < testSaveLoad.Count; i++)
         {
             testSaveLoad[i].SetData();
+            Olaf.SetData();
+            Gubne.SetData();
         }
+        */
     }
 
     public override void SaveData()
@@ -45,25 +49,11 @@ public class Stage_1stFloor : StageManager
         {
             try
             {
-                gameData.userData.eDatas_1F[i] = stageEnemy[i].SaveState();
+                gameData.userData.eDatas_1F[i] = stageEnemy[i].SaveData();
             }
             catch
             {
-                gameData.userData.eDatas_1F.Add(stageEnemy[i].SaveState());
-            }
-        }
-
-        for (int i = 0; i < testSaveLoad.Count; i++)
-        {
-            try
-            {
-                gameData.userData.eDatas_1F_skeleton[i] = testSaveLoad[i].SaveData();
-
-            }
-            catch
-            {
-
-                gameData.userData.eDatas_1F_skeleton.Add(testSaveLoad[i].SaveData());
+                gameData.userData.eDatas_1F.Add(stageEnemy[i].SaveData());
             }
         }
     }
@@ -108,31 +98,22 @@ public class Stage_1stFloor : StageManager
     {
         base.LoadData();
         c_Gimmick.LoadData();
-
-        /*
-        Olaf.LoadState(0);
-        Gubne.LoadState(0);
-
-        for (int i = 0; i < spawnEnemy.Count; i++)
-        {
-            spawnEnemy[i].LoadState(i);
-        }
-        */
     }
 
     public override void LoadEnemy()
     {
-        for (int i = 0; i < stageEnemy.Count; i++)
+        for (int i = 0; i < gameData.userData.eDatas_1F.Count; i++)
         {
-            stageEnemy[i].LoadState(gameData.userData.eDatas_1F[i]);
-            stageEnemy[i].isSet = true;
+            stageEnemy[i].LoadData(gameData.userData.eDatas_1F[i]);
         }
 
+        /*
         for (int i = 0; i < testSaveLoad.Count; i++)
         {
             testSaveLoad[i].SetData();
             testSaveLoad[i].LoadData(gameData.userData.eDatas_1F_skeleton[i]);
         }
+        */
     }
 
     public override void LoadItem()

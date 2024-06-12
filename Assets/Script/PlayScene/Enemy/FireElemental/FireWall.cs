@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FireWall : MonoBehaviour
 {
-    private PlayerStatus playerStatus;
+    private Player player;
     public float fireDageme = 10f;
     private float countdown = 1f;
     private float attackCount = 1f;
@@ -13,7 +13,7 @@ public class FireWall : MonoBehaviour
 
     private ParticleSystem fireWall;
 
-    public FireElemental fireElemental;
+    //public FireElemental fireElemental;
 
     public bool activeWall = false;
 
@@ -41,12 +41,12 @@ public class FireWall : MonoBehaviour
     {
         if (activeWall)
         {
-            if (playerStatus != null)
+            if (player != null)
             {
                 attackCount -= Time.deltaTime;
                 if (attackCount <= 0)
                 {
-                    playerStatus.TakeDamage(fireDageme);
+                    player.TakeDamage(fireDageme);
                     attackCount = countdown;
                 }
             }
@@ -126,8 +126,11 @@ public class FireWall : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            playerStatus = other.GetComponent<PlayerStatus>();
-            playerStatus.TakeDamage(fireDageme);
+            if (other.TryGetComponent<Player>(out Player _player))
+            {
+                player = _player;
+                _player.TakeDamage(fireDageme);
+            }
         }
     }
 
@@ -135,7 +138,7 @@ public class FireWall : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playerStatus = null;        
+            player = null;        
         }
     }
 }

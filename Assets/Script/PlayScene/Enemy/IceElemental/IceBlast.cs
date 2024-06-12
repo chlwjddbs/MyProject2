@@ -71,8 +71,12 @@ public class IceBlast : MonoBehaviour
         
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<PlayerStatus>().TakeDamage(AttackDamage);
-            Debug.Log("blast");
+            if(other.TryGetComponent<IAttackable>(out IAttackable value))
+            {
+                value.TakeDamage(AttackDamage,null);
+                Debug.Log("blast");
+            }
+            
         }
     }
 }

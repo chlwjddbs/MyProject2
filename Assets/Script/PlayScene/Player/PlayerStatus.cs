@@ -397,7 +397,7 @@ public class PlayerStatus : MonoBehaviour , ISlow_StatusEffect
 
         stausUI?.Invoke();
 
-        GetComponentInChildren<Weapon>().SetDamage();
+        //GetComponentInChildren<Weapon>().SetDamage();
     }
 
     public void Equip(int _equipType , EquipItem equipItem)

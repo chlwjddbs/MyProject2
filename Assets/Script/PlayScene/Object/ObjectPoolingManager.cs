@@ -21,8 +21,6 @@ public class ObjectPoolingManager : MonoBehaviour
 
     public static ObjectPoolingManager instance;
 
-    public PlayerStatus test;
-
     private void Awake()
     {
         if(instance != null)

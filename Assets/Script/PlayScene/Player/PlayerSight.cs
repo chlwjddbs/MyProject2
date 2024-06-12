@@ -116,7 +116,7 @@ public class PlayerSight : MonoBehaviour
                         //리스트에 추가되지 않은 타겟이면 리스트에 추가하고 랜더러를 켜준다.
                         if (!viewTarget.Contains(target))
                         {
-                            if(target.TryGetComponent<IRenderer>(out IRenderer value))
+                            if (target.TryGetComponent<IRenderer>(out IRenderer value))
                             {
                                 value.OnRenderBox();
                             }

@@ -10,11 +10,13 @@ public class GateManager : MonoBehaviour
     public class GateInfo
     {
         public string gateName;
+        public int gateNum;
         public Vector3 coordinate;
         public bool isActive;
-        public GateInfo(string _gateName, Vector3 _coordinate, bool _isActive = false)
+        public GateInfo(string _gateName, int _gateNum, Vector3 _coordinate, bool _isActive = false)
         {
             gateName = _gateName;
+            gateNum = _gateNum;
             coordinate = _coordinate;
             isActive = _isActive;
         }
@@ -83,17 +85,6 @@ public class GateManager : MonoBehaviour
         teleportGateUIRect = teleportGateUI.GetComponent<RectTransform>();
         CloseUI();
 
-        /*
-        if (GameData.instance.newGame)
-        {
-            
-        }
-        else
-        {
-            LoadData();
-        }
-        */
-
         for (int i = 0; i < transform.childCount; i++)
         {
             if (transform.GetChild(i).TryGetComponent(out TeleportGate _gate))
@@ -107,15 +98,11 @@ public class GateManager : MonoBehaviour
 
     public void LoadData()
     {
-        foreach (var item in GameData.instance.userData.gateInfo)
+        foreach (var gateInfo in GameData.instance.userData.gateInfo)
         {
-            Debug.Log(item.gateName);
-        }
-        for (int i = 0; i < GameData.instance.userData.gateNum.Count; i++)
-        {
-            GateInfo gateInfo = GameData.instance.userData.gateInfo[i];
-            ActiveGateSlot(GameData.instance.userData.gateNum[i], gateInfo.gateName, gateInfo.coordinate, gateInfo.isActive);
-            gateList[i].LoadData();
+            Debug.Log(gateInfo.gateName);
+            ActiveGateSlot(gateInfo.gateNum, gateInfo.gateName, gateInfo.coordinate, gateInfo.isActive);
+            gateList[gateInfo.gateNum].LoadData();
         }
     }
 
@@ -199,7 +186,7 @@ public class GateManager : MonoBehaviour
     //GateManager에서 관리되고 있는 게이트들이 사용 가능한 상태가 되었을때 플레이어에게 UI를 제공한다.
     public void ActiveGateSlot(int _gateNum, string _gateName, Vector3 _gateCoordinate, bool _isAcive = false)
     {
-        gateDic.Add(_gateNum, new GateInfo(_gateName, _gateCoordinate, _isAcive));
+        gateDic.Add(_gateNum, new GateInfo(_gateName, _gateNum ,_gateCoordinate, _isAcive));
         Debug.Log(GateListUI.GetChild(_gateNum));
         GateListUI.GetChild(_gateNum).gameObject.SetActive(true);
         GateListUI.GetChild(_gateNum).gameObject.GetComponent<GateSlot>().ActiveGate(_gateNum, _gateName, _gateCoordinate, this);

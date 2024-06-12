@@ -51,7 +51,7 @@ public class IceElementalTrigger : MonoBehaviour
             obstacleWall.SetActive(true);
             IceElemental.iceEffect.SetActive(true);
             //IceElemental.isActive = true;
-            IceElemental.PlayESound("encounterOlf");
+            IceElemental.PlayESound("encounterOlaf");
             //IceElemental.GetComponent<IceElementalAction>().enabled = true;
             Snow.Play();
             awakeTrigger.enabled = false;

@@ -161,6 +161,8 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
 
         if (isDeath)
         {
+            pStateMachine.UpdateElapsedTime();
+            pStateMachine.states[new DeathPState().ToString()].OnUpdate();
             return;
         }
 
@@ -270,7 +272,6 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
         ChangeState(new DeathPState());
         isDeath = true;
         hitBox.enabled = false;
-        StartCoroutine("GotoGameOverScene");
     }
 
     #region Check : Tag State Restriction
@@ -578,7 +579,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
         pStateMachine.RegisterPState(new AttackPState());
         pStateMachine.RegisterPState(new CastPState());
         pStateMachine.RegisterPState(new ActionPState());
-        
+        pStateMachine.RegisterPState(new DeathPState());
     }
 
     public void SetValue()
@@ -630,7 +631,11 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
         playerLv = dataManager.userData.level;
         currentExp = dataManager.userData.currentExp;
 
-        for (int i = 0; i < playerLv; i++)
+        //레벨 1때는 성장 스텟이 존재하지 않는다.
+        //int = 0 부터면 불러오기 시 for문이 한번 돌기 때문에 계수가 있는 스텟은 0이 들어가면 0으로 들어오지만
+        //고정 성장치를 가지는 스텟은 0이 들어가면 0->1레벨로 상승한걸로 간주하여 성장 스텟이 들어온다.
+        //int = 1부터해서 게임 불러오기시에 0레벨 성장을 막아준다.
+        for (int i = 1; i < playerLv; i++)
         {
             baseDamage += i * attackCoefficient;
             baseDefence += defenceCoefficient;

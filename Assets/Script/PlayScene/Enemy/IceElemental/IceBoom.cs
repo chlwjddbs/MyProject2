@@ -72,14 +72,15 @@ public class IceBoom : MonoBehaviour
             iceElemental.PlayESound("iceBoom");
             coll.enabled = false;
             other.GetComponent<IAttackable>().TakeDamage(attackDamage,null);
+            iceElemental.AddBlastGauge(iceBlastGaugePoint);
 
+            /*
             if (iceElemental == null)
             {
                 int searchInt = GetComponentsInParent<Transform>().Length - 1;
                 //GetComponentInParent<IceElemental2>().AddBlastGauge(iceBlastGaugePoint);
                 if (Search(GetComponentsInParent<Transform>()[searchInt].gameObject))
-                {
-                    iceElemental.AddBlastGauge(iceBlastGaugePoint);
+                {               
                     bfsQueue.Clear();
                     visitSequence.Clear();
                 }
@@ -89,6 +90,7 @@ public class IceBoom : MonoBehaviour
                 }
                 //iceElemental.GetComponent<IceElementalAction>().AddBlastGauge(iceBlastGaugePoint);
             }
+            */
         }
     }
 

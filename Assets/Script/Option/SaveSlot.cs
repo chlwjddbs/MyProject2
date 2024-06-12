@@ -119,7 +119,12 @@ public class SaveSlot : MonoBehaviour
         dataManager.slotName = "";
         //dataManager.currentSlot = -1;
         userData = new UserData();
-        
+
+        btColor.normalColor = nomalColor;
+        btColor.highlightedColor = highlightedColor;
+        btColor.selectedColor = nomalColor;
+        mButton.colors = btColor;
+
         savedTimeText.text = LocalizationSettings.StringDatabase.GetLocalizedString("SaveInfo", "EmptySlot");
         gameDataText.text = LocalizationSettings.StringDatabase.GetLocalizedString("SaveInfo", "EmptySlot");
     }

@@ -154,32 +154,6 @@ public class FireElemental : Enemy_FSM
         AudioManager.instance.PlayBGM("PlayScene_Floor_1", 1f);
     }
 
-    public override void LoadData(Enemy_FSM.EnemyData _enemyData)
-    {
-        enemyData = _enemyData;
-
-        eStateMachine.LoadData(enemyData.currentState, enemyData.attackCoolTime);
-
-        transform.rotation = enemyData.enemyQuat;
-
-        if (enemyData.isDeath)
-        {
-            isDeath = enemyData.isDeath;
-            searchPlayer.StopSearch();
-            enemyMark.SetActive(false);
-            remainHealth = 0;
-            hitBox.enabled = false;
-            attackCollider.enabled = false;          
-            FireAura.Stop();
-            gameObject.SetActive(false);
-            return;
-        }
-
-        isAttackable = enemyData.isAttackable;        
-        remainHealth = enemyData.remainHealth;
-        previousDamage = enemyData.previousDamage;
-    }
-
     public void BurnExplosion()
     {
         StartCoroutine("SpawnBurn");
@@ -238,5 +212,31 @@ public class FireElemental : Enemy_FSM
         }
 
         burnCount = 0;
+    }
+
+    public override void LoadData(Enemy_FSM.EnemyData _enemyData)
+    {
+        enemyData = _enemyData;
+        isDeath = enemyData.isDeath;
+
+        eStateMachine.LoadData(enemyData.currentState, enemyData.attackCoolTime);
+
+        transform.rotation = enemyData.enemyQuat;
+
+        if (enemyData.isDeath)
+        {
+            searchPlayer.StopSearch();
+            enemyMark.SetActive(false);
+            remainHealth = 0;
+            hitBox.enabled = false;
+            attackCollider.enabled = false;
+            FireAura.Stop();
+            gameObject.SetActive(false);
+            return;
+        }
+
+        isAttackable = enemyData.isAttackable;
+        remainHealth = enemyData.remainHealth;
+        previousDamage = enemyData.previousDamage;
     }
 }

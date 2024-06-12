@@ -8,7 +8,15 @@ public class UICheck : MonoBehaviour//, IPointerExitHandler, IPointerEnterHandle
     private Player player;
     private void Awake()
     {
-        player = GameObject.Find("ThePlayer").GetComponent<Player>();
+        GameObject findPlayer = GameObject.Find("ThePlayer");
+        if (findPlayer != null)
+        {
+            player = findPlayer.GetComponent<Player>();
+        }
+        else
+        {
+            Debug.Log("현재 Scene에 Player가 없습니다.");
+        }
     }
     
     private void Update()

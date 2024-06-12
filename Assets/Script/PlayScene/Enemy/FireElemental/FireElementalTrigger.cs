@@ -9,6 +9,7 @@ public class FireElementalTrigger : MonoBehaviour
     public ParticleSystem FireAura;
     public FireElemental fireElemental;
     public SetCursorImage cursorAction;
+    public GameObject spawnTrigger;
 
     public List<BoxCollider> gate;
 
@@ -113,6 +114,7 @@ public class FireElementalTrigger : MonoBehaviour
             Obstacle.SetActive(false);
             OpenTheGate();
             enabled = false;
+            spawnTrigger.SetActive(false);
         }
     }
 }

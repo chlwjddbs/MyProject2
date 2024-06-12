@@ -113,9 +113,9 @@ public class RotateAroundBurn : MonoBehaviour
         if (other.transform.CompareTag("Player"))
         {
             AudioManager.instance.PlayExternalSound("burnHit");
-            if(other.TryGetComponent<PlayerStatus>(out PlayerStatus value))
+            if(other.TryGetComponent<IAttackable>(out IAttackable value))
             {
-                value.TakeDamage(attackDamage);
+                value.TakeDamage(attackDamage,null);
                 //other.GetComponent<IAttackable>().TakeDamage(attackDamage, null);
                 ExplosionEffect();
             }
@@ -130,7 +130,10 @@ public class RotateAroundBurn : MonoBehaviour
             if (countdown <= 0)
             {
                 AudioManager.instance.PlayExternalSound("burnHit");
-                other.GetComponent<PlayerStatus>().TakeDamage(attackDamage);
+                if (other.TryGetComponent<IAttackable>(out IAttackable value))
+                {
+                    value.TakeDamage(attackDamage,null);
+                }
                 ExplosionEffect();
                 countdown = resetcount;
             }

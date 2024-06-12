@@ -284,12 +284,18 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
 
     public void OnRenderBox()
     {
-        renderBox.SetActive(true);
+        if (!renderBox.activeSelf)
+        {
+            renderBox.SetActive(true);
+        }
     }
 
     public void OffRenderBox()
     {
-        renderBox.SetActive(false);
+        if (renderBox.activeSelf)
+        {
+            renderBox.SetActive(false);
+        }
     }
     #endregion
 
@@ -379,6 +385,10 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
 
         foreach (var s in sounds)
         {
+            if(gameObject.name == "Olaf")
+            {
+                Debug.Log(s.name);
+            }
             s.source = audios.AddComponent<AudioSource>();
             //Sound 클래스를 통해 만든 사운드 정보를 가져와 AudioSource에 세팅해 준다.
             //Sound 클래스에는 재생할 오디오 clip과 
@@ -448,6 +458,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     public virtual void LoadData(Enemy_FSM.EnemyData _enemyData)
     {
         enemyData = _enemyData;
+        isDeath = enemyData.isDeath;
 
         eStateMachine.LoadData(enemyData.currentState, enemyData.attackCoolTime);
 
@@ -456,8 +467,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         
         if (enemyData.isDeath)
         {
-            //Die();
-            isDeath = enemyData.isDeath;
+            //Die();       
             searchPlayer.StopSearch();
             enemyMark.SetActive(false);
             remainHealth = 0;

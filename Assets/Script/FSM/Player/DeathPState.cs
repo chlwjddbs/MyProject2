@@ -5,17 +5,20 @@ using UnityEngine;
 public class DeathPState : PlayerStates
 {
     private float gameover;
+    private bool changeScene;
 
     public override void Initialize()
     {
         base.Initialize();
-        gameover = 3f;
+        pState = PlayerState.Death;
+        gameover = 2f;
     }
     public override void OnUpdate()
     {
-        if(stateMachine.ElapsedTime >= gameover)
+        if(stateMachine.ElapsedTime >= gameover && !changeScene)
         {
-            GameData.instance.fader.SceneLoad("GameOverScene");
+            changeScene = true;
+            GameData.instance.fader.SceneLoad("GameOverScene"); 
         }
     }
 }

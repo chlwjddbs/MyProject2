@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
-    public PlayerStatus playerStatus;
+    //public PlayerStatus playerStatus;
     //public PlayerController playerController;
 
     public Player player;
@@ -71,6 +71,7 @@ public class Weapon : MonoBehaviour
         //SetAttackDamage();
     }
 
+    /*
     public void SetSkillDage(float _addDage, bool _multiple)
     {
         isDamage = true;
@@ -89,7 +90,7 @@ public class Weapon : MonoBehaviour
     {
         attackDamage = playerStatus.currentDamage;
     }
-
+    */
     /*
     private void OnTriggerEnter(Collider other)
     {

@@ -21,5 +21,6 @@ public class AttackPState : PlayerStates
     public override void OnExit()
     {
         player.AttackCollider.enabled = false;
+        player.AttackedTargets.Clear();
     }
 }
