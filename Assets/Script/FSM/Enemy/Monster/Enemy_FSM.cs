@@ -35,6 +35,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     protected EnemyStateMachine eStateMachine;
     protected Animator eAnime;
     protected NavMeshAgent agent;
+    public EnemyStatusUI eStatusUI;
 
     [HideInInspector] public SearchPlayer searchPlayer;
 
@@ -103,6 +104,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     public float RemainHealth { get { return remainHealth; } }
     public float DefencePoint { get { return defencePoint; } }
     public Collider HitBox { get { return hitBox; } }
+
     #endregion
 
     [Header("Patrol Info")]
@@ -146,6 +148,8 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         }
 
         eStateMachine.Update(Time.deltaTime);
+        eStatusUI?.Updata();
+
         if (eStateMachine.AttackCoolTime <= AttackDelay)
         {
             eStateMachine.AttackTimeCount();
@@ -228,6 +232,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         {
             remainHealth -= _damage;
             Damaged();
+            eStatusUI.SetHpBar(true);
             Debug.Log(remainHealth / maxHealth * 100 + " %");
             PlayESound(damagedSound);
 
@@ -278,6 +283,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         enemyMark.SetActive(false);
         hitBox.enabled = false;
         attackCollider.enabled = false;
+        eStatusUI.EnemyDeath();
         //자신을 죽인 타겟에게 경험치를 주도록 구현
         //ex) Die로부터 자신을 죽은 타겟을 받아와 해당 타겟의 경험치를 상승시키도록 한다.
     }
@@ -342,7 +348,8 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         agent = GetComponent<NavMeshAgent>();
         searchPlayer = GetComponent<SearchPlayer>();
         hitBox = GetComponent<CapsuleCollider>();
-
+        eStatusUI = GetComponentInChildren<EnemyStatusUI>();
+      
         SetState();
         SetValue();
         SetPool();
@@ -369,6 +376,8 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         remainHealth = maxHealth;
         StartPoint = transform.position;
         agent.speed = moveSpeed;
+
+        eStatusUI?.SetData(this);
     }
 
     public virtual void SetPool()
