@@ -50,14 +50,7 @@ public class PlayerSight : MonoBehaviour
     {
         viewTargetAdd();      //범위 내 적 등록하기
         viewTargetRemove();   //범위 외 적 삭제하기
-        //VisibleWall();        //벽 보기 : 시야에 들어온 벽만 보기
-        //VisibleWall_2();
-        //VisibleWall_3();
-        //VisibleUnderWall(); //UnderWall 보기
         VisibleParticle();
-        //SightWall();        //벽 보기 : 시야를 가리는 벽 반투명 처리하기
-        //SightWall_2();
-        //HideWall();
         VisibleObject();
     }
 
@@ -333,6 +326,8 @@ public class PlayerSight : MonoBehaviour
         }
     }
     */
+
+    #region 벽 관련 스크립트는 DrawWaill에서 처리하도록 변경
     public void VisibleWall_3()
     {
         //플레이어기준으로 sightRaduis크기의 OverlapSphere를 그려 그 안에 들어온 벽들을 찾는다.
@@ -406,6 +401,77 @@ public class PlayerSight : MonoBehaviour
             }
         }
     }
+    public void HideWall()
+    {
+        //Debug.DrawRay(transform.position + sigthOffset, Vector3.forward * 123f, Color.blue, 1f);
+        //플레이어기준으로 sightRaduis크기의 OverlapSphere를 그려 그 안에 들어온 checkWall들을 찾는다.
+        Collider[] checkWalls = Physics.OverlapSphere(transform.position, sightRaduis, 1 << LayerMask.NameToLayer("CheckWall"));
+
+        for (int i = 0; i < checkWalls.Length; i++)
+        {
+            //감지된 checkWall
+            Transform checkWall = checkWalls[i].transform;
+
+            //감지된 checkWall의 부모가 현재 시야내에 들어온 목록에 있다면
+            if (visibleWalls.Contains(checkWall.parent))
+            {
+                //checkWall 방향 구하기
+                Vector3 wallDir = (checkWall.position - (transform.position + sigthOffset)).normalized;
+
+                //플레이어와 checkWall의 거리
+                float wallDis = Vector3.Distance(transform.position + sigthOffset, checkWall.transform.position);
+
+                //checkWall 방향으로 레이를 쏴서
+                RaycastHit[] hit = Physics.RaycastAll(transform.position + sigthOffset, wallDir, wallDis, wallsMask);
+
+                //아무것도 맞지 않았다면
+                //(wllsMask, 즉 실제 벽에 레이가 닿지 않았다는것은 플레이어가 벽 뒤에서 바라 봤기 때문에 레이가 벽까지 닿지 않은 것임으로 벽을 반투명처리해준다.)
+                if (hit.Length == 0)
+                {
+                    if (!checkWall.GetComponentInParent<DrawWalls>().isHide)
+                    {
+                        //벽을 반투명하게 바꿔준다.
+                        checkWall.GetComponentInParent<DrawWalls>().isHide = true;
+                    }
+                }
+                else
+                {
+                    //하나 이상 레이에 들어오면 들어온 벽이 무엇인지 판별해 준다.
+                    for (int j = 0; j < hit.Length; j++)
+                    {
+                        //만약 hit[j].transform.gameObject가 checkWall의 부모라면 벽의 정면을 보고 있는것이기 때문에 벽을 불투명하게 한다.
+                        if (hit[j].transform.gameObject == checkWall.parent.gameObject)
+                        {
+                            if (checkWall.GetComponentInParent<DrawWalls>().isHide)
+                            {
+                                //벽을 반투명하게 바꿔준다.
+                                checkWall.GetComponentInParent<DrawWalls>().isHide = false;
+                            }
+                            break;
+                        }
+                        //checkWall의 부모가 걸리지 않았다면 벽의 뒤를 보고 있고, 다른 벽에 걸린것이지만 시야내에 들어온 벽이기 때문에 반투명 처리를 해준다.
+                        else if (j == hit.Length - 1)
+                        {
+                            if (!checkWall.GetComponentInParent<DrawWalls>().isHide)
+                            {
+                                //벽을 반투명하게 바꿔준다.
+                                checkWall.GetComponentInParent<DrawWalls>().isHide = true;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (!checkWall.GetComponentInParent<DrawWalls>().isHide)
+                {
+                    //벽을 반투명하게 바꿔준다.
+                    checkWall.GetComponentInParent<DrawWalls>().isHide = true;
+                }
+            }
+        }
+    }
+    #endregion
 
     public void VisibleObject()
     {
@@ -651,76 +717,7 @@ public class PlayerSight : MonoBehaviour
     }
     */
 
-    public void HideWall()
-    {
-        //Debug.DrawRay(transform.position + sigthOffset, Vector3.forward * 123f, Color.blue, 1f);
-        //플레이어기준으로 sightRaduis크기의 OverlapSphere를 그려 그 안에 들어온 checkWall들을 찾는다.
-        Collider[] checkWalls = Physics.OverlapSphere(transform.position, sightRaduis, 1 << LayerMask.NameToLayer("CheckWall"));
-
-        for (int i = 0; i < checkWalls.Length; i++)
-        {
-            //감지된 checkWall
-            Transform checkWall = checkWalls[i].transform;
-
-            //감지된 checkWall의 부모가 현재 시야내에 들어온 목록에 있다면
-            if (visibleWalls.Contains(checkWall.parent))
-            {
-                //checkWall 방향 구하기
-                Vector3 wallDir = (checkWall.position - (transform.position + sigthOffset)).normalized;
-
-                //플레이어와 checkWall의 거리
-                float wallDis = Vector3.Distance(transform.position + sigthOffset, checkWall.transform.position);
-
-                //checkWall 방향으로 레이를 쏴서
-                RaycastHit[] hit = Physics.RaycastAll(transform.position + sigthOffset, wallDir, wallDis, wallsMask);
-                
-                //아무것도 맞지 않았다면
-                //(wllsMask, 즉 실제 벽에 레이가 닿지 않았다는것은 플레이어가 벽 뒤에서 바라 봤기 때문에 레이가 벽까지 닿지 않은 것임으로 벽을 반투명처리해준다.)
-                if (hit.Length == 0)
-                {
-                    if (!checkWall.GetComponentInParent<DrawWalls>().isHide)
-                    {
-                        //벽을 반투명하게 바꿔준다.
-                        checkWall.GetComponentInParent<DrawWalls>().isHide = true;
-                    }
-                }
-                else
-                {
-                    //하나 이상 레이에 들어오면 들어온 벽이 무엇인지 판별해 준다.
-                    for (int j = 0; j < hit.Length; j++)
-                    {
-                        //만약 hit[j].transform.gameObject가 checkWall의 부모라면 벽의 정면을 보고 있는것이기 때문에 벽을 불투명하게 한다.
-                        if (hit[j].transform.gameObject == checkWall.parent.gameObject)
-                        {
-                            if (checkWall.GetComponentInParent<DrawWalls>().isHide)
-                            {
-                                //벽을 반투명하게 바꿔준다.
-                                checkWall.GetComponentInParent<DrawWalls>().isHide = false;
-                            }
-                            break;
-                        }
-                        //checkWall의 부모가 걸리지 않았다면 벽의 뒤를 보고 있고, 다른 벽에 걸린것이지만 시야내에 들어온 벽이기 때문에 반투명 처리를 해준다.
-                        else if (j == hit.Length - 1)
-                        {
-                            if (!checkWall.GetComponentInParent<DrawWalls>().isHide)
-                            {
-                                //벽을 반투명하게 바꿔준다.
-                                checkWall.GetComponentInParent<DrawWalls>().isHide = true;
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (!checkWall.GetComponentInParent<DrawWalls>().isHide)
-                {
-                    //벽을 반투명하게 바꿔준다.
-                    checkWall.GetComponentInParent<DrawWalls>().isHide = true;
-                }
-            }
-        }
-    }
+   
 
     //아이템 버리기
     public bool Dropable(Vector3 DropPos)
@@ -859,7 +856,7 @@ public class PlayerSight : MonoBehaviour
                     visibleWalls.Add(visibleWall.transform);
                     if (visibleWall.transform.TryGetComponent<DrawWalls>(out DrawWalls drawWall))
                     {
-                        drawWall.isDraw = true;
+                        drawWall.DrawWall();
                         drawWall.DrawMiniMap();
                     }
                 }

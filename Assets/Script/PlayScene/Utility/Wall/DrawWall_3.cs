@@ -22,11 +22,19 @@ public class DrawWall_3 : DrawWalls
     private PlayerSight player;
     private Vector3 sightOffset = new Vector3(0,2.5f,0);
     public Transform checkWall;
-    
+
+    private Vector3 playerDir;
+    private float playerDis;
+
 
     void Start()
     {
         player = GameObject.Find("ThePlayer").GetComponentInChildren<PlayerSight>();
+        //eraseTime = 0.1f;
+        UnderWall.enabled = false;
+        isDraw = false;
+        Wall.enabled = false;
+        Drawoverwall.SetActive(false);
 
         if (MiniMap != null)
         {
@@ -38,10 +46,9 @@ public class DrawWall_3 : DrawWalls
     void Update()
     {
         if (isDraw) 
-        {
-            countDonw = eraseTime;
+        {    
             CheckDrawWall();
-            DrawWall();
+            UnSightWall();
         }
         else
         {
@@ -54,25 +61,14 @@ public class DrawWall_3 : DrawWalls
         //EraseWall();
     }
 
-    public void DrawWall()
+    public override void DrawWall()
     {
-        //벽에 시야에서 벗어났다 다시 들어왔지만 아직 지워지지 않은 상태라면 eraseTime을 리셋 시켜주어야 한다.
-        if(isDraw && countDonw < eraseTime)
-        {
-            countDonw = eraseTime;
-            UnderWall.enabled = true;
-            //isErase = false;
-        }
-        if (isDraw && Wall.enabled == false)
-        {
-            countDonw = eraseTime;
-            //isErase = false;
+        isDraw = true;
+        countDonw = eraseTime;
+        if (Wall.enabled == false)
+        {   
             Wall.enabled = true;
             UnderWall.enabled = true;
-        }               
-        else if(!isDraw && Wall.enabled == true)
-        {
-            EraseWall();
         }
     }
 
@@ -82,13 +78,26 @@ public class DrawWall_3 : DrawWalls
         if (Wall.enabled)
         {
             countDonw -= Time.deltaTime;
+            
             if (countDonw <= 0)
             {
+                Debug.Log(transform.name);
                 player.visibleWalls.Remove(transform);
                 UnderWall.enabled = false;
-                isDraw = false;
                 Wall.enabled = false;
                 Drawoverwall.SetActive(false);              
+            }
+        }
+    }
+
+    public void UnSightWall()
+    {
+        if (!Physics.Raycast(transform.position, playerDir, playerDis, 1 << 10))
+        {
+            if (player.visibleWalls.Contains(transform))
+            {
+                isDraw = false;
+                countDonw = eraseTime;
             }
         }
     }
@@ -108,28 +117,15 @@ public class DrawWall_3 : DrawWalls
         }
     }
 
-    public void DrawOverWall()
-    {
-        if (Drawoverwall != null)
-        {
-            if (isHide && Drawoverwall.activeSelf == true)
-            {
-                Drawoverwall.SetActive(false);
-            }
-            else if (!isHide && Drawoverwall.activeSelf == false)
-            {
-                Drawoverwall.SetActive(true);
-            }
-        }
-    }
+    
 
     public void CheckDrawWall()
     {
-        Vector3 dir = (player.transform.position + sightOffset - transform.position).normalized;
-        float dis = (player.transform.position + sightOffset - transform.position).magnitude;
+        playerDir = (player.transform.position + sightOffset - transform.position).normalized;
+        playerDis = (player.transform.position + sightOffset - transform.position).magnitude;
         
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, dir, dis, 1 << 13);
-
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, playerDir, playerDis, 1 << 13);
+        /*
         if (transform.name == "GreenWall135")
         {
             Debug.DrawRay(transform.position, dir * dis, Color.red, 1f);
@@ -139,13 +135,14 @@ public class DrawWall_3 : DrawWalls
                 Debug.Log(hits[i].transform.GetComponentInParent<DrawWalls>().name);
             }
         }
-
+        */
         if (hits.Length == 0)
         {
             if (wallMaterialNum == 1)
             {
                 wallMaterialNum = 0;
                 Wall.material = wallMaterials[0]; //불투명 메트리얼 적용
+                Drawoverwall.SetActive(true);
             }
         }
         else
@@ -156,6 +153,7 @@ public class DrawWall_3 : DrawWalls
                 {
                     wallMaterialNum = 1;
                     Wall.material = wallMaterials[1]; //반투명 메트리얼 적용
+                    Drawoverwall.SetActive(false);
                 }
             }
             else
@@ -164,6 +162,7 @@ public class DrawWall_3 : DrawWalls
                 {
                     wallMaterialNum = 0;
                     Wall.material = wallMaterials[0]; //불투명 메트리얼 적용
+                    Drawoverwall.SetActive(true);
                 }
             }
         }
@@ -201,4 +200,19 @@ public void ChangeWall()
         }
     }
 }
+
+public void DrawOverWall()
+    {
+        if (Drawoverwall != null)
+        {
+            if (isHide && Drawoverwall.activeSelf == true)
+            {
+                Drawoverwall.SetActive(false);
+            }
+            else if (!isHide && Drawoverwall.activeSelf == false)
+            {
+                Drawoverwall.SetActive(true);
+            }
+        }
+    }
 */

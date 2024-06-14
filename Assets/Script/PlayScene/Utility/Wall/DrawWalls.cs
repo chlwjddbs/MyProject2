@@ -25,5 +25,6 @@ public class DrawWalls : MonoBehaviour
     public float offWallCount = 1f;
     public float offCount;
 
+    public virtual void DrawWall() { }
     public virtual void DrawMiniMap() { }
 }
