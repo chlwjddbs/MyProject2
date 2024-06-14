@@ -52,21 +52,22 @@ public class PlayerSight : MonoBehaviour
         viewTargetRemove();   //범위 외 적 삭제하기
         //VisibleWall();        //벽 보기 : 시야에 들어온 벽만 보기
         //VisibleWall_2();
-        VisibleWall_3();
+        //VisibleWall_3();
         //VisibleUnderWall(); //UnderWall 보기
         VisibleParticle();
         //SightWall();        //벽 보기 : 시야를 가리는 벽 반투명 처리하기
         //SightWall_2();
-        HideWall();
+        //HideWall();
         VisibleObject();
     }
 
     private void LateUpdate()
     {
-        visibleWalls.Clear();
+        //visibleWalls.Clear();
         DrawSight(); //시야 그리기
     }
 
+    #region searcr target
     //적 탐지하기
     private void viewTargetAdd()
     {
@@ -190,6 +191,7 @@ public class PlayerSight : MonoBehaviour
         }
         */
     }
+    #endregion
 
     //시야에 들어온 벽만 보기
     /*
@@ -339,62 +341,65 @@ public class PlayerSight : MonoBehaviour
         for (int i = 0; i < targetWall.Length; i++)
         {
             //감지된 벽 구하기
-            Transform wall = targetWall[i].transform;
-
-            //감지된 벽의 방향 구하기
-            Vector3 wallDir = (wall.position - (transform.position + sigthOffset)).normalized;
-
-            //플레이어 시야 앵글안에 벽이 있다면
-            if (Vector3.Angle(transform.forward, wallDir) < sightAngle / 2)
+            if (targetWall[i].TryGetComponent<DrawWalls>(out DrawWalls drawWall))
             {
-                //플레이어와 벽의 거리
-                float wallDis = Vector3.Distance(transform.position + sigthOffset, wall.transform.position);
+                //Transform wall = targetWall[i].transform;
 
-                //벽과의 거리가 시야범위보다 멀어지면 시야에 들어오지 않았다고 판정한다.
-                if (wallDis > sightRange)
+                //감지된 벽의 방향 구하기
+                Vector3 wallDir = (drawWall.transform.position - (transform.position + sigthOffset)).normalized;
+
+                //플레이어 시야 앵글안에 벽이 있다면
+                if (Vector3.Angle(transform.forward, wallDir) < sightAngle / 2)
                 {
-                    if (wall.GetComponent<DrawWalls>().isDraw == true)
-                    {
-                        wall.GetComponent<DrawWalls>().isDraw = false;
-                    }
-                }
-                else
-                {
-                    //플레이어에서 벽 방향으로 벽과의 거리 만큼 레이캐스트를 쏴 벽을 받아온다.
-                    RaycastHit[] hit = Physics.RaycastAll(transform.position + sigthOffset, wallDir, wallDis, wallsMask);
+                    //플레이어와 벽의 거리
+                    float wallDis = Vector3.Distance(transform.position + sigthOffset, drawWall.transform.position);
 
-                    if (wall.name == "1")
+                    //벽과의 거리가 시야범위보다 멀어지면 시야에 들어오지 않았다고 판정한다.
+                    if (wallDis > sightRange)
                     {
-                        Debug.DrawRay(transform.position + sigthOffset, wallDir * wallDis, Color.blue, 1f);
-                        Debug.Log(hit.Length);
-                        Debug.Log(wallDis);
-                    }
-
-                    //충돌한 벽이 2개 이상일때
-                    if (hit.Length > 1f)
-                    {
-                        //충돌한 벽이 2개 이상이지만 시야에 들어온 벽이라면 보여준다.
-                        if (visibleWalls.Contains(wall))
+                        if (drawWall.isDraw == true)
                         {
-                            if (wall.GetComponent<DrawWalls>().isDraw == false)
-                            {
-                                wall.GetComponent<DrawWalls>().isDraw = true;
-                            }
-                        }
-                        else
-                        {
-                            if (wall.GetComponent<DrawWalls>().isDraw == true)
-                            {
-                                //시야에 들어오지 않은 벽의 매시랜더러를 꺼준다. (안보이게 함)
-                                wall.GetComponent<DrawWalls>().isDraw = false;
-                            }
+                            drawWall.isDraw = false;
                         }
                     }
                     else
                     {
-                        if (wall.GetComponent<DrawWalls>().isDraw == false)
+                        //플레이어에서 벽 방향으로 벽과의 거리 만큼 레이캐스트를 쏴 벽을 받아온다.
+                        RaycastHit[] hit = Physics.RaycastAll(transform.position + sigthOffset, wallDir, wallDis, wallsMask);
+
+                        if (drawWall.name == "1")
                         {
-                            wall.GetComponent<DrawWalls>().isDraw = true;
+                            Debug.DrawRay(transform.position + sigthOffset, wallDir * wallDis, Color.blue, 1f);
+                            Debug.Log(hit.Length);
+                            Debug.Log(wallDis);
+                        }
+
+                        //충돌한 벽이 2개 이상일때
+                        if (hit.Length > 1f)
+                        {
+                            //충돌한 벽이 2개 이상이지만 시야에 들어온 벽이라면 보여준다.
+                            if (visibleWalls.Contains(drawWall.transform))
+                            {
+                                if (drawWall.isDraw == false)
+                                {
+                                    drawWall.isDraw = true;
+                                }
+                            }
+                            else
+                            {
+                                if (drawWall.isDraw == true)
+                                {
+                                    //시야에 들어오지 않은 벽의 매시랜더러를 꺼준다. (안보이게 함)
+                                    drawWall.isDraw = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (drawWall.isDraw == false)
+                            {
+                                drawWall.isDraw = true;
+                            }
                         }
                     }
                 }
@@ -409,64 +414,67 @@ public class PlayerSight : MonoBehaviour
 
         for (int i = 0; i < objects.Length; i++)
         {
-            //감지된 오브젝트 구하기
-            Transform _object = objects[i].transform;
-
-            //감지된 오브젝트의 방향 구하기
-            Vector3 _objectDir = (_object.position - (transform.position + sigthOffset)).normalized;
-
-            //플레이어 시야 앵글안에 오브젝트이 있다면
-            if (Vector3.Angle(transform.forward, _objectDir) < sightAngle / 2)
+            if (objects[i].TryGetComponent<DrawOutline>(out DrawOutline visibleObj))
             {
-                //플레이어와 오브젝트의 거리
-                float _objectDis = Vector3.Distance(transform.position + sigthOffset, _object.transform.position);
+                //감지된 오브젝트 구하기
+                //Transform _object = objects[i].transform;
 
-                if (_objectDis > sightRange)
+                //감지된 오브젝트의 방향 구하기
+                Vector3 _objectDir = (visibleObj.transform.position - (transform.position + sigthOffset)).normalized;
+
+                //플레이어 시야 앵글안에 오브젝트이 있다면
+                if (Vector3.Angle(transform.forward, _objectDir) < sightAngle / 2)
                 {
-                    if (_object.GetComponent<DrawOutline>() != null)
-                    {
-                        _object.GetComponent<DrawOutline>().isDraw = true;
-                    }
+                    //플레이어와 오브젝트의 거리
+                    float _objectDis = Vector3.Distance(transform.position + sigthOffset, visibleObj.transform.position);
 
-                    if (_object.GetComponent<SetCursorImage>() != null)
+                    if (_objectDis > sightRange)
                     {
-                        _object.GetComponent<SetCursorImage>().isDraw = true;
-                    }
-                }
-                else
-                {
-                    //플레이어에서 오브젝트의 방향으로 오브젝트와의 거리 만큼 레이캐스트를 쏴 오브젝트를 받아온다.
-                    RaycastHit[] hit = Physics.RaycastAll(transform.position + sigthOffset, _objectDir, _objectDis, wallsMask);
-
-                    if (_object.name == "1")
-                    {
-                        Debug.DrawRay(transform.position + sigthOffset, _objectDir * _objectDis, Color.blue, 1f);
-                        Debug.Log(hit.Length);
-                    }
-
-                    //충돌한 벽이 1개 이상일때
-                    if (hit.Length >= 1f)
-                    {
-                        if (_object.GetComponent<DrawOutline>() != null)
+                        if (visibleObj != null)
                         {
-                            _object.GetComponent<DrawOutline>().isDraw = false;
+                            visibleObj.isDraw = true;
                         }
 
-                        if (_object.GetComponent<SetCursorImage>() != null)
+                        if (visibleObj != null)
                         {
-                            _object.GetComponent<SetCursorImage>().isDraw = false;
+                            visibleObj.isDraw = true;
                         }
                     }
                     else
                     {
-                        if (_object.GetComponent<DrawOutline>() != null)
+                        //플레이어에서 오브젝트의 방향으로 오브젝트와의 거리 만큼 레이캐스트를 쏴 오브젝트를 받아온다.
+                        RaycastHit[] hit = Physics.RaycastAll(transform.position + sigthOffset, _objectDir, _objectDis, wallsMask);
+
+                        if (visibleObj.name == "1")
                         {
-                            _object.GetComponent<DrawOutline>().isDraw = true;
+                            Debug.DrawRay(transform.position + sigthOffset, _objectDir * _objectDis, Color.blue, 1f);
+                            Debug.Log(hit.Length);
                         }
 
-                        if (_object.GetComponent<SetCursorImage>() != null)
+                        //충돌한 벽이 1개 이상일때
+                        if (hit.Length >= 1f)
                         {
-                            _object.GetComponent<SetCursorImage>().isDraw = true;
+                            if (visibleObj != null)
+                            {
+                                visibleObj.isDraw = false;
+                            }
+
+                            if (visibleObj != null)
+                            {
+                                visibleObj.isDraw = false;
+                            }
+                        }
+                        else
+                        {
+                            if (visibleObj != null)
+                            {
+                                visibleObj.isDraw = true;
+                            }
+
+                            if (visibleObj != null)
+                            {
+                                visibleObj.isDraw = true;
+                            }
                         }
                     }
                 }
@@ -737,6 +745,12 @@ public class PlayerSight : MonoBehaviour
         }
     }
 
+    public void DrawWalls()
+    {
+        VisibleWall_3();
+        HideWall();
+    }
+
     public Vector3 DirFromAngle(float angleDegrees, bool angleIsGlobal)
     {
 
@@ -831,30 +845,37 @@ public class PlayerSight : MonoBehaviour
         //angle각의 방향을 받아온다.
         Vector3 dir = DirFromAngle(globalAngle, true);
         RaycastHit hit;
-       // List<Transform> checkList = new List<Transform>();
+        // List<Transform> checkList = new List<Transform>();
 
-        //각 방향으로 레이를 쏘아 wallMask가 히트 되었다면
+        //각 방향으로 레이를 쏘아 wallMask가 히트 되었고
         if (Physics.Raycast(transform.position + drawOffset, dir, out hit, sightRaduis, wallsMask))
         {
-            //보이는 벽에 추가해준다.
-            if (!visibleWalls.Contains(hit.transform))
+            RaycastHit visibleWall;
+            //히트된 Wall이 sightRange 범위내에 있으면 보이는 벽으로 판단한다.
+            if (Physics.Raycast(transform.position + drawOffset, dir, out visibleWall, sightRange, wallsMask))
             {
-                visibleWalls.Add(hit.transform);
+                if (!visibleWalls.Contains(visibleWall.transform))
+                {
+                    visibleWalls.Add(visibleWall.transform);
+                    if (visibleWall.transform.TryGetComponent<DrawWalls>(out DrawWalls drawWall))
+                    {
+                        drawWall.isDraw = true;
+                        drawWall.DrawMiniMap();
+                    }
+                }
             }
-                //hit.transform.GetComponent<MeshRenderer>().enabled = false;
 
-                //hit된 벽의 내용을 저장한다.
-                return new ViewCastInfo(true, hit.point, hit.distance, globalAngle, hit.transform);
+            //hit.transform.GetComponent<MeshRenderer>().enabled = false;
+
+            //hit된 벽의 내용을 저장한다.
+            return new ViewCastInfo(true, hit.point, hit.distance, globalAngle, hit.transform);
         }
         else
         {
             //hit되지 않았으면 flase와 함께 시야의 끝거리를 저장한다.
             return new ViewCastInfo(false, transform.position + dir * sightRaduis, sightRaduis, globalAngle, null);
         }
-
-       
-      
-}
+    }
 
     public struct Edge
     {

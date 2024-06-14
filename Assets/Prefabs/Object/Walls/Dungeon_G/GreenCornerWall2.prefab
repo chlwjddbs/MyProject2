@@ -298,6 +298,12 @@ MonoBehaviour:
   isHide: 0
   isDraw: 0
   eraseTime: 0.1
+  offWallCount: 1
+  offCount: 0
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
+  checkWall: {fileID: 2556674462218797182}
 --- !u!1 &2556674462980076346
 GameObject:
   m_ObjectHideFlags: 0

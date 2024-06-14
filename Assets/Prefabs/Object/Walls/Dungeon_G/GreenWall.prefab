@@ -73,6 +73,9 @@ MonoBehaviour:
   isHide: 0
   isDraw: 0
   eraseTime: 0.1
+  offWallCount: 1
+  offCount: 0
+  checkWall: {fileID: 3495041866719922099}
 --- !u!1 &2909799776290619805
 GameObject:
   m_ObjectHideFlags: 0

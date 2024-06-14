@@ -147,6 +147,12 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
             return;
         }
 
+        if (Player.isDeath)
+        {
+            ChangeState(new IdleEState());
+            return;
+        }
+
         eStateMachine.Update(Time.deltaTime);
         eStatusUI?.Updata();
 
@@ -283,6 +289,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         enemyMark.SetActive(false);
         hitBox.enabled = false;
         attackCollider.enabled = false;
+        renderBox.SetActive(false);
         eStatusUI.EnemyDeath();
         //자신을 죽인 타겟에게 경험치를 주도록 구현
         //ex) Die로부터 자신을 죽은 타겟을 받아와 해당 타겟의 경험치를 상승시키도록 한다.

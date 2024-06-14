@@ -21,4 +21,9 @@ public class DrawWalls : MonoBehaviour
 
     public float eraseTime = 0.1f;
     protected float countDonw;
+
+    public float offWallCount = 1f;
+    public float offCount;
+
+    public virtual void DrawMiniMap() { }
 }

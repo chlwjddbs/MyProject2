@@ -47,6 +47,7 @@ public class IceElementalTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             IceElemental.SetAwake();
+            IceElemental.searchPlayer.enabled = true;
             StartCoroutine(ChangeBGM());
             obstacleWall.SetActive(true);
             IceElemental.iceEffect.SetActive(true);

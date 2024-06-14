@@ -699,7 +699,6 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
                     if (collision.transform.TryGetComponent<IAttackable>(out IAttackable value))
                     {
                         value.TakeDamage(attackDamage,transform);
-                        Debug.Log(value.RemainHealth);
                     }
                 }
             }
