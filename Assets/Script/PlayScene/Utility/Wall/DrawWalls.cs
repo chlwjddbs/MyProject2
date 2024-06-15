@@ -11,7 +11,7 @@ public class DrawWalls : MonoBehaviour
     public MeshRenderer UnderWall;
 
     //0이면 불투명, 1이면 반투명
-    protected float wallMaterialNum;
+    protected int wallMaterialNum;
     public GameObject Drawoverwall;
     public GameObject MiniMap;
     protected bool isDrawMiniMap = false;
@@ -22,9 +22,20 @@ public class DrawWalls : MonoBehaviour
     public float eraseTime = 0.1f;
     protected float countDonw;
 
-    public float offWallCount = 1f;
-    public float offCount;
+    public bool isSight;
 
     public virtual void DrawWall() { }
-    public virtual void DrawMiniMap() { }
+    public virtual void DrawMiniMap() 
+    {
+        if (MiniMap == null)
+        {
+            return;
+        }
+
+        if (isDraw && !isDrawMiniMap)
+        {
+            isDrawMiniMap = true;
+            MiniMap.SetActive(true);
+        }
+    }
 }

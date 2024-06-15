@@ -33,7 +33,7 @@ public class PlayerSight : MonoBehaviour
     public Vector3 sigthOffset;
     public Vector3 drawOffset;
 
-    public List<Transform> visibleWalls = new List<Transform>();
+    public List<DrawWalls> visibleWalls = new List<DrawWalls>();
 
     public GameObject sceneView;
 
@@ -56,7 +56,11 @@ public class PlayerSight : MonoBehaviour
 
     private void LateUpdate()
     {
-        //visibleWalls.Clear();
+        foreach (var wall in visibleWalls)
+        {
+            wall.isDraw = false;
+        }
+        visibleWalls.Clear();
         DrawSight(); //시야 그리기
     }
 
@@ -373,7 +377,7 @@ public class PlayerSight : MonoBehaviour
                         if (hit.Length > 1f)
                         {
                             //충돌한 벽이 2개 이상이지만 시야에 들어온 벽이라면 보여준다.
-                            if (visibleWalls.Contains(drawWall.transform))
+                            if (visibleWalls.Contains(drawWall))
                             {
                                 if (drawWall.isDraw == false)
                                 {
@@ -413,7 +417,7 @@ public class PlayerSight : MonoBehaviour
             Transform checkWall = checkWalls[i].transform;
 
             //감지된 checkWall의 부모가 현재 시야내에 들어온 목록에 있다면
-            if (visibleWalls.Contains(checkWall.parent))
+            if (visibleWalls.Contains(checkWall.parent.GetComponentInParent<DrawWalls>()))
             {
                 //checkWall 방향 구하기
                 Vector3 wallDir = (checkWall.position - (transform.position + sigthOffset)).normalized;
@@ -480,7 +484,7 @@ public class PlayerSight : MonoBehaviour
 
         for (int i = 0; i < objects.Length; i++)
         {
-            if (objects[i].TryGetComponent<DrawOutline>(out DrawOutline visibleObj))
+            if (objects[i].TryGetComponent<SetCursorImage>(out SetCursorImage visibleObj))
             {
                 //감지된 오브젝트 구하기
                 //Transform _object = objects[i].transform;
@@ -742,12 +746,6 @@ public class PlayerSight : MonoBehaviour
         }
     }
 
-    public void DrawWalls()
-    {
-        VisibleWall_3();
-        HideWall();
-    }
-
     public Vector3 DirFromAngle(float angleDegrees, bool angleIsGlobal)
     {
 
@@ -851,13 +849,12 @@ public class PlayerSight : MonoBehaviour
             //히트된 Wall이 sightRange 범위내에 있으면 보이는 벽으로 판단한다.
             if (Physics.Raycast(transform.position + drawOffset, dir, out visibleWall, sightRange, wallsMask))
             {
-                if (!visibleWalls.Contains(visibleWall.transform))
+                if (visibleWall.transform.TryGetComponent<DrawWalls>(out DrawWalls drawWall)) 
                 {
-                    visibleWalls.Add(visibleWall.transform);
-                    if (visibleWall.transform.TryGetComponent<DrawWalls>(out DrawWalls drawWall))
+                    if (!visibleWalls.Contains(drawWall))
                     {
+                        visibleWalls.Add(drawWall);
                         drawWall.DrawWall();
-                        drawWall.DrawMiniMap();
                     }
                 }
             }

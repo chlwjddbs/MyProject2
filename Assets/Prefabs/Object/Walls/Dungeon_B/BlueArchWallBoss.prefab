@@ -309,6 +309,7 @@ MonoBehaviour:
   isHide: 0
   isDraw: 0
   eraseTime: 0.1
+  isSight: 0
   archWall: {fileID: 6020822375933496405}
   isDrawDoor: 0
   isHideDoor: 0
@@ -422,8 +423,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6979860297353470632}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.625}
-  m_LocalScale: {x: 1, y: 1, z: 0.25}
+  m_LocalPosition: {x: 0, y: 0, z: 0.255}
+  m_LocalScale: {x: 1, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6979860298713302439}
@@ -1304,6 +1305,7 @@ MonoBehaviour:
   isHide: 0
   isDraw: 0
   eraseTime: 0.1
+  isSight: 0
   archWall: {fileID: 6020822375933496405}
   isDrawDoor: 0
   isHideDoor: 0
@@ -1650,8 +1652,10 @@ MonoBehaviour:
   isHide: 0
   isDraw: 0
   eraseTime: 0.1
+  isSight: 0
   archWall: {fileID: 6979860297477370817}
-  UnderWall2: {fileID: 743748985516936214}
+  underWall2: {fileID: 743748985516936214}
+  checkWall: {fileID: 6979860297353470635}
 --- !u!65 &6979860298713302437
 BoxCollider:
   m_ObjectHideFlags: 0

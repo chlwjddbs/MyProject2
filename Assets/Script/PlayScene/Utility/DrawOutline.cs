@@ -13,10 +13,13 @@ public class DrawOutline : Interaction
     public bool isDraw = false;
 
     private MeshRenderer outline;
+
+    private SetCursorImage cursor;
     // Start is called before the first frame update
     void Start()
     {
         outline = GetComponent<MeshRenderer>();
+        cursor = transform.GetComponent<SetCursorImage>();
     }
 
 
@@ -28,7 +31,7 @@ public class DrawOutline : Interaction
     //Interaction 참조 : 마우스가 타겟을 포지션 했을때
     public override void DoAction()
     {
-        if (isDraw)
+        if (cursor.isDraw)
         {
             //아이템이 UI와 겹치거나 플레이어가 액션 중일 때 outline 미표시
             if (player.isUI | player.isAction)

@@ -26,6 +26,8 @@ public class DrawWall_3 : DrawWalls
     private Vector3 playerDir;
     private float playerDis;
 
+    private float time;
+
 
     void Start()
     {
@@ -34,6 +36,8 @@ public class DrawWall_3 : DrawWalls
         UnderWall.enabled = false;
         isDraw = false;
         Wall.enabled = false;
+        wallMaterialNum = 1;
+        Wall.material = wallMaterials[1];
         Drawoverwall.SetActive(false);
 
         if (MiniMap != null)
@@ -45,10 +49,9 @@ public class DrawWall_3 : DrawWalls
     // Update is called once per frame
     void Update()
     {
-        if (isDraw) 
-        {    
+        if (isDraw)
+        {
             CheckDrawWall();
-            UnSightWall();
         }
         else
         {
@@ -56,20 +59,18 @@ public class DrawWall_3 : DrawWalls
         }
     }
 
-    private void LateUpdate()
-    {
-        //EraseWall();
-    }
-
     public override void DrawWall()
     {
         isDraw = true;
         countDonw = eraseTime;
+
         if (Wall.enabled == false)
         {   
             Wall.enabled = true;
             UnderWall.enabled = true;
         }
+
+        DrawMiniMap();
     }
 
     //시야에 나간즉시 없애주지 않고 잔상을 남겨준다.
@@ -78,46 +79,16 @@ public class DrawWall_3 : DrawWalls
         if (Wall.enabled)
         {
             countDonw -= Time.deltaTime;
-            
+
             if (countDonw <= 0)
             {
-                Debug.Log(transform.name);
-                player.visibleWalls.Remove(transform);
+                //player.visibleWalls.Remove(this);
                 UnderWall.enabled = false;
                 Wall.enabled = false;
-                Drawoverwall.SetActive(false);              
+                Drawoverwall.SetActive(false);
             }
         }
     }
-
-    public void UnSightWall()
-    {
-        if (!Physics.Raycast(transform.position, playerDir, playerDis, 1 << 10))
-        {
-            if (player.visibleWalls.Contains(transform))
-            {
-                isDraw = false;
-                countDonw = eraseTime;
-            }
-        }
-    }
-
-    //벽이 시야에 들어오면 미니맵에 표시 시켜준다.
-    public override void DrawMiniMap()
-    {
-        if (MiniMap == null)
-        {
-            return;
-        }
-
-        if (isDraw && !isDrawMiniMap)
-        {
-            isDrawMiniMap = true;
-            MiniMap.SetActive(true);
-        }
-    }
-
-    
 
     public void CheckDrawWall()
     {
@@ -125,23 +96,18 @@ public class DrawWall_3 : DrawWalls
         playerDis = (player.transform.position + sightOffset - transform.position).magnitude;
         
         RaycastHit[] hits = Physics.RaycastAll(transform.position, playerDir, playerDis, 1 << 13);
-        /*
-        if (transform.name == "GreenWall135")
-        {
-            Debug.DrawRay(transform.position, dir * dis, Color.red, 1f);
-
-            for (int i = 0; i < hits.Length; i++)
-            {
-                Debug.Log(hits[i].transform.GetComponentInParent<DrawWalls>().name);
-            }
-        }
-        */
+        
         if (hits.Length == 0)
         {
             if (wallMaterialNum == 1)
             {
                 wallMaterialNum = 0;
                 Wall.material = wallMaterials[0]; //불투명 메트리얼 적용
+                
+            }
+
+            if (!Drawoverwall.activeSelf)
+            {
                 Drawoverwall.SetActive(true);
             }
         }
@@ -153,6 +119,10 @@ public class DrawWall_3 : DrawWalls
                 {
                     wallMaterialNum = 1;
                     Wall.material = wallMaterials[1]; //반투명 메트리얼 적용
+                }
+
+                if (Drawoverwall.activeSelf)
+                {
                     Drawoverwall.SetActive(false);
                 }
             }
@@ -162,6 +132,10 @@ public class DrawWall_3 : DrawWalls
                 {
                     wallMaterialNum = 0;
                     Wall.material = wallMaterials[0]; //불투명 메트리얼 적용
+                }
+
+                if (!Drawoverwall.activeSelf)
+                {
                     Drawoverwall.SetActive(true);
                 }
             }

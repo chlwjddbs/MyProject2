@@ -229,7 +229,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 5, z: 0.5}
+  m_Size: {x: 0.55, y: 5, z: 0.55}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4224950304032391026
 MonoBehaviour:
@@ -253,8 +253,7 @@ MonoBehaviour:
   isHide: 0
   isDraw: 0
   eraseTime: 0.1
-  offWallCount: 1
-  offCount: 0
+  isSight: 0
   checkWall: {fileID: 4224950304344972561}
 --- !u!1 &4224950304112363340
 GameObject:
@@ -466,8 +465,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 5, z: 0.25}
-  m_Center: {x: 0, y: 0, z: 0.126}
+  m_Size: {x: 0.55, y: 5, z: 0.25}
+  m_Center: {x: 0, y: 0, z: 0.155}
 --- !u!65 &8418151900571634653
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -479,5 +478,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.125, y: 5, z: 0.25}
-  m_Center: {x: 0.25, y: 0, z: 0}
+  m_Size: {x: 0.25, y: 5, z: 0.55}
+  m_Center: {x: 0.155, y: 0, z: 0}

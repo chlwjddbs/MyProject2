@@ -5,11 +5,17 @@ using UnityEngine;
 public class DrawDoorWall : DrawWalls
 {
     public DrawArchWall archWall;
-    public bool isDrawDoor;
-    public bool isHideDoor;
+    public bool isDrawDoor { get { return archWall.isDraw; } }
 
     void Start()
     {
+        UnderWall.enabled = false;
+        isDraw = false;
+        Wall.enabled = false;
+        wallMaterialNum = 1;
+        Wall.material = wallMaterials[1];
+        Drawoverwall.SetActive(false);
+
         if (MiniMap != null)
         {
             MiniMap.SetActive(false);
@@ -19,66 +25,54 @@ public class DrawDoorWall : DrawWalls
     // Update is called once per frame
     void Update()
     {
-        ChangeWall();
-        DrawWall();
-        DrawOverWall();
-        if (MiniMap != null)
+        if (isDrawDoor)
         {
-            DrawMiniMap();
+            DrawDoor();
+            CheckDrawWall();
         }
-
-        CheckDraw();
-        CheckHide();
-    }
-
-    public void ChangeWall()
-    {
-        {
-            //메테리얼을 직접 비교하면 사용중인 메테리얼에 instance가되어 비교가 되지 않기 때문에 wallMaterialNum을 선언해 현재 메테리얼을 체크해준다.
-            if (isHideDoor && wallMaterialNum == 0)
-            {
-                wallMaterialNum = 1;
-                Wall.material = wallMaterials[1]; //반투명 메트리얼 적용
-            }
-            else if (!isHideDoor && wallMaterialNum == 1)
-            {
-                wallMaterialNum = 0;
-                Wall.material = wallMaterials[0]; //불투명 메트리얼 적용
-            }
-        }
-    }
-
-    public void DrawWall()
-    {
-        if (isDrawDoor && countDonw < eraseTime)
-        {
-            countDonw = eraseTime;
-            UnderWall.enabled = true;
-        }
-        if (isDrawDoor && Wall.enabled == false)
-        {
-            countDonw = eraseTime;
-            Wall.enabled = true;
-            UnderWall.enabled = true;
-        }
-        else if (!isDrawDoor && Wall.enabled == true)
+        else
         {
             EraseWall();
         }
     }
 
+
+    public void DrawDoor()
+    {
+        countDonw = eraseTime;
+
+        if (Wall.enabled == false)
+        {
+            Wall.enabled = true;
+            UnderWall.enabled = true;
+        }
+
+        DrawMiniMap();
+    }
+
     public void EraseWall()
     {
-        countDonw -= Time.deltaTime;
-        if (countDonw <= 0)
+        if (Wall.enabled)
         {
-            UnderWall.enabled = false;
-            Wall.enabled = false;
+            countDonw -= Time.deltaTime;
+
+            if (countDonw <= 0)
+            {
+                //player.visibleWalls.Remove(this);
+                UnderWall.enabled = false;
+                Wall.enabled = false;
+                Drawoverwall.SetActive(false);
+            }
         }
     }
 
-    public void DrawMiniMap()
+    public override void DrawMiniMap()
     {
+        if (MiniMap == null)
+        {
+            return;
+        }
+
         if (isDrawDoor && !isDrawMiniMap)
         {
             isDrawMiniMap = true;
@@ -86,42 +80,33 @@ public class DrawDoorWall : DrawWalls
         }
     }
 
-    public void DrawOverWall()
+    public void CheckDrawWall()
     {
-        if (Drawoverwall != null)
+        if (archWall.ChechDoorwallMaterialNum() == 1)
         {
-            if (isHideDoor && Drawoverwall.activeSelf == true)
+            if (wallMaterialNum == 0)
+            {
+                wallMaterialNum = 1;
+                Wall.material = wallMaterials[1]; //반투명 메트리얼 적용
+            }
+
+            if (Drawoverwall.activeSelf)
             {
                 Drawoverwall.SetActive(false);
             }
-            else if (!isHideDoor && Drawoverwall.activeSelf == false)
+        }
+        else
+        {
+            if (wallMaterialNum == 1)
+            {
+                wallMaterialNum = 0;
+                Wall.material = wallMaterials[0]; //불투명 메트리얼 적용
+            }
+
+            if (!Drawoverwall.activeSelf)
             {
                 Drawoverwall.SetActive(true);
             }
-        }
-    }
-
-    public void CheckDraw()
-    {
-        if (!isDrawDoor && archWall.isDraw)
-        {
-            isDrawDoor = true;
-        }
-        else if(isDrawDoor && !archWall.isDraw)
-        {
-            isDrawDoor = false;
-        }
-    }
-
-    public void CheckHide()
-    {
-        if (!isHideDoor && archWall.isHide)
-        {
-            isHideDoor = true;
-        }
-        else if (isHideDoor && !archWall.isHide)
-        {
-            isHideDoor = false;
         }
     }
 }

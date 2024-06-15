@@ -73,8 +73,7 @@ MonoBehaviour:
   isHide: 0
   isDraw: 0
   eraseTime: 0
-  offWallCount: 1
-  offCount: 0
+  isSight: 0
   checkWall: {fileID: 1601007197640645355}
 --- !u!1 &1601007197640645354
 GameObject:
@@ -101,8 +100,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1601007197640645354}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.25}
-  m_LocalScale: {x: 2.25, y: 8.5, z: 0.25}
+  m_LocalPosition: {x: 0, y: 0, z: 0.563}
+  m_LocalScale: {x: 2.25, y: 8.5, z: 1.15}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1601007197366102152}
