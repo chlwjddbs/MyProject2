@@ -28,6 +28,7 @@ public class DrawArchWall : DrawWalls
         Wall.enabled = false;
         wallMaterialNum = 1;
         Wall.material = wallMaterials[1];
+        archWall.material = wallMaterials[1];
         Drawoverwall.SetActive(false);
 
         if (MiniMap != null)
@@ -95,6 +96,7 @@ public class DrawArchWall : DrawWalls
             {
                 wallMaterialNum = 0;
                 Wall.material = wallMaterials[0]; //불투명 메트리얼 적용
+                archWall.material = wallMaterials[0];
 
             }
 
@@ -111,6 +113,7 @@ public class DrawArchWall : DrawWalls
                 {
                     wallMaterialNum = 1;
                     Wall.material = wallMaterials[1]; //반투명 메트리얼 적용
+                    archWall.material = wallMaterials[1];
                 }
 
                 if (Drawoverwall.activeSelf)
@@ -124,6 +127,7 @@ public class DrawArchWall : DrawWalls
                 {
                     wallMaterialNum = 0;
                     Wall.material = wallMaterials[0]; //불투명 메트리얼 적용
+                    archWall.material = wallMaterials[0];
                 }
 
                 if (!Drawoverwall.activeSelf)

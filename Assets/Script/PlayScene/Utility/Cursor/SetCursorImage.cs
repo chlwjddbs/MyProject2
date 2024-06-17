@@ -54,4 +54,10 @@ public class SetCursorImage : Interaction
         player.isObject = false;
         CursorManager.instance.ResetCursor();
     }
+
+    private void OnDisable()
+    {
+        player.isObject = false;
+        CursorManager.instance.ResetCursor();
+    }
 }

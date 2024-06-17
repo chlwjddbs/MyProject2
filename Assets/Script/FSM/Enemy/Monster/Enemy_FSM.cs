@@ -35,7 +35,8 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     protected EnemyStateMachine eStateMachine;
     protected Animator eAnime;
     protected NavMeshAgent agent;
-    public EnemyStatusUI eStatusUI;
+    protected EnemyStatusUI eStatusUI;
+    protected BossEnemyStatusUI bossStatusUI;
 
     [HideInInspector] public SearchPlayer searchPlayer;
 
@@ -67,6 +68,8 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     public bool chaseMode;
     public bool returnHome;
     public bool isCasting;
+
+    [SerializeField] protected bool bossEnemy = false;
     
     public bool VisibleTarget { get { return searchPlayer.visibelTarget; } }
     #endregion
@@ -154,7 +157,11 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         }
 
         eStateMachine.Update(Time.deltaTime);
-        eStatusUI?.Updata();
+
+        if (!bossEnemy)
+        {
+            eStatusUI?.Updata();
+        }
 
         if (eStateMachine.AttackCoolTime <= AttackDelay)
         {
@@ -238,7 +245,14 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         {
             remainHealth -= _damage;
             Damaged();
-            eStatusUI.SetHpBar(true);
+            if (bossEnemy)
+            {
+                bossStatusUI.SetHpBar();
+            }
+            else
+            {
+                eStatusUI.SetHpBar(true);
+            }
             Debug.Log(remainHealth / maxHealth * 100 + " %");
             PlayESound(damagedSound);
 
@@ -290,7 +304,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         hitBox.enabled = false;
         attackCollider.enabled = false;
         renderBox.SetActive(false);
-        eStatusUI.EnemyDeath();
+        eStatusUI?.EnemyDeath();
         //자신을 죽인 타겟에게 경험치를 주도록 구현
         //ex) Die로부터 자신을 죽은 타겟을 받아와 해당 타겟의 경험치를 상승시키도록 한다.
     }
@@ -355,8 +369,14 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         agent = GetComponent<NavMeshAgent>();
         searchPlayer = GetComponent<SearchPlayer>();
         hitBox = GetComponent<CapsuleCollider>();
-        eStatusUI = GetComponentInChildren<EnemyStatusUI>();
-      
+        if (bossEnemy)
+        {
+            bossStatusUI = BossEnemyStatusUI.instance;
+        }
+        else
+        {
+            eStatusUI = GetComponentInChildren<EnemyStatusUI>();
+        }
         SetState();
         SetValue();
         SetPool();

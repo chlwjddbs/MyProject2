@@ -27,7 +27,7 @@ public class FireElementalTrigger : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         FireElementalDeath();
 
@@ -46,21 +46,13 @@ public class FireElementalTrigger : MonoBehaviour
                         {
                             //fireElemental.FireAura.SetActive(true);
                             fireElemental.FireAura.Play();
-                            fireElemental.enabled = true;
-                            Destroy(cursorAction.gameObject, .3f);
+                            spawnTrigger.SetActive(false);
                             StartCoroutine("SpawnFireElemental");
                         }
                     }
-
                 }
             }
         }
-        /*
-        if (FireElemental.GetComponent<FireElemental>().isPase_2)
-        {
-
-        }
-        */
     }
 
     IEnumerator SpawnFireElemental()
@@ -84,9 +76,7 @@ public class FireElementalTrigger : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Destroy(SpawnFireElementalEffect);
 
-        //fireElemental.isActive = true;
-        fireElemental.enabled = true;
-        fireElemental.HitBox.enabled = true;
+        fireElemental.SetAwake();
     }
 
     void LockTheGate()

@@ -24,8 +24,12 @@ public class FireElemental : Enemy_FSM
     public IObjectPool<GameObject> circlePool;
     public IObjectPool<GameObject> burnPool;
     public IObjectPool<GameObject> burnEffectPool;
-
-    public AudioClip test1;
+    public void SetAwake()
+    {
+        enabled = true;
+        HitBox.enabled = true;
+        bossStatusUI.SetBoss(this);
+    }
 
     public override void SetState()
     {
@@ -97,7 +101,7 @@ public class FireElemental : Enemy_FSM
         {
             remainHealth -= _damage;
             Damaged();
-            Debug.Log(remainHealth / maxHealth * 100 + " %");
+            bossStatusUI.SetHpBar();
             PlayESound(damagedSound);
         }
 
