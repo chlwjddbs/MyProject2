@@ -106,7 +106,7 @@ MonoBehaviour:
   BackGroundUI: {fileID: 8920798931240161264}
   itemnameText: {fileID: 8920798932133464264}
   ItemShapeBox: {fileID: 8920798932082334136}
-  quantity: 22
+  quantity: 1
 --- !u!114 &4401234857274134973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,7 +597,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8920798932221935012}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 41.5, y: 0.5, z: -306.72}
+  m_LocalPosition: {x: 41.5, y: 0.05, z: -306.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

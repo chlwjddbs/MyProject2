@@ -12,7 +12,7 @@ public class SkillItem : Item
 
     public Sound skillSound;
    
-    public override void Use(int slotNum)
+    public override void Use(int slotNum , Player player = null)
     {
         SkillBook.instance.LearnSkill(this);
     }

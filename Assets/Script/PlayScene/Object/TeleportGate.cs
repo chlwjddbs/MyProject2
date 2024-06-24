@@ -23,8 +23,14 @@ public class TeleportGate : Interaction
         }
     }
     */
+    public void OnMouseOver()
+    {
+        if (theDistance < actionDis)
+        {
+            DoAction();
+        }
+    }
 
-  
     public override void DoAction()
     {      
         if (Input.GetMouseButtonUp(0))

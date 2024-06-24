@@ -8,6 +8,7 @@ Shader "Custom/StencilObjectShader"
         _Metallic("Metallic", Range(0,1)) = 0.0
         _NormalMap("Normal Texture", 2D) = "bump" {}
         _Occlusion("Occlusion", 2D) = "white" {}
+        _Emission("Emission",2D) = "black" {}
     }
         SubShader
         {
@@ -30,16 +31,17 @@ Shader "Custom/StencilObjectShader"
             sampler2D _MainTex;
             sampler2D _NormalMap;
             sampler2D _Occlusion;
+            sampler2D _Emission;
 
             struct Input
             {
                 float2 uv_MainTex;
                 float2 uv_NormalMap;
-               
             };
-
+                       
             half _Smoothness;
             half _Metallic;
+            
             fixed4 _Color;
 
             // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
@@ -55,9 +57,12 @@ Shader "Custom/StencilObjectShader"
                 fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
                 fixed3 n = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap));
                 o.Occlusion = tex2D(_Occlusion, IN.uv_MainTex);
+                o.Emission = tex2D(_Emission, IN.uv_MainTex);
 
                 o.Albedo = c.rgb;
                 // Metallic and smoothness come from slider variables
+                
+                
                 o.Metallic = _Metallic;
                 o.Smoothness = _Smoothness;
                 o.Alpha = c.a;

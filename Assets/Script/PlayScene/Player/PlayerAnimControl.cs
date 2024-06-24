@@ -26,15 +26,12 @@ public class PlayerAnimControl : MonoBehaviour
     public void StartAttack()
     {     
         player.AttackCollider.enabled = true;
-        //weaponSlot.GetComponent<MeshCollider>().enabled = true;
     }
 
     public void EndAttack()
     {
-        player.AttackCollider.enabled = false;
-        //weaponSlot.GetComponent<MeshCollider>().enabled = false;
-        //weaponSlot.GetComponent<Weapon>().isMultiple = false;
-        //weaponSlot.GetComponent<Weapon>().enemies.Clear();
+        player.ResetAttack();
+        player.SetDamage();
     }
 
     public void SetCastStay()

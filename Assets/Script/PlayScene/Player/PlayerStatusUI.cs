@@ -55,14 +55,14 @@ public class PlayerStatusUI : MonoBehaviour
     {
         level.text = player.PlayerLv.ToString();
         LayoutRebuilder.ForceRebuildLayoutImmediate(levelUI[0]);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(levelUI[1]);
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(levelUI[1]);
     }
 
     public void SetExpUI()
     {
         exp.text = player.CurrentExp + " / " + player.NextLvExp;
         LayoutRebuilder.ForceRebuildLayoutImmediate(expUI[0]);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(expUI[1]);
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(expUI[1]);
     }
 
     public void SetHpUI()
@@ -70,7 +70,7 @@ public class PlayerStatusUI : MonoBehaviour
         HpBar.fillAmount = player.RemainHealth / player.MaxHealth;
         hp.text = player.RemainHealth + " / " + player.MaxHealth;
         LayoutRebuilder.ForceRebuildLayoutImmediate(hpUI[0]);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(hpUI[1]);
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(hpUI[1]);
     }
 
     public void SetMpUI()
@@ -78,28 +78,28 @@ public class PlayerStatusUI : MonoBehaviour
         MpBar.fillAmount = player.RemainMana / player.MaxMana;
         mp.text = player.RemainMana + " / " + player.MaxMana;
         LayoutRebuilder.ForceRebuildLayoutImmediate(mpUI[0]);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(mpUI[1]);
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(mpUI[1]);
     }
 
     public void SetDamageUI()
     {
         damage.text = player.AttackDamage.ToString();
         LayoutRebuilder.ForceRebuildLayoutImmediate(damageUI[0]);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(damageUI[1]);
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(damageUI[1]);
     }
 
     public void SetDefenceUI()
     {
         defence.text = player.DefencePoint.ToString();
         LayoutRebuilder.ForceRebuildLayoutImmediate(defenceUI[0]);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(defenceUI[1]);
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(defenceUI[1]);
     }
 
     public void SetMoveSpeedUI()
     {
         moveSpeed.text = player.MoveSpeed.ToString();
         LayoutRebuilder.ForceRebuildLayoutImmediate(moveSpeedUI[0]);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(moveSpeedUI[1]);
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(moveSpeedUI[1]);
     }
 
     /*

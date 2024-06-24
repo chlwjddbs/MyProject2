@@ -18,9 +18,8 @@ public class Interaction : MonoBehaviour
 
 
     // Update is called once per frame
-    public virtual void Update()
+    public virtual void LateUpdate()
     {
-        
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             theDistance = player.checkObjectDis;
@@ -29,11 +28,13 @@ public class Interaction : MonoBehaviour
         {
             theDistance = 100f;
         }
-        
+
+        MouseOver();
         //theDistance = PlayerController.CheckDistance;
     }
 
     //OnMouseOver가 아닌 업데이트에서 처리시 모든 아이템에 DoAction이 적용 된다.
+    /*
     public virtual void OnMouseOver()
     {
         if (theDistance < actionDis)
@@ -41,10 +42,16 @@ public class Interaction : MonoBehaviour
             DoAction();
         }
     }
-
+    */
     private void OnMouseExit()
     {
         DontAction();
+    }
+    
+
+    public virtual void MouseOver()
+    {
+
     }
 
     public virtual void DoAction()

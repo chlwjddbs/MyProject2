@@ -5,20 +5,26 @@ using UnityEngine;
 public class SetCursorImage : Interaction
 {
     public bool isDraw = false;
+    public bool overMouse = false;
+
     public cursorImages enableCursor;
     public cursorImages disableCursor;
 
-    // Start is called before the first frame update
+    public override void LateUpdate()
+    {
+        base.LateUpdate();
+    }
 
+    /*
     public override void OnMouseOver()
     {
         DoAction();
     }
+    */
 
-    //Interaction 참조 : 타겟과 플레이어의 거리가 actionDis 이내이고 마우스가 타겟을 포지션 했을때
-    public override void DoAction()
+    public override void MouseOver()
     {
-        if (isDraw)
+        if (isDraw && overMouse)
         {
             //마우스가 UI를 가르킬 때
             if (player.isUI | player.isAction)
@@ -29,16 +35,22 @@ public class SetCursorImage : Interaction
             }
             else
             {
-                if (theDistance < actionDis)
-                { 
-                    player.isObject = true;
-                    CursorManager.instance.SetCursurImage(enableCursor);
-                }
-                else
-                {
-                    CursorManager.instance.SetCursurImage(disableCursor);
-                }
+                DoAction();
             }
+        }
+    }
+
+    //Interaction 참조 : 타겟과 플레이어의 거리가 actionDis 이내이고 마우스가 타겟을 포지션 했을때
+    public override void DoAction()
+    {
+        if (theDistance < actionDis)
+        {
+            player.isObject = true;
+            CursorManager.instance.SetCursurImage(enableCursor);
+        }
+        else
+        {
+            CursorManager.instance.SetCursurImage(disableCursor);
         }
     }
 

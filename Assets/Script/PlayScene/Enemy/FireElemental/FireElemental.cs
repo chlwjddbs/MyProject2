@@ -156,6 +156,7 @@ public class FireElemental : Enemy_FSM
         yield return new WaitForSeconds(1.3f);
         gameObject.SetActive(false);
         AudioManager.instance.PlayBGM("PlayScene_Floor_1", 1f);
+        bossStatusUI.Death();
     }
 
     public void BurnExplosion()

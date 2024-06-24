@@ -7,6 +7,7 @@ using TMPro;
 
 public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    private Player player;
     private Inventory inven;
     private Equipment equipment;
     private InventoryUI invenUI;
@@ -69,6 +70,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
    
     public void SetData()
     {
+        player = GameObject.Find("ThePlayer").GetComponent<Player>();
         inven = Inventory.instance;
         equipment = Equipment.instance;
         dropItemSlot = DropItemManager.instance;
@@ -210,11 +212,11 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
                 RemoveItemSlot();
 
                 //사용 효과 발동
-                tempItem.Use(slotNum);
+                tempItem.Use(slotNum,player);
             }
             else
             {
-                item.Use(slotNum);
+                item.Use(slotNum,player);
             }
         }
         //사용하는 아이템이 스킬북일 때
@@ -227,7 +229,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
                 inven.RemoveItem(slotNum);
                 //슬롯에서 정보 제거
                 RemoveItemSlot();
-                tempItem.Use(slotNum);
+                tempItem.Use(slotNum,player);
             }
             else
             {
@@ -243,7 +245,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
             inven.RemoveItem(slotNum);
             //슬롯에서 정보 제거
             RemoveItemSlot();
-            tempItem.Use(slotNum);
+            tempItem.Use(slotNum,player);
         }
 
         //아이템 사용 후 인벤토리 상태 체크
@@ -339,7 +341,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
             if (!hit.transform.CompareTag("Water") && !hit.transform.CompareTag("Obstacle") && !hit.transform.CompareTag("Object"))
             {
                 hitpos = hit.point;
-                Vector3 PlayerPos = new Vector3(invenUI.Player.transform.position.x, 1f, invenUI.Player.transform.position.z);
+                Vector3 PlayerPos = new Vector3(invenUI.Player.transform.position.x, .5f, invenUI.Player.transform.position.z);
                 if (invenUI.Player.GetComponentInChildren<PlayerSight>().Dropable(hitpos))
                 {
                     //아이템이 포션이고 2개 이상 가지고 있다면
@@ -355,7 +357,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
                         //현재 플에이어의 위치와 아이템을 버린 위치의 거리가 10f 미만일 때
                         if ((PlayerPos - hitpos).magnitude < 10f)
                         {
-                            hitpos.y = 0.5f;
+                            hitpos.y = 0.05f;
                             //버린 위치에 버릴 아이템을 생성하고    
                             Instantiate(item.FieldObject, hitpos, item.FieldObject.transform.rotation, dropItemSlot.transform);
                             //인벤토리에서 아이템을 정리한다.
@@ -367,7 +369,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
                         {
                             //10거리 보다 멀때 DropPos를 최대거리인 10으로 조정하여 10위치에 아이템을 버린다.
                             DropPos = PlayerPos + ((hitpos - PlayerPos).normalized * 10);
-                            DropPos.y = 0.5f;
+                            DropPos.y = 0.05f;
                             Instantiate(item.FieldObject, DropPos, item.FieldObject.transform.rotation,dropItemSlot.transform);
                             //인벤토리에서 아이템을 정리한다.
                             inven.RemoveItem(slotNum);

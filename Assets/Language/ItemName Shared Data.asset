@@ -63,6 +63,10 @@ MonoBehaviour:
     m_Key: NovaStrike Book
     m_Metadata:
       m_Items: []
+  - m_Id: 49949130769100800
+    m_Key: FrostSword
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

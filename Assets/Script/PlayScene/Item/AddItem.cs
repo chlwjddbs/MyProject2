@@ -20,20 +20,24 @@ public class AddItem : Interaction
 
     public GameObject ItemShapeBox;
 
-    private SetCursorImage cursor;
+    [HideInInspector]public SetCursorImage cursor;
+    private DrawOutline drawOutline;
 
     //아이템의 수량
     public int quantity;
+
+    public int test = 0;
 
     private void Start()
     {
         BackGroundUI.SetActive(false);
         cursor = transform.GetComponent<SetCursorImage>();
+        drawOutline = transform.GetComponent<DrawOutline>();
     }
 
-    public override void Update()
+    public override void LateUpdate()
     {
-        base.Update();
+        base.LateUpdate();
         DrawItem();
     }
 
@@ -43,15 +47,18 @@ public class AddItem : Interaction
         {
             ItemShapeBox.SetActive(true);
         }
-        else if(!cursor.isDraw && ItemShapeBox.activeSelf == true)
+        else if(!cursor.isDraw && !cursor.overMouse && ItemShapeBox.activeSelf == true)
         {
             ItemShapeBox.SetActive(false);
+            theDistance = Mathf.Infinity;
         }
     }
 
-    public override void OnMouseOver()
+    
+
+    public override void MouseOver()
     {
-        if (cursor.isDraw)
+        if (cursor.isDraw && cursor.overMouse)
         {
             if (player.isUI | player.isAction)
             {
@@ -64,6 +71,7 @@ public class AddItem : Interaction
                 {
                     SetItemName();
                     BackGroundUI.SetActive(true);
+                    drawOutline.DrawOutLine();
                 }
                 DoAction();
             }
@@ -75,6 +83,7 @@ public class AddItem : Interaction
         if (theDistance < actionDis)
         {
             player.isObject = true;
+
             if (Input.GetMouseButtonDown(0))
             {
                 //인벤토리가 가득찬 상태이지만 중첩 가능한 소모품일 경우 갯수 추가는 가능하기 때문에 체크한다.
@@ -106,35 +115,11 @@ public class AddItem : Interaction
                 }
                 else
                 {
-                    /*
-                    switch (item.itemType)
-                    {
-                        case ItemType.Equip:
-                            AudioManager.instance.PlayeSound("addEquip");
-                            break;
-                        case ItemType.Ingredient:
-                            break;
-                        case ItemType.Potion:
-                            break;
-                        case ItemType.Puzzle:
-                            break;
-                        case ItemType.SkillBook:
-                            break;
-                        default:
-                            break;
-                    }
-                    */
-
                     AudioManager.instance.PlayeSound("getItem");
                     Inventory.instance.AddItem(item);
                     Debug.Log(item.name + " : 아이템 획득");
-                    //player.SetState(PlayerState.Idle);
                     Destroy(itemObject);
-                    //player.isItem = false;
                 }
-
-                //Cursor.SetCursor(CursorManager.instance.orginCursor, CursorManager.instance.hotSpot, CursorMode.Auto);
-                //CursorManager.instance.ResetCursor();
             }
         }
     }
@@ -200,6 +185,7 @@ public class AddItem : Interaction
         if (BackGroundUI.activeSelf == true)
         {
             BackGroundUI.SetActive(false);
+            drawOutline.DrawOrign();
         }
     }
 
@@ -215,10 +201,32 @@ public class AddItem : Interaction
         }
     }
 
-
     private void OnDestroy()
     {
         player.isObject = false;
         CursorManager.instance.ResetCursor();
     }
 }
+
+/*
+    public override void OnMouseOver()
+    {
+        if (cursor.isDraw)
+        {
+            if (player.isUI | player.isAction)
+            {
+                DontAction();
+                return;
+            }
+            else
+            {
+                if (BackGroundUI.activeSelf == false)
+                {
+                    SetItemName();
+                    BackGroundUI.SetActive(true);
+                }
+                DoAction();
+            }
+        }
+    }
+    */

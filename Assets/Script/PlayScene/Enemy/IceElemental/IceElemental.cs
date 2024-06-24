@@ -20,7 +20,7 @@ public class IceElemental : Enemy_FSM
     [Header("iceBoom")]
     [SerializeField] private float iceBoomRange = 5f;
     public GameObject iceBoom;
-    private IObjectPool<GameObject> iceBoomPool;
+    public IObjectPool<GameObject> iceBoomPool;
     public GameObject iceBoomCircle;
     private IObjectPool<GameObject> iceBoomCirclePool;
     private int iceBoolCount = 3;
@@ -39,25 +39,47 @@ public class IceElemental : Enemy_FSM
         enabled = true;
         StartCoroutine("MutipleBoom");
         castingPos = transform.position;
+        bossStatusUI.SetBoss(this);
     }
 
     public override void Die()
     {
         base.Die();
 
-        deathEffect.SetActive(true);
-        iceEffect.SetActive(false);
-        Destroy(deathEffect, 3f);
+        StartCoroutine(OlafDeath());
+    }
 
-        teleportGate.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+    public override void DropItem()
+    {
+        base.DropItem();
+        Debug.Log(dropItem[0].name);
+    }
+
+    IEnumerator OlafDeath()
+    {
+        deathEffect.SetActive(true);
+
+        yield return new WaitForSeconds(.5f);
+
+        teleportGate.transform.position = new Vector3(transform.position.x, 0.375f, transform.position.z);
         teleportGate.gateCoordinate = teleportGate.transform.position;
         teleportGate.gameObject.SetActive(true);
         teleportGate.OpenGate();
 
-        StopAllCoroutines();
+        yield return new WaitForSeconds(.5f);
+
+        iceEffect.SetActive(false);
+        
+        bossStatusUI.Death();
+
         iceBlast.StopSound();
         iceBlast.StopParticle();
         deathAction?.Invoke();
+
+        yield return new WaitForSeconds(2f);
+
+        deathEffect.SetActive(false);
+        StopAllCoroutines();
     }
 
     public override void Damaged()
@@ -124,9 +146,6 @@ public class IceElemental : Enemy_FSM
         
         GameObject _iceBoom = iceBoomPool.Get();
         _iceBoom.transform.position = iceBoomPos;
-
-        yield return new WaitForSeconds(2f);
-        iceBoomPool.Release(_iceBoom);
     }
 
     public void AddBlastGauge(int _gauge)

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7238092217788962207}
-  - component: {fileID: 2458202530106544720}
   - component: {fileID: 2487086771733260703}
   - component: {fileID: 3044323155460417986}
+  - component: {fileID: 4202286197557983694}
   m_Layer: 11
   m_Name: TeleportGate
   m_TagString: Object
@@ -26,29 +26,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101591458535675002}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 45.75, y: 0, z: 137}
-  m_LocalScale: {x: 1, y: 5, z: 1}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: 45.75, y: 0.375, z: 137}
+  m_LocalScale: {x: 10, y: 10, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1167717060843504455}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &2458202530106544720
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101591458535675002}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 2.5
-  m_Height: 0.72548383
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 270, y: 0, z: 0}
 --- !u!114 &2487086771733260703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +50,7 @@ MonoBehaviour:
   theDistance: 0
   actionDis: 10
   isDraw: 0
+  overMouse: 0
   enableCursor: 4
   disableCursor: 5
 --- !u!114 &3044323155460417986
@@ -82,9 +69,23 @@ MonoBehaviour:
   actionDis: 10
   gateManager: {fileID: 0}
   gateNumber: 0
-  gateName: 
+  gateName: firstGate
   gateCoordinate: {x: 0, y: 0, z: 0}
   isActive: 0
+--- !u!64 &4202286197557983694
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101591458535675002}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8996428509911583228, guid: 0e4d02fd5bd77c84883697e399019573, type: 3}
 --- !u!1 &2029839419358151971
 GameObject:
   m_ObjectHideFlags: 0
@@ -22992,7 +22993,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 260279
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -24050,9 +24051,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8919716789345311454}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
-  m_LocalScale: {x: 1, y: 0.2, z: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 0.1, y: 0.2, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4013169324197038677}
@@ -24062,7 +24063,7 @@ Transform:
   - {fileID: 5401161435364614011}
   m_Father: {fileID: 7238092217788962207}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!198 &6043747285413810605
 ParticleSystem:
   m_ObjectHideFlags: 0

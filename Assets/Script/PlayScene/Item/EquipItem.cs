@@ -32,7 +32,7 @@ public class EquipItem : Item
     //무기에 따른 기본 공격 애니메이션
     public AnimationClip attackClip;
 
-    public override void Use(int _slotNum)
+    public override void Use(int _slotNum , Player player = null)
     {
         AudioManager.instance.PlayeSound(equipType.ToString() + "Sound");
         Equipment.instance.EquipItem(this, _slotNum);

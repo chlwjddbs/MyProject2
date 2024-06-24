@@ -12,12 +12,20 @@ public class SignText : Interaction
     private float countdown;
     private float coolTime = 4;
 
-    public override void Update()
+    public override void LateUpdate()
     {
-        theDistance = PlayerController.CheckDistance;
+        theDistance = player.checkObjectDis;
         if(countdown > 0)
         {
             countdown -= Time.deltaTime;
+        }
+    }
+
+    public void OnMouseOver()
+    {
+        if (theDistance < actionDis)
+        {
+            DoAction();
         }
     }
 

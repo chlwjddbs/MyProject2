@@ -121,9 +121,11 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
     [Header("Etc Data")]
     public Vector3 mousePos;
     
-    [HideInInspector] public bool isObject = false;         //마우스 포인터가 Object에 있는지 판정
+    public bool isObject = false;         //마우스 포인터가 Object에 있는지 판정
     [HideInInspector] public bool isUI = false;             //마우스 포인터가 UI에 있는지 판정
     public float checkObjectDis;                            //player와 object의 거리
+    private SetCursorImage overMouseItem;
+    public LayerMask objMask;
 
     private float moveSpeed;
     [SerializeField] private float baseMoveSpeed = 14f;
@@ -193,15 +195,53 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
             //플레이어의 앞 방향을 마우스 방향으로 지정
             body.forward = mousePos.normalized;
 
-            //hit된 오브젝트가 true이면 플레이어와의 거리를 표시해준다.
-            if (CheckTag(hit.transform.tag))
+            if (Physics.Raycast(ray, out RaycastHit obj, Mathf.Infinity,objMask))
             {
-                checkObjectDis = (hit.transform.position - body.position).magnitude;
+                //Debug.Log(obj.transform.name);
+                
+                //플레이어가 아이템위에 마우스를 올린 후
+                //기존에 확인한 아이템이 없을 경우
+                if(overMouseItem == null)           
+                {
+                    //새로 확인한 아이템 정보를 저장한다.
+                    if (obj.transform.TryGetComponent<SetCursorImage>(out SetCursorImage item))
+                    {
+                        item.overMouse = true;
+                        overMouseItem = item;
+                        checkObjectDis = (obj.transform.position - body.position).magnitude;
+                    }
+                }
+                //현재 확인한 아이템과 기존에 확인한 아이템이 다를경우
+                else if(overMouseItem.transform != obj.transform)
+                {
+                    //기존에 확인한 아이템이 연결을 해제 한 후 현재 확인한 아이템을 등록해준다.
+                    overMouseItem.overMouse = false;
+                    if (obj.transform.TryGetComponent<SetCursorImage>(out SetCursorImage item))
+                    {
+                        overMouseItem = item;
+                        overMouseItem.overMouse = true;
+                        checkObjectDis = (obj.transform.position - body.position).magnitude;
+                    }
+                }
+                //현재 확인한 아이템과 기존 확인한 아이템이 같을 경우 거리만 갱신해 준다.
+                else if(overMouseItem.transform == obj.transform)
+                {
+                    checkObjectDis = (obj.transform.position - body.position).magnitude;
+                }
             }
             else
             {
-                //그렇지 않으면 거리 초기화
+                //그렇지 않으면 거리 초기화 
                 checkObjectDis = Mathf.Infinity;
+                if(overMouseItem != null)
+                {
+                    overMouseItem.overMouse = false;
+                    if (overMouseItem.TryGetComponent<AddItem>(out AddItem item))
+                    {
+                        item.DontAction();
+                    }
+                    overMouseItem = null;
+                }
             }
         }
     }
@@ -216,10 +256,16 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
             }
         }
     }
+    public void ResetAttack()
+    {
+        attackCollider.enabled = false;
+        attackedTargets.Clear();
+    }
 
-    public void SetDamage(float _damageCoefiicient = 1f)
+    public void SetDamage(float _damageCoefiicient = 1f , bool multiAttack = false)
     {
         attackDamage = (baseDamage + equipDamage) * _damageCoefiicient;
+        multiAttackAble = multiAttack;
     }
 
     public void TakeDamage(float _damage, Transform _attacker = null, Vector3 _damagedDir = new Vector3())
@@ -338,7 +384,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
 
         if (_equipItem.defence != 0)
         {
-            equipDamage += _equipItem.defence;
+            equipDefence += _equipItem.defence;
             defencePoint = baseDefence + equipDefence;
             playerStatusUI.SetDefenceUI();
         }
@@ -367,7 +413,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
 
         if (_unEquipItem.defence != 0)
         {
-            equipDamage -= _unEquipItem.defence;
+            equipDefence -= _unEquipItem.defence;
             defencePoint = baseDefence + equipDefence;
             playerStatusUI.SetDefenceUI();
         }
@@ -684,6 +730,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
             //attackCollider이면 데미지를 준다.
             if ((collision.contacts[0].thisCollider == attackCollider))
             {
+                Debug.Log(MultiAttackAble);
                 if (!MultiAttackAble) 
                 {
                     if(attackedTargets.Count >= 1)

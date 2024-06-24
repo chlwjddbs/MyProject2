@@ -33,7 +33,7 @@ public class Item : ScriptableObject
     //필드에서 보이는 아이템 오브젝트
     public GameObject FieldObject;
 
-    public virtual void Use(int slotNum)
+    public virtual void Use(int slotNum, Player player)
     {
         Debug.Log("소모품 사용");
     }

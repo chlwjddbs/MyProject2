@@ -15,7 +15,7 @@ public class TurnSlash : SkillManager
         {
             player.UseMana(cunsumeMana);
             player.SetAnime(skillMotion);
-            player.SetDamage(skillDamage);
+            player.SetDamage(skillDamage,true);
             player.ChangeState(new ActionPState());
             player.SetActionSpeed(actionSpeed);
             //player.isAction = true;     

@@ -123,6 +123,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     [SerializeField] int exp;
     [SerializeField] protected GameObject renderBox;
     public GameObject enemyMark;
+    public List<Item> dropItem;
     
     public int Exp { get { return exp; } }
     public GameObject RenderBox { get { return renderBox; } }
@@ -305,10 +306,21 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         attackCollider.enabled = false;
         renderBox.SetActive(false);
         eStatusUI?.EnemyDeath();
+        DropItem();
         //자신을 죽인 타겟에게 경험치를 주도록 구현
         //ex) Die로부터 자신을 죽은 타겟을 받아와 해당 타겟의 경험치를 상승시키도록 한다.
     }
 
+    public virtual void DropItem()
+    {
+        for (int i = 0; i < dropItem.Count; i++)
+        {
+            if (dropItem[i] != null)
+            {
+                Instantiate(dropItem[i].FieldObject, transform.position, Quaternion.identity, DropItemManager.instance.transform);
+            }
+        }
+    }
     public void OnRenderBox()
     {
         if (!renderBox.activeSelf)

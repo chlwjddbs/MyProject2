@@ -63,7 +63,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 292037187739648
-    m_Localized: NovaStrike_Book
+    m_Localized: NovaStrike Book
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49949130769100800
+    m_Localized: Frost Sword
     m_Metadata:
       m_Items: []
   references:

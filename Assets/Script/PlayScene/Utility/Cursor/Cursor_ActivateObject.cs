@@ -8,7 +8,7 @@ public class Cursor_ActivateObject : Interaction
 
     // Start is called before the first frame update
 
-    public override void OnMouseOver()
+    public void OnMouseOver()
     {
         DoAction();
     }

@@ -8,9 +8,8 @@ public class HpPotion : Potion
 {
     public float recoveryPoint;
 
-    public override void Use(int slotNum)
+    public override void Use(int slotNum, Player player)
     {
-        PlayerStatus player = FindObjectOfType<PlayerStatus>();
         player.RecoveryHP(recoveryPoint);
     }
 }

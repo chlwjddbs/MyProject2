@@ -15,6 +15,8 @@ public class CursorManager : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
+
+        player = GameObject.Find("ThePlayer").GetComponent<Player>();
     }
 
     public Texture2D orginCursor;
@@ -29,6 +31,8 @@ public class CursorManager : MonoBehaviour
     public Texture2D dumy;
 
     private Dictionary<string, Texture2D> cursorDictionary;
+
+    private Player player;
 
     //커서 모드
     public CursorMode cursorMode = CursorMode.Auto;
@@ -55,7 +59,7 @@ public class CursorManager : MonoBehaviour
 
     public void SetCursur(Texture2D _cursor)
     {
-        if (!PlayerController.isAction)
+        if (!player.isAction)
         {
             Cursor.SetCursor(_cursor, hotSpot, cursorMode);
         }
@@ -63,7 +67,7 @@ public class CursorManager : MonoBehaviour
     
     public void SetCursurImage(cursorImages _cursorName)
     {
-        if(!PlayerController.isAction)
+        if(!player.isAction)
         {
             Texture2D _cursor;
             if (cursorDictionary.ContainsKey(_cursorName.ToString()))

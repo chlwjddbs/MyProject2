@@ -13,27 +13,7 @@ public class IceBoom : MonoBehaviour
 
     private IceElemental iceElemental;
 
-    /*
-    // Start is called before the first frame update
-    void Start()
-    {
-        iceElemental = GameObject.Find("IceElemental");
-    }
-    */
-
-    // Update is called once per frame
-
-    /*
-    void Update()
-    {
-        countdown -= Time.deltaTime;
-        if(countdown <= 0)
-        {
-            coll.enabled = false;
-        }
-    }
-    */
-
+   
     public bool Search(GameObject researchTest)
     {
         bfsQueue.Enqueue(researchTest);
@@ -64,6 +44,14 @@ public class IceBoom : MonoBehaviour
         coll.enabled = true;
     }
 
+    IEnumerator EndBoom()
+    {
+        yield return new WaitForSeconds(1.5f);
+        coll.enabled = false;
+        yield return new WaitForSeconds(.5f);
+        iceElemental.iceBoomPool.Release(gameObject);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -73,29 +61,12 @@ public class IceBoom : MonoBehaviour
             coll.enabled = false;
             other.GetComponent<IAttackable>().TakeDamage(attackDamage,null);
             iceElemental.AddBlastGauge(iceBlastGaugePoint);
-
-            /*
-            if (iceElemental == null)
-            {
-                int searchInt = GetComponentsInParent<Transform>().Length - 1;
-                //GetComponentInParent<IceElemental2>().AddBlastGauge(iceBlastGaugePoint);
-                if (Search(GetComponentsInParent<Transform>()[searchInt].gameObject))
-                {               
-                    bfsQueue.Clear();
-                    visitSequence.Clear();
-                }
-                else
-                {
-                    Debug.Log("IceElemental을 찾을 수 없습니다.");
-                }
-                //iceElemental.GetComponent<IceElementalAction>().AddBlastGauge(iceBlastGaugePoint);
-            }
-            */
         }
     }
 
     private void OnEnable()
     {
         coll.enabled = true;
+        StartCoroutine(EndBoom());
     }
 }
