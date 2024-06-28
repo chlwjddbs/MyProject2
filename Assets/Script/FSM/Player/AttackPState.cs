@@ -14,6 +14,7 @@ public class AttackPState : PlayerStates
     {
         base.OnEnter();
         player.SetDamage();
+        player.isAction = true;
         //PlayerAnimecontrol에서 켜준다.
         //player.AttackCollider.enabled = true; 
     }
@@ -21,5 +22,6 @@ public class AttackPState : PlayerStates
     public override void OnExit()
     {
         player.ResetAttack();
+        player.SetDamage();
     }
 }

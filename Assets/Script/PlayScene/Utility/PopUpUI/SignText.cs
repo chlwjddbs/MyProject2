@@ -12,6 +12,13 @@ public class SignText : Interaction
     private float countdown;
     private float coolTime = 4;
 
+    private DrawOutline drawOutline;
+
+    private void Start()
+    {
+        drawOutline = GetComponent<DrawOutline>();
+    }
+
     public override void LateUpdate()
     {
         theDistance = player.checkObjectDis;
@@ -27,6 +34,8 @@ public class SignText : Interaction
         {
             DoAction();
         }
+
+        drawOutline.DrawOutLine();
     }
 
     public override void DoAction()
@@ -36,6 +45,12 @@ public class SignText : Interaction
         {
             SetSequenceText();
         }
+    }
+
+    public override void DontAction()
+    {
+        base.DontAction();
+        drawOutline.DrawOrign();
     }
 
     private void SetSequenceText()

@@ -53,6 +53,19 @@ public class EnemyStatusUI : MonoBehaviour
         StartCoroutine(Death());
     }
 
+    public void OnHpbar()
+    {
+        if (visible)
+        {
+            HpBar.SetActive(true);
+        }
+    }
+
+    public void OffHpbar()
+    {
+        HpBar.SetActive(false);
+    }
+
     IEnumerator Death()
     {
         transform.eulerAngles = new Vector3(55, 42.5f, 0);

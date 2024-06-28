@@ -10,6 +10,8 @@ public class Fader : MonoBehaviour
     public float fadeInTime = 1f;
     public float fadeOutTime = 2f;
 
+    public float fadeTime;
+
     /*
     // Start is called before the first frame update
     void Start()
@@ -46,16 +48,20 @@ public class Fader : MonoBehaviour
 
     IEnumerator C_FadeIn()
     {
-        AudioManager.instance.StopBGM(fadeInTime);
-        float t = 0.0f;
-        while (t <= fadeInTime)
+        //AudioManager.instance.StopBGM(fadeInTime);
+        fadeTime = 0.0f;
+        while (fadeTime < fadeInTime)
         {
-            //t += Time.deltaTime;
-            t += Time.unscaledDeltaTime;
-            faderImage.color = new Color(0, 0, 0, t/ fadeInTime);
+            if (Time.unscaledDeltaTime < 1)
+            {
+                //t += Time.deltaTime;
+                fadeTime += Time.unscaledDeltaTime;
+                fadeTime = Mathf.Clamp(fadeTime, 0, fadeInTime);
+                faderImage.color = new Color(0, 0, 0, fadeTime / fadeInTime);
+            }
             yield return null;
         }
-        Debug.Log("fadeIN");
+        //Debug.Log("fadeIN");
     }
 
     public void SceneLoad(string _sceneName)
@@ -69,24 +75,27 @@ public class Fader : MonoBehaviour
         AudioManager.instance.StopBGM(fadeInTime);
         AudioManager.instance.AllAmStop();
 
-        float t = 0.0f;
-        while (t <= fadeInTime)
+        fadeTime = 0.0f;
+        while (fadeTime < fadeInTime)
         {
-            //t += Time.deltaTime;
-            t += Time.unscaledDeltaTime;
-            faderImage.color = new Color(0, 0, 0, t / fadeInTime);
+            if (Time.unscaledDeltaTime < 1)
+            {
+                fadeTime += Time.unscaledDeltaTime;
+                fadeTime = Mathf.Clamp(fadeTime, 0, fadeInTime);
+                faderImage.color = new Color(0, 0, 0, fadeTime / fadeInTime);
+            }
             yield return null;
         }
 
         yield return null;
 
-        SceneMoveManager.LoadSceneInfo(_sceneName);
+        SceneMoveManager.LoadSceneInfo(_sceneName,this);
     }
 
     //FadeOut은 씬 시작 뿐 아니라 특정 상황에서도 충분히 사용 할 수 있으므로 따로 해서 관리
     public void FadeOut()
     {
-        StopAllCoroutines();
+        //StopAllCoroutines();
         StartCoroutine(C_FadeOut());
     }
 
@@ -96,11 +105,36 @@ public class Fader : MonoBehaviour
         yield return null;
 
         //AudioManager.instance.PlayBGM("MainMenuBGM");
-        float t = fadeOutTime;
-        while (t >= 0)
+        fadeTime = fadeOutTime;
+        while (fadeTime > 0)
         {
-            t -= Time.unscaledDeltaTime;
-            faderImage.color = new Color(0, 0, 0, t/ fadeOutTime);
+            if (Time.unscaledDeltaTime < 1)
+            {
+                fadeTime -= Time.unscaledDeltaTime;
+                fadeTime = Mathf.Clamp(fadeTime, 0, fadeOutTime);
+                faderImage.color = new Color(0, 0, 0, fadeTime / fadeOutTime);
+            }   
+            yield return null;
+        }
+
+        yield return null;
+    }
+
+    IEnumerator LoadScence_FadeOut()
+    {
+        //StopAllCoroutines();
+        yield return null;
+
+        //AudioManager.instance.PlayBGM("MainMenuBGM");
+        fadeTime = 1f;
+        while (fadeTime > 0)
+        {
+            if (Time.unscaledDeltaTime < 1)
+            {
+                fadeTime -= Time.unscaledDeltaTime;
+                fadeTime = Mathf.Clamp(fadeTime, 0, fadeOutTime);
+                faderImage.color = new Color(0, 0, 0, fadeTime / fadeOutTime);
+            }
             yield return null;
         }
 
@@ -109,19 +143,25 @@ public class Fader : MonoBehaviour
 
     public void SceneStartFadeOut(Scene scene, LoadSceneMode mode)
     {
-        if(SceneManager.GetActiveScene().name == "LoadingScene")  
-        {  
+        StopAllCoroutines();
+
+        if (SceneManager.GetActiveScene().name == "LoadingScene")
+        {
+            StartCoroutine(LoadScence_FadeOut());
             return;
         }
 
         StartCoroutine(C_FadeOut());
-        //Debug.Log("fade");
+    }
+
+    public void LoadingScence()
+    {
+        StopAllCoroutines();
+        faderImage.color = new Color(0, 0, 0, 0);
     }
 
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= SceneStartFadeOut;
     }
-
-
 }

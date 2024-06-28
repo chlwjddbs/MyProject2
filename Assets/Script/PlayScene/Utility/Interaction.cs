@@ -10,7 +10,6 @@ public class Interaction : MonoBehaviour
 
     protected Player player;
 
-
     private void OnEnable()
     {
         player = FindObjectOfType<Player>();
@@ -63,6 +62,4 @@ public class Interaction : MonoBehaviour
     {
         player.isObject = false;
     }
-
-    
 }

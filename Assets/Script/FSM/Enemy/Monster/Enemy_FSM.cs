@@ -195,6 +195,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
             Debug.Log($"{soundName} 사운드는 존재하지 않습니다.");
         }
     }
+
     public void StopESound(string soundName)
     {
         if (soundDic.TryGetValue(soundName, out Sound s))
@@ -306,6 +307,10 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         attackCollider.enabled = false;
         renderBox.SetActive(false);
         eStatusUI?.EnemyDeath();
+        if(Target.TryGetComponent<Player>(out Player player))
+        {
+            player.AddExp(exp);
+        }
         DropItem();
         //자신을 죽인 타겟에게 경험치를 주도록 구현
         //ex) Die로부터 자신을 죽은 타겟을 받아와 해당 타겟의 경험치를 상승시키도록 한다.
@@ -327,6 +332,8 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         {
             renderBox.SetActive(true);
         }
+
+        eStatusUI?.OnHpbar();
     }
 
     public void OffRenderBox()
@@ -334,6 +341,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         if (renderBox.activeSelf)
         {
             renderBox.SetActive(false);
+            eStatusUI?.OffHpbar();
         }
     }
     #endregion

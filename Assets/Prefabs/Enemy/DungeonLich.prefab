@@ -298,6 +298,8 @@ Transform:
   - {fileID: 4816756760529166027}
   - {fileID: 4816756759234197035}
   - {fileID: 7026018762128082798}
+  - {fileID: 4816756761016454680}
+  - {fileID: 4816756760974199926}
   m_Father: {fileID: 4816756759473599385}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1287,7 +1289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa8eeb99b575743a3992b4120a1847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -1296,6 +1297,7 @@ MonoBehaviour:
   chaseMode: 0
   returnHome: 0
   isCasting: 0
+  bossEnemy: 0
   attackDamage: 15
   attackDelay: 0
   attackRange: 15
@@ -1318,6 +1320,7 @@ MonoBehaviour:
   exp: 0
   renderBox: {fileID: 4816756759998562436}
   enemyMark: {fileID: 1942489442694183370}
+  dropItem: []
   sounds:
   - name: spawnSkeleton
     clip: {fileID: 8300000, guid: 3109f77cbbbd12b4792da506036a43d2, type: 3}
@@ -11600,8 +11603,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4816756760260841581}
-  - {fileID: 4816756761016454680}
-  - {fileID: 4816756760974199926}
   m_Father: {fileID: 4816756759473599385}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -27063,8 +27064,8 @@ Transform:
   - {fileID: 4816756760220593340}
   - {fileID: 4816756759822780434}
   - {fileID: 4816756759841929341}
-  m_Father: {fileID: 4816756759998562437}
-  m_RootOrder: 2
+  m_Father: {fileID: 2218841035485539034}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!111 &4816756760974199927
 Animation:
@@ -27318,8 +27319,8 @@ Transform:
   m_Children:
   - {fileID: 4816756760003267098}
   - {fileID: 4816756760762078482}
-  m_Father: {fileID: 4816756759998562437}
-  m_RootOrder: 1
+  m_Father: {fileID: 2218841035485539034}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &4816756761016454682
 ParticleSystem:

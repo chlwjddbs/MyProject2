@@ -171,16 +171,19 @@ public class EquipmentUI : MonoBehaviour
         {
             GetComponent<PlayerStatusUI>().EquipWeapon(_equipItem.itemImege);
             GameObject weapon = Instantiate(_equipItem.equipItemObject, weaponSlot.transform.position , Quaternion.identity, weaponSlot);
-            //캐릭터가 장비를 들고 있을때 자연스럽게 보이기 위해 장비의 rotate offset 추가
+
             weapon.transform.localPosition = resetPos;
             weapon.transform.localEulerAngles = resetPos;
             weapon.transform.localScale = new Vector3(1, 1, 1);
+            //캐릭터가 장비를 들고 있을때 자연스럽게 보이기 위해 장비의 rotate offset 추가        
             //weaponSlot.transform.localScale = weapon.transform.localScale;
             //weapon.transform.localScale = new Vector3(1, 1, 1);
             //weaponSlot.transform.localEulerAngles = _equipItem.offset;
             weaponSlot.transform.localPosition = _equipItem.equipItemObject.transform.position;
             weaponSlot.transform.localEulerAngles = _equipItem.equipItemObject.transform.eulerAngles;
             weaponSlot.transform.localScale = _equipItem.equipItemObject.transform.localScale;
+
+            
         }
         else if(equipType == (int)EquipType.Shield)
         {

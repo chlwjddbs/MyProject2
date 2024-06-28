@@ -236,6 +236,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
                 if(overMouseItem != null)
                 {
                     overMouseItem.overMouse = false;
+                    overMouseItem.DontAction();
                     if (overMouseItem.TryGetComponent<AddItem>(out AddItem item))
                     {
                         item.DontAction();
@@ -260,6 +261,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
     {
         attackCollider.enabled = false;
         attackedTargets.Clear();
+        isAction = false;
     }
 
     public void SetDamage(float _damageCoefiicient = 1f , bool multiAttack = false)
@@ -439,10 +441,14 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
             nextLvExp += playerLv * addExpCoefficient;
 
             baseHealth += playerLv * healthCoefficient;
+            maxHealth = baseHealth + equipHealth;
             baseMana += playerLv * manaCoefficient;
+            maxMana = baseMana + equipMana;
 
             baseDamage += playerLv * attackCoefficient;
+            attackDamage = baseDamage + equipDamage;
             baseDefence += defenceCoefficient;
+            defencePoint = baseDefence + equipDefence;
 
             //시작 레벨 1 -> 레벨업 -> (1레벨 * 성장 계수) 만큼 성장 -> 레벨업(레벨2)
             //레벨업부터 하게되면 1레벨에서 2레벨에 넘어가는 성장 계수가 2가 된다. -> 시작 레벨1 -> 레벨업 -> (2레벨 * 성장 계수)가 되기 때문에 레벨업을 성정 후 한다.
@@ -730,7 +736,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
             //attackCollider이면 데미지를 준다.
             if ((collision.contacts[0].thisCollider == attackCollider))
             {
-                Debug.Log(MultiAttackAble);
+                //Debug.Log(MultiAttackAble);
                 if (!MultiAttackAble) 
                 {
                     if(attackedTargets.Count >= 1)

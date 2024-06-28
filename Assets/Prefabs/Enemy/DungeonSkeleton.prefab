@@ -699,7 +699,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 972882342932288317}
   m_LocalRotation: {x: -0.37756416, y: 0.5371355, z: 0.61545956, w: 0.43605077}
-  m_LocalPosition: {x: 0.03561783, y: 1.122438, z: -0.13022804}
+  m_LocalPosition: {x: 0.0356173, y: 1.122438, z: -0.13022731}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -785,7 +785,7 @@ GameObject:
   - component: {fileID: 972882342932451134}
   - component: {fileID: 972882342932451132}
   - component: {fileID: 8111548054540771576}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DungeonSkeleton
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -843,7 +843,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0927b3d0a0c64082770bd4decf9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -852,6 +851,7 @@ MonoBehaviour:
   chaseMode: 0
   returnHome: 0
   isCasting: 0
+  bossEnemy: 0
   attackDamage: 15
   attackDelay: 1.5
   attackRange: 3.5
@@ -868,6 +868,7 @@ MonoBehaviour:
   exp: 1
   renderBox: {fileID: 8963378223043360307}
   enemyMark: {fileID: 2365449522400699746}
+  dropItem: []
   sounds:
   - name: sk_attack
     clip: {fileID: 8300000, guid: d99c7596a5ed936468d3fbbda27f454a, type: 3}
