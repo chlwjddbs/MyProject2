@@ -18,13 +18,13 @@ public class EquipmentUI : MonoBehaviour
 
     //장착슬롯을 관리하는 부모 오브젝트
     public Transform equipItems;
+    public ItemInformation itemInformation;
 
     //장착한 장비가 저장되는 장비 슬롯
     private EquipItemSlot[] equipSlot;
 
     private EquipItem equipItem;
 
-    
     //장착한 장비의 생성 위치
     public Transform weaponSlot;
     public Transform shieldSlot;
@@ -97,7 +97,7 @@ public class EquipmentUI : MonoBehaviour
             int _slotNum = i;
             //0번 슬롯의 버튼 이벤트에 SelectSlot 메서드 등록. 슬롯의 번호는 슬롯의 아이템타입
             equipSlot[i].GetComponent<Button>().onClick.AddListener(delegate { SelectEquipSlot(_slotNum); });
-            equipSlot[i].SetData();
+            equipSlot[i].SetData(itemInformation);
         }
 
         equipment.AddUpdateEquip += AddEquipItem;
@@ -182,8 +182,6 @@ public class EquipmentUI : MonoBehaviour
             weaponSlot.transform.localPosition = _equipItem.equipItemObject.transform.position;
             weaponSlot.transform.localEulerAngles = _equipItem.equipItemObject.transform.eulerAngles;
             weaponSlot.transform.localScale = _equipItem.equipItemObject.transform.localScale;
-
-            
         }
         else if(equipType == (int)EquipType.Shield)
         {
@@ -196,7 +194,6 @@ public class EquipmentUI : MonoBehaviour
 
     public void RemoveEquipItem(EquipItem _equipItem)
     {
-        
         //탈착한 아이템 타입을 int형으로 저장
         int equipType = (int)_equipItem.equipType;
 
@@ -270,12 +267,10 @@ public class EquipmentUI : MonoBehaviour
             return;
         }
         
-
         //현재 선택된 슬롯과 새로 선택한 슬롯이 같을 경우
         if (slotNum == _slotNumber)
         {
-            //셀렉 이미지꺼주고 선택된 슬롯 초기화
-            equipSlot[slotNum].selectImage.SetActive(false);
+            DeSelectSlot(slotNum);
             slotNum = -1;
         }
         //다른 슬롯을 선택한 경우
@@ -285,7 +280,7 @@ public class EquipmentUI : MonoBehaviour
             if (slotNum != -1)
             {
                 //전에 선택한 슬롯의 셀렉 이미지 오프
-                equipSlot[slotNum].selectImage.SetActive(false);
+                DeSelectSlot(slotNum);
             }
 
             //새로 선택한 슬롯을 현재 슬롯으로 전환
@@ -297,8 +292,25 @@ public class EquipmentUI : MonoBehaviour
         }
     }
 
+    public void DeSelectSlot(int _slotNum)
+    {
+        if (slotNum != -1)
+        {
+            equipSlot[slotNum].selectImage.SetActive(false);
+        }
+
+        equipSlot[_slotNum].selectImage.SetActive(false);
+        slotNum = -1;
+        itemInformation.gameObject.SetActive(false);
+    }
+
     public void DeSelectAllSlots()
     {
+        if (slotNum != -1)
+        {
+            itemInformation.gameObject.SetActive(false);
+        }
+
         for (int i = 0; i < equipSlot.Length; i++)
         {
             equipSlot[i].selectImage.SetActive(false);

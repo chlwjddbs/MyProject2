@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Equip", menuName = "Item/Equip")]
 public class EquipItem : Item
 {
+    public int Level;
+
     //장비의 타입 (무기, 방패, 갑옷 등)
     public EquipType equipType;
 
@@ -19,6 +21,9 @@ public class EquipItem : Item
 
     //장비 마나
     public float mana;
+
+    //장비 이동속도
+    public float moveSpeed;
 
     //실제 장착할 장비(인게임에 표시될 장비 오브젝트)
     public GameObject equipItemObject;

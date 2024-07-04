@@ -80,6 +80,10 @@ public class AddItem : Interaction
 
     public override void DoAction()
     {
+        if (!cursor.overMouse)
+        {
+            return;
+        }
         if (theDistance < actionDis)
         {
             player.isObject = true;
@@ -108,7 +112,7 @@ public class AddItem : Interaction
                 }
 
                 //인벤토리가 가득차지 않았다면 아이템 타입에 따라 아이템 획득
-                if (item.itemType == ItemType.Potion)
+                if (item.itemType == ItemType.Used)
                 {
                     AudioManager.instance.PlayeSound("getPotion");
                     AddPotion();
@@ -191,7 +195,7 @@ public class AddItem : Interaction
 
     public void SetItemName()
     {
-        if (item.itemType == ItemType.Potion && quantity > 1)
+        if (item.itemType == ItemType.Used && quantity > 1)
         {
             itemnameText.text = LocalizationSettings.StringDatabase.GetLocalizedString("ItemName", item.itemName, LocalizationSettings.SelectedLocale) + " x " + quantity;
         }

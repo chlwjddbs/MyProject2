@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "new Posion",menuName = "Item/Posion/Hp_Posion")]
-public class HpPotion : Potion
+[CreateAssetMenu(fileName = "new Used",menuName = "Item/Used/Hp_Posion")]
+public class HpPotion : Used
 {
     public float recoveryPoint;
 

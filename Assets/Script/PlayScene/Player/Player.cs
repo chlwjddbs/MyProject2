@@ -124,7 +124,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
     public bool isObject = false;         //마우스 포인터가 Object에 있는지 판정
     [HideInInspector] public bool isUI = false;             //마우스 포인터가 UI에 있는지 판정
     public float checkObjectDis;                            //player와 object의 거리
-    private SetCursorImage overMouseItem;
+    [SerializeField]private SetCursorImage overMouseItem;
     public LayerMask objMask;
 
     private float moveSpeed;
@@ -180,6 +180,21 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
     {
         if (isAction)
         {
+            //isAction을 요구하는 상태로 전환시 LookAtMouse 를 사용하지 않는 상태가 있으므로 현재 스크립트에서 overMouseItem = null 처리를 해주는것은 옳지 않다.
+            //오브젝트에 overMouse 판정을 담당하는 SetCursorImage 스크립트에서 처리하도록 한다.
+
+            /*
+            if (overMouseItem != null)
+            {
+                checkObjectDis = Mathf.Infinity;
+                overMouseItem.DontAction();
+                if (overMouseItem.TryGetComponent<AddItem>(out AddItem item))
+                {
+                    item.DontAction();
+                }
+                overMouseItem = null;
+            }
+            */
             return;
         }
         //스크린에서 월드로 레이를 그림
@@ -226,6 +241,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
                 //현재 확인한 아이템과 기존 확인한 아이템이 같을 경우 거리만 갱신해 준다.
                 else if(overMouseItem.transform == obj.transform)
                 {
+                    overMouseItem.overMouse = true; //아이템에 마우스를 올려 놓고 Action 동작을 하면 overMouse가 false처리되어 마우스 이미지가 갱신되지 않는다. isAction 이후에도 마우스가 아이템 위에 있으면 overMouse true체크를 해준다.
                     checkObjectDis = (obj.transform.position - body.position).magnitude;
                 }
             }

@@ -443,7 +443,7 @@ public class ControllOption : MonoBehaviour
 
             //입력받은 key 정보를 저장
             Event ev = Event.current;
-            string keyName = ev.keyCode.ToString();
+            string newKey = ev.keyCode.ToString();
             KeyCode tmp_Code = selectOption.bindKey;
 
             if(ev.keyCode == KeyCode.Escape)
@@ -451,12 +451,12 @@ public class ControllOption : MonoBehaviour
                 DeSelectAll();
             }
 
-            if (key_Dic.TryGetValue(keyName, out BindKeyInfo _bindkey))
+            if (key_Dic.TryGetValue(newKey, out BindKeyInfo _bindkey))
             {             
                 //selectOption이 bind된 key를 찾는다.           
                 if (bindKey_Dic.TryGetValue(selectOption.keyOption, out KeyOptionInfo _keyOption))
                 {
-                    if (keyName == _keyOption.bindKey.ToString())
+                    if (_keyOption.bindKey.ToString() == newKey)
                     {
                         Debug.Log("같은 키로 변경할 수 없습니다.");
                         return;
@@ -469,7 +469,7 @@ public class ControllOption : MonoBehaviour
                     {
                         if(optionManager.tmp_BindDic.TryGetValue(_bindkey.bindOption.keyOption, out KeyCode vale))
                         {
-                            //취소 기능을 위해 만들어진 tmp 딕셔너리는 옵션이 바뀌기 전 값만 있으면 된다.
+                            //취소 기능을 위해 만들어진 tmp 딕셔너리는 옵션이 바뀌기 전 기존의 처음값만 있으면 된다.
                             //수 없이 많이 반복해서 바꿔도 취소를 누르면 처음의 값이 필요하기 때문이다.
                         }
                         else
@@ -486,10 +486,10 @@ public class ControllOption : MonoBehaviour
                     }
 
                     //입력받은 key에 selectOtpion 정보를 새로 Bind 해준다.
-                    _bindkey.BindOption(selectOption, whSprite_Dic[keyName]);
+                    _bindkey.BindOption(selectOption, whSprite_Dic[newKey]);
 
                     //selectOption의 정보를 입력받은 key로 갱신한다.
-                    _keyOption.Bindkey(ev.keyCode, bKSprite_Dic[keyName], _bindkey);
+                    _keyOption.Bindkey(ev.keyCode, bKSprite_Dic[newKey], _bindkey);
                     //bindKey_Dic[selectOption.keyOption] = _keyOption; : 딕셔너리부터 값을 가져온거기 때문에 값을 변경해주면 굳이 다시 넣지 않아도 된다.
 
                     if (optionManager.tmp_BindDic.TryGetValue(selectOption.keyOption, out KeyCode _code))
@@ -687,6 +687,8 @@ public enum KeyOption
     QuickSlot3,
     QuickSlot4,
     QuickSlot5,
+
+    ViewDescription,
 
     KeyCount,
 }

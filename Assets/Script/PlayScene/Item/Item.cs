@@ -11,6 +11,8 @@ public class Item : ScriptableObject
     //아이템 타입(장비, 포션, 퍼즐 등)
     public ItemType itemType;
 
+    public ItemGrade itemGrade;
+
     //아이템 이름
     public string itemName;
 
@@ -44,7 +46,19 @@ public enum ItemType
 {
     Equip,          //장비   
     Ingredient,     //재료
-    Potion,         //포션
-    Puzzle,         //퍼즐
+    Used,           //소모품
+    Key,            //퍼즐
     SkillBook,      //스킬북
+    Etc,            //기타
+}
+
+public enum ItemGrade
+{
+    Common,
+    Uncommon,
+    Rare,
+    Unique,
+    Epic,
+    Legendary,
+    Mythic,
 }

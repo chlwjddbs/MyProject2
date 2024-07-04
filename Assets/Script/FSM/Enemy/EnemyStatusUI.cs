@@ -11,6 +11,8 @@ public class EnemyStatusUI : MonoBehaviour
     public bool visible;
     private float visibleCount = 5;
     private float countDown;
+
+    private Vector3 hpbarDir;
  
     public void SetData(Enemy_FSM _enemy)
     {
@@ -19,14 +21,14 @@ public class EnemyStatusUI : MonoBehaviour
         HpFill.fillAmount = 1;
         transform.eulerAngles = new Vector3(55, 42.5f, 0);
         visible = false;
-        
+        hpbarDir = new Vector3(55, 42.5f, 0);
     }
 
     public void Updata()
     {
         if (visible)
         {
-            transform.eulerAngles = new Vector3(55, 42.5f, 0);
+            transform.eulerAngles = hpbarDir;
             countDown -= Time.deltaTime;
             if(countDown <= 0)
             {

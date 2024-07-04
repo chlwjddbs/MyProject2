@@ -171,6 +171,10 @@ MonoBehaviour:
     m_Localized: Quick Slot5
     m_Metadata:
       m_Items: []
+  - m_Id: 84739048854581248
+    m_Localized: View Description
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

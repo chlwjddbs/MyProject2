@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: ItemDescription Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: ItemDescription
+  m_TableCollectionNameGuidString: 3887011c075d3de40b8262d646a2e821
+  m_Entries:
+  - m_Id: 8125739008
+    m_Key: BasicShield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 858202107904
+    m_Key: BasicSword
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1634588749824
+    m_Key: FrostSword
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320447465189376
+    m_Key: BasicAxe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320455300149248
+    m_Key: SmallPotion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 329391050911744
+    m_Key: MeteorStrike_Book
+    m_Metadata:
+      m_Items: []
+  - m_Id: 330428562337792
+    m_Key: MeteorStrike
+    m_Metadata:
+      m_Items: []
+  - m_Id: 336713395531776
+    m_Key: NomalHeal_Book
+    m_Metadata:
+      m_Items: []
+  - m_Id: 339651509678080
+    m_Key: NomalHeal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343339179503616
+    m_Key: TurnSlash_Book
+    m_Metadata:
+      m_Items: []
+  - m_Id: 343477008527360
+    m_Key: TurnSlash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 344036176359424
+    m_Key: ViewDescription
+    m_Metadata:
+      m_Items: []
+  - m_Id: 691255492538368
+    m_Key: UseEffect
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5254851990810001418
+  references:
+    version: 2
+    RefIds:
+    - rid: 5254851990810001418
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1719928063638

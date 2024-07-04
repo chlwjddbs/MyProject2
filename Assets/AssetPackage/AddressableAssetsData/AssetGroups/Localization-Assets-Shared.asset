@@ -65,6 +65,18 @@ MonoBehaviour:
     m_Address: Assets/Language/GateName Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
+  - m_GUID: 25f42d05b5b068941bcbc607a143ab1b
+    m_Address: Assets/Language/ItemGrade Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 3887011c075d3de40b8262d646a2e821
+    m_Address: Assets/Language/ItemDescription Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: 7c046f1c1a50ca146b07fd9f46ec6c67
+    m_Address: Assets/Language/UsedItemEffect Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 5abc97afe0b7072489f6ee8b6808c52f, type: 2}
   m_SchemaSet:

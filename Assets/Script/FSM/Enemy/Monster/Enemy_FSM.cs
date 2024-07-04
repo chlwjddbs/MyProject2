@@ -35,7 +35,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     protected EnemyStateMachine eStateMachine;
     protected Animator eAnime;
     protected NavMeshAgent agent;
-    protected EnemyStatusUI eStatusUI;
+    [SerializeField]protected EnemyStatusUI eStatusUI;
     protected BossEnemyStatusUI bossStatusUI;
 
     [HideInInspector] public SearchPlayer searchPlayer;
@@ -395,6 +395,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         }
         else
         {
+            if(eStatusUI == null)
             eStatusUI = GetComponentInChildren<EnemyStatusUI>();
         }
         SetState();

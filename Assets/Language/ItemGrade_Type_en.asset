@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: ItemGrade_Type_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 25f42d05b5b068941bcbc607a143ab1b, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 16950554624
+    m_Localized: Common
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20490547200
+    m_Localized: Uncommon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22851940352
+    m_Localized: Rare
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3270929346560
+    m_Localized: Unique
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3273424957440
+    m_Localized: Epic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3273823416320
+    m_Localized: Legendary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3364890144768
+    m_Localized: Mythic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 942128491720704
+    m_Localized: Head
+    m_Metadata:
+      m_Items: []
+  - m_Id: 942132677636096
+    m_Localized: Weapon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 942134875451392
+    m_Localized: Shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 942135856918528
+    m_Localized: Armor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 942585255620608
+    m_Localized: Shoes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 942587092725760
+    m_Localized: Ring
+    m_Metadata:
+      m_Items: []
+  - m_Id: 942587700899840
+    m_Localized: Ingredient
+    m_Metadata:
+      m_Items: []
+  - m_Id: 942588283908096
+    m_Localized: Used
+    m_Metadata:
+      m_Items: []
+  - m_Id: 942588887887872
+    m_Localized: Key
+    m_Metadata:
+      m_Items: []
+  - m_Id: 942932145532928
+    m_Localized: SkillBook
+    m_Metadata:
+      m_Items: []
+  - m_Id: 942955788824576
+    m_Localized: Etc
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

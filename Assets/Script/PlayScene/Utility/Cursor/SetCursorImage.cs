@@ -12,6 +12,11 @@ public class SetCursorImage : Interaction
 
     public override void LateUpdate()
     {
+        if (player.isAction)
+        {
+            overMouse = false;
+            return;
+        }
         base.LateUpdate();
     }
 

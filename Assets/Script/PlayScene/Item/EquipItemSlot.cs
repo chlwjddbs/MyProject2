@@ -9,6 +9,9 @@ public class EquipItemSlot : MonoBehaviour , IPointerClickHandler
     private Inventory inven;
     private Equipment equipment;
 
+    private InventoryUI invenUI;
+    private EquipmentUI equipUI;
+
     //장착한 장비의 이미지
     public GameObject equipItemImage;
     //선택된 슬롯 이미지
@@ -18,14 +21,36 @@ public class EquipItemSlot : MonoBehaviour , IPointerClickHandler
     public EquipType slotType;
     public int slotTypeNum;
 
-    //현재 장착중인 아이템
-    private EquipItem equipItem;
+    private Vector3 slotPos;
+    private RectTransform slotRect;
 
-    public void SetData()
+    //현재 장착중인 아이템
+    private EquipItem equipItem
+    {
+        get 
+        { 
+            if(equipment.equipItems[slotTypeNum] != null)
+            {
+                return equipment.equipItems[slotTypeNum];
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
+    private ItemInformation itemInformation;
+
+    public void SetData(ItemInformation _itemInformation)
     {
         inven = Inventory.instance;
         equipment = Equipment.instance;
         slotTypeNum = (int)slotType;
+        itemInformation = _itemInformation;
+        invenUI = GetComponentInParent<InventoryUI>();
+        equipUI = GetComponentInParent<EquipmentUI>();
+        slotRect = GetComponent<RectTransform>();
     }
 
     public void SelectEquipSlot()
@@ -36,6 +61,8 @@ public class EquipItemSlot : MonoBehaviour , IPointerClickHandler
         }
 
         selectImage.SetActive(true);
+        slotPos = Camera.main.ViewportToScreenPoint(Camera.main.ScreenToViewportPoint(slotRect.position));
+        itemInformation.SetDescription(equipItem, slotPos);
     }
 
     public void UnEquipItemSlot()
@@ -54,6 +81,8 @@ public class EquipItemSlot : MonoBehaviour , IPointerClickHandler
 
         if (eventData.button == PointerEventData.InputButton.Right)
         {
+            invenUI.DeSelectAllSlots();
+            equipUI.DeSelectAllSlots();
             //현재 슬롯이 빈 칸이 아닐 때만 작동
             if (equipment.equipItems[slotTypeNum] != null)
             {

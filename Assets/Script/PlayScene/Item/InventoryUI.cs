@@ -22,6 +22,7 @@ public class InventoryUI : MonoBehaviour
 
     //Items에서 가져온 슬롯들을 정리할 배열 생성
     [HideInInspector] public ItemSlot[] itemSlot;
+    public ItemInformation itemInformation;
 
     //현재 선택된 슬롯의 번호
     public int slotNum = -1; //-1 : 선택된 슬롯의 번호가 없을 경우
@@ -90,6 +91,7 @@ public class InventoryUI : MonoBehaviour
         inven = Inventory.instance;
         equipUI = GetComponent<EquipmentUI>();
         InvenUIrect = InvenUI.GetComponent<RectTransform>();
+        itemInformation.SetData();
         CloseUI();
 
         //Items의 자식들 = itemSlot의 갯수
@@ -111,7 +113,7 @@ public class InventoryUI : MonoBehaviour
 
             itemSlot[i].GetComponent<Button>().onClick.AddListener(delegate { SelectSlot(slotNum); });
             itemSlot[i].slotNum = i;
-            itemSlot[i].SetData();
+            itemSlot[i].SetData(itemInformation);
         }
 
         //인벤토리 업데이트 액션함수에 등록
@@ -180,7 +182,7 @@ public class InventoryUI : MonoBehaviour
     //인벤토리에 추가되는 아이템이 중첩 가능한 아이템일 때 중첩 가능한지 체크
     public void GoodsOverlap(int _slotNum, Item _item)
     {
-        if (_item.itemType == ItemType.Potion)
+        if (_item.itemType == ItemType.Used)
         {
             inven.isOverlap = itemSlot[_slotNum].PotionOverlapable();
         }
@@ -243,7 +245,7 @@ public class InventoryUI : MonoBehaviour
     public void CloseUI()
     {
         //InvenUI.SetActive(false);
-        DeSelectAllSlots();
+        DeSelectAllSlots();     
         isOpen = false;
         InvenUIrect.anchoredPosition = new Vector3(1920f, 0, 0);
     }
@@ -268,9 +270,10 @@ public class InventoryUI : MonoBehaviour
         //현재 선택된 슬롯과 새로 선택한 슬롯이 같을 경우
         if (slotNum == _slotNumber)
         {
+            DeSelectSlot(slotNum);
             //셀렉 이미지꺼주고 선택된 슬롯 초기화
-            itemSlot[slotNum].selectImage.SetActive(false);
-            slotNum = -1;
+            //itemSlot[slotNum].selectImage.SetActive(false);
+            //slotNum = -1;
         }
         //다른 슬롯을 선택한 경우
         else
@@ -293,13 +296,24 @@ public class InventoryUI : MonoBehaviour
 
     public void DeSelectSlot(int _slotNumber)
     {
+        if(slotNum != -1)
+        {
+            itemSlot[slotNum].selectImage.SetActive(false);
+        }
+
         itemSlot[_slotNumber].selectImage.SetActive(false);
         slotNum = -1;
+        itemInformation.gameObject.SetActive(false);
     }
 
     //모든 슬롯 리셋
     public void DeSelectAllSlots()
     {
+        if (slotNum != -1)
+        {
+            itemInformation.gameObject.SetActive(false);
+        }
+
         for (int i = 0; i < itemSlot.Length; i++)
         {
             itemSlot[i].selectImage.SetActive(false);
