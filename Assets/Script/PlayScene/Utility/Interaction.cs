@@ -10,18 +10,18 @@ public class Interaction : MonoBehaviour
 
     protected Player player;
 
+    
     private void OnEnable()
     {
         player = FindObjectOfType<Player>();
     }
-
-
+    
     // Update is called once per frame
     public virtual void LateUpdate()
     {
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            theDistance = player.checkObjectDis;
+            theDistance = Player.checkObjectDis;
         }
         else
         {

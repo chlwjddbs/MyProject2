@@ -21,7 +21,7 @@ public class SignText : Interaction
 
     public override void LateUpdate()
     {
-        theDistance = player.checkObjectDis;
+        theDistance = Player.checkObjectDis;
         if(countdown > 0)
         {
             countdown -= Time.deltaTime;

@@ -121,9 +121,9 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
     [Header("Etc Data")]
     public Vector3 mousePos;
     
-    public bool isObject = false;         //마우스 포인터가 Object에 있는지 판정
-    [HideInInspector] public bool isUI = false;             //마우스 포인터가 UI에 있는지 판정
-    public float checkObjectDis;                            //player와 object의 거리
+    public bool isObject = false;                             //마우스 포인터가 Object에 있는지 판정
+    [HideInInspector] public bool isUI = false;               //마우스 포인터가 UI에 있는지 판정
+    public static float checkObjectDis;                       //player와 object의 거리
     [SerializeField]private SetCursorImage overMouseItem;
     public LayerMask objMask;
 

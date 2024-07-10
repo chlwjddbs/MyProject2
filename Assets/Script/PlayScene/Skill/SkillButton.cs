@@ -187,7 +187,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
             //ex) 2번째 스킬 버튼에 heal스킬이 장착되면 장착 스킬 목록 리스트 2번쨰에 heal스킬 추가
             SkillBook.instance.equipSkill[buttonNum] = _skillItem;
             skillItem = _skillItem;
-            GameObject _skill = Instantiate(skillItem.skill, skillPos);
+            GameObject _skill = Instantiate(skillItem.skill.gameObject, skillPos);
             skill = _skill.GetComponent<SkillManager>();
             skill.SetSkill(player);
             skillImage.sprite = skillItem.itemImege;
@@ -206,8 +206,8 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         AudioManager.instance.AddSkillSound(_skillItem.skillSound, buttonNum);
         SkillBook.instance.equipSkill[buttonNum] = _skillItem;
         skillItem = _skillItem;
-        GameObject _skill = Instantiate(skillItem.skill, skillPos);
-        skill = _skill.GetComponent<SkillManager>();
+        GameObject _skill = Instantiate(skillItem.skill.gameObject, skillPos);
+        skill = skillItem.skill;
         skillImage.sprite = skillItem.itemImege;
         skillImage.enabled = true;
         remainingTime = _coolTime;

@@ -150,23 +150,23 @@ public class ItemInformation : MonoBehaviour
 
         if (equip.attack == 0)
         {
-            equipRect[4].gameObject.SetActive(false);
+            equipRect[5].gameObject.SetActive(false);
         }
         if(equip.defence == 0)
         {
-            equipRect[5].gameObject.SetActive(false);
+            equipRect[6].gameObject.SetActive(false);
         }
         if(equip.health == 0)
         {
-            equipRect[6].gameObject.SetActive(false);
+            equipRect[7].gameObject.SetActive(false);
         }
         if(equip.mana == 0)
         {
-            equipRect[7].gameObject.SetActive(false);
+            equipRect[8].gameObject.SetActive(false);
         }
         if(equip.moveSpeed == 0)
         {
-            equipRect[8].gameObject.SetActive(false);
+            equipRect[9].gameObject.SetActive(false);
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(selectedItemRect);
@@ -241,7 +241,32 @@ public class ItemInformation : MonoBehaviour
 
     public void SkillBookType()
     {
+        SkillItem skillItem = (SkillItem)selectItem;
 
+        selectedItemRect = skillBookRect[0];
+        descriptionRect = skillBookRect[6];
+        description = skillBookType[6];
+
+        selectedItemRect.gameObject.SetActive(true);
+        descriptionRect.gameObject.SetActive(true);
+
+        skillBookImage.sprite = skillItem.itemImege;
+        skillBookType[0].text = LocalizationSettings.StringDatabase.GetLocalizedString("ItemName", skillItem.itemName, LocalizationSettings.SelectedLocale);
+        skillBookType[1].text = skillItem.skill.skillLevel.ToString();
+        skillBookType[2].text = LocalizationSettings.StringDatabase.GetLocalizedString("ItemGrade_Type", skillItem.itemType.ToString(), LocalizationSettings.SelectedLocale);
+        skillBookType[3].text = LocalizationSettings.StringDatabase.GetLocalizedString("ItemGrade_Type", skillItem.itemGrade.ToString(), LocalizationSettings.SelectedLocale);
+        skillBookType[4].text = LocalizationSettings.StringDatabase.GetLocalizedString("SkillEffect", skillItem.skillName, LocalizationSettings.SelectedLocale);
+        skillBookType[5].text = LocalizationSettings.StringDatabase.GetLocalizedString("ItemDescription", "ViewDescription", LocalizationSettings.SelectedLocale) + $" ({controllOption.bindKey_Dic[keyOption].bindKey})";
+        skillBookType[6].text = LocalizationSettings.StringDatabase.GetLocalizedString("ItemDescription", skillItem.skillName, LocalizationSettings.SelectedLocale);
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate (skillBookType[4].rectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(selectedItemRect);
+        ViewDescription();
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(selectedItemRect);
+
+        myVec.y = selectedItemRect.rect.height;
+        myRect.sizeDelta = myVec;
     }
 
     public void Etc()

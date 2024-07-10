@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemNumber: 0
   itemType: 4
+  itemGrade: 0
   itemName: NomalHeal_Book
   description: This skill restores a small amount of HP to the player.
   itemWeight: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
   FieldObject: {fileID: 9120395849000409295, guid: 1d575b06c0599464fbb887b13ad4b7e0, type: 3}
   skillName: NomalHeal
   skillType: 3000
-  skill: {fileID: 680774134242604639, guid: c3f990da58d66bd4e88c820e300c0b2e, type: 3}
+  skill: {fileID: 7299911114127905667, guid: c3f990da58d66bd4e88c820e300c0b2e, type: 3}
   skillSound:
     name: nomalHeal
     clip: {fileID: 8300000, guid: dddde2397affa4973880bcc238b6ad30, type: 3}

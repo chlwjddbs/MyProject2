@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SkillManager : MonoBehaviour
 {
+    public int skillLevel;
+
     //스킬의 현재 남은 스킬의 쿨타임
     public float remainingTime;
 

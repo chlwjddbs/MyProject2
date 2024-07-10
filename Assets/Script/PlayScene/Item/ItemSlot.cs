@@ -26,6 +26,8 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
     private Vector3 slotPos;
     private RectTransform slotRect;
 
+    private Vector3 descriptionPos;
+
     [SerializeField] private Inventory.InvenItem itemInfo;
 
     private ItemInformation itemInformation;
@@ -196,8 +198,21 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         }
         selectImage.SetActive(true);
         //itemDescription.gameObject.SetActive(true);
-        slotPos = Camera.main.ViewportToScreenPoint(Camera.main.ScreenToViewportPoint(slotRect.position));
-        itemInformation.SetDescription(item, slotPos);
+
+        //UIManger Canvas Scaler의 UI Scale Mode가 Scale With Screen Size로 되어 있어 화면비 변경시 Reference Resolution의 비율을 따라간다.
+        //Reference Resolution 이 (1920,1080)일때 해상도를 (3840,2160)으로 변경하면 UIManger의 크기는 Reference Resolution으로 인해 (1920,1080)이 된다.
+        //그럴 경우 Camera.main.ScreenToViewportPoint(slotRect.position)을 통해 화면 좌표를 받아 온 후
+        //Camera.main.ViewportToScreenPoint을 통해 위치를 역산할 시 비율이 조정된 UIManager의 크기(1920,1080)를 따라가는게 아닌 설정한 해상도(3840,2160)를 따라 가기때문에 위치가 달라지게 된다.
+        //ex) Camera.main.ScreenToViewportPoint(slotRect.position) 의 값이 화면 중앙(0.5, 0.5)일때 (960, 540)값이 아닌 (1920,1080)을 가져오게 되어 Description UI가 원하는 위치에 표시되지 않는다.
+        //그러므로 invenUI RectTransform을 받아와 해상도 변경에 대응 할 수 있도록 한다.
+        if (invenUI.TryGetComponent<RectTransform>(out RectTransform screenRect))
+        {
+            slotPos = Camera.main.ScreenToViewportPoint(slotRect.position);
+            descriptionPos.x = screenRect.rect.width * slotPos.x;
+            descriptionPos.y = screenRect.rect.height * slotPos.y;
+        }
+        
+        itemInformation.SetDescription(item, descriptionPos);
     }
 
     public void UseItem()

@@ -77,6 +77,10 @@ MonoBehaviour:
     m_Address: Assets/Language/UsedItemEffect Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
+  - m_GUID: 0425d3ef4f3039148a9aadc1e3b2365a
+    m_Address: Assets/Language/SkillEffect Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 5abc97afe0b7072489f6ee8b6808c52f, type: 2}
   m_SchemaSet:

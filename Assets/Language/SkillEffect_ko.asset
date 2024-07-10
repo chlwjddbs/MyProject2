@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SkillEffect_ko
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: ko
+  m_SharedData: {fileID: 11400000, guid: 0425d3ef4f3039148a9aadc1e3b2365a, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 23242010624
+    m_Localized: "\uACF5\uACA9\uB825 : 4000%\n\uCFE8\uD0C0\uC784 : 300\uCD08\n\uD544\uC694
+      \uB9C8\uB825 : 120\n\uBC94\uC704 : 150"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9399558270976
+    m_Localized: "\uCCB4\uB825 \uD68C\uBCF5\uB7C9 : 30\n\uCFE8\uD0C0\uC784 : 5\uCD08\n\uD544\uC694
+      \uB9C8\uB825 : 15"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9973079011328
+    m_Localized: "\uACF5\uACA9\uB825 : 200%\n\uCFE8\uD0C0\uC784 : 1\uCD08\n\uD544\uC694
+      \uB9C8\uB825 : 5\n\uBC94\uC704 : \uBB34\uAE30 \uBC94\uC704"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11362333159424
+    m_Localized: "[\uC0C1\uC138 \uD6A8\uACFC]"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

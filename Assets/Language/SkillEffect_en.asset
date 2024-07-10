@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: SkillEffect_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 0425d3ef4f3039148a9aadc1e3b2365a, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 23242010624
+    m_Localized: 'Damage : 4000%
+
+      Cool Time : 300s
+
+      Use Mana : 120
+
+      Range
+      : 150'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9399558270976
+    m_Localized: 'Hp Recovery : 30
+
+      Cool Time : 5s
+
+      Use Mana : 15'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9973079011328
+    m_Localized: 'Damage : 200
+
+      Cool Time : 1s
+
+      Use Mana : 5
+
+      Range
+      : Weapon Reach'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11362333159424
+    m_Localized: '[Skill Effect]'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

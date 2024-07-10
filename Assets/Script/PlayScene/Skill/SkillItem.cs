@@ -8,7 +8,7 @@ public class SkillItem : Item
     public string skillName;
     public SkillType skillType;
 
-    public GameObject skill;
+    public SkillManager skill;
 
     public Sound skillSound;
    

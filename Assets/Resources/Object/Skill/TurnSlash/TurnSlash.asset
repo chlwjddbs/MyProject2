@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemNumber: 0
   itemType: 4
+  itemGrade: 0
   itemName: TurnSlash_Book
   description: attackDamagex2
   itemWeight: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
   FieldObject: {fileID: 9120395849000409295, guid: 63b539c744522da4a910d44efa1808a3, type: 3}
   skillName: TurnSlash
   skillType: 0
-  skill: {fileID: 680774134242604639, guid: b9439f3ab697e96438d55a21cc466989, type: 3}
+  skill: {fileID: 4639209112979521401, guid: b9439f3ab697e96438d55a21cc466989, type: 3}
   skillSound:
     name: TurnSlash
     clip: {fileID: 8300000, guid: 707639fa619d7204eb22cd8b6270f95f, type: 3}

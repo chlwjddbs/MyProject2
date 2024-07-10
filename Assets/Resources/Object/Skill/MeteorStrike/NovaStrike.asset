@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemNumber: 0
   itemType: 4
+  itemGrade: 0
   itemName: NovaStrike_Book
   description: 
   itemWeight: 0
@@ -23,4 +24,13 @@ MonoBehaviour:
   FieldObject: {fileID: 9120395849000409295, guid: e75e09cc19e123c4b9577483f422fac1, type: 3}
   skillName: NovaStrike
   skillType: 0
-  skill: {fileID: 680774134242604639, guid: e676ad8e9c7f3304dbee2f75e7984d6b, type: 3}
+  skill: {fileID: -7159593080719683441, guid: e676ad8e9c7f3304dbee2f75e7984d6b, type: 3}
+  skillSound:
+    name: 
+    clip: {fileID: 0}
+    volume: 0
+    pitch: 0
+    loop: 0
+    soundType: 0
+    playOnAwake: 0
+    source: {fileID: 0}

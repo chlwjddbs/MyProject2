@@ -44,9 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 224ceee459d0d7a45a05d6cb8750be7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillLevel: 5
   remainingTime: 0
   coolTime: 1
-  cunsumeMana: 1
+  cunsumeMana: 5
   isUse: 0
   skillMotion: {fileID: 7400000, guid: ed25cc60f58aad8438d700287d8006a4, type: 2}
   actionSpeed: 3
