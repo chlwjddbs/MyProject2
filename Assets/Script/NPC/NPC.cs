@@ -12,11 +12,6 @@ public class NPC : MonoBehaviour
     //플레이어와의 거리
     public float theDistance;
 
-    //ActionUI
-    public GameObject actionUI;
-    public TextMeshProUGUI actionTextUI;
-    public string actionText = "Talk With ";
-
     public List<Quest> npcQuest;
 
     public string xmlFile;
@@ -45,19 +40,17 @@ public class NPC : MonoBehaviour
     {
         if (theDistance < 2.0f)
         {
-            //ShowActionUI();
+            
         }
         else
         {
-            HideActionUI();
+            
         }
 
         if (Input.GetButtonDown("Action"))
         {
             if (theDistance < 2.0f)
             {
-                HideActionUI();
-
                 DoEvent();
             }
         }
@@ -70,26 +63,12 @@ public class NPC : MonoBehaviour
         {
             questManager.cuurentState = QuestState.None;
             dialogManager.StartDialog(xmlFile,0);
-            Dialog dialog = dialogManager.dialogs.Dequeue();
-
-            Debug.Log(dialog.sentence);
             return;
         }
     }
 
     private void OnMouseExit()
     {
-        HideActionUI();
-    }
-
-    public virtual void ShowActionUI()
-    {
-        actionUI.SetActive(true);
-        actionTextUI.text = actionText + npcInfo.npcName;
-    }
-
-    public void HideActionUI()
-    {
-        //actionUI.SetActive(false);
+       
     }
 }
