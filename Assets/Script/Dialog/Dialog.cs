@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Dialog
 {
-    public int logNum;          //xml에서 접근할 Dialog 번호
+    public int logNum;          //xml에서 접근할 Dialog 번호  
     public string talkerImage;        //dialog ui에 표시할 이미지 
     public string talkerName;   //dialog에서 말하고 있는 대상
     public string sentence;     //dialog 내용

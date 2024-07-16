@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Localization.Settings;
 
 public class DialogUI : MonoBehaviour
 {
     private DialogManager dialogManager;
+    private QuestManager questManager;
+
     public Image talkerImage;
     public TextMeshProUGUI talkerName;
     public TextMeshProUGUI sentenceArea;
@@ -18,12 +21,14 @@ public class DialogUI : MonoBehaviour
     private bool isOpen;
     public RectTransform dialogRect;
 
+    private string dialogSentence;
     private bool typing;
 
     // Start is called before the first frame update
     void Start()
     {
         dialogManager = DialogManager.instance;
+        questManager = QuestManager.instance;
         ResetDialogUI();
         CloseUI();
     }
@@ -36,7 +41,10 @@ public class DialogUI : MonoBehaviour
             return;
         }
 
-        DialogControll();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            DialogControll();
+        }
     }
 
     public void OpenUI()
@@ -49,6 +57,11 @@ public class DialogUI : MonoBehaviour
     {
         isOpen = false;
         dialogRect.anchoredPosition = new Vector3(0, -1080f, 0);
+
+        if(questManager.cuurentState == QuestState.Ready)
+        {
+            questManager.SetQuestUI();
+        }
     }
 
     public void ResetDialogUI()
@@ -79,12 +92,19 @@ public class DialogUI : MonoBehaviour
 
         talkerImage.sprite = Resources.Load<Sprite>("Dialog/CharacterImage/" + dialog.talkerImage);
 
-        talkerName.text = dialog.talkerName;
+        if (dialog.talkerName == "Player")
+        {
+            talkerName.text = GameData.instance.userData.userName;
+        }
+        else
+        {
+            talkerName.text = LocalizationSettings.StringDatabase.GetLocalizedString("NPC", dialog.talkerName, LocalizationSettings.SelectedLocale);
+        }
 
-        //sentenceArea.text = dialog.sentence;
+        dialogSentence = LocalizationSettings.StringDatabase.GetLocalizedString("Dialog", dialog.sentence , LocalizationSettings.SelectedLocale);
 
         //대화문 타이핑 연출
-        StartCoroutine(typingSentence(dialog.sentence));
+        StartCoroutine(typingSentence(dialogSentence));
     }
 
     IEnumerator typingSentence(string typingText)
@@ -109,7 +129,7 @@ public class DialogUI : MonoBehaviour
         {
             typing = false;
             StopAllCoroutines();
-            sentenceArea.text = dialog.sentence;
+            sentenceArea.text = dialogSentence;
         }
     }
 
@@ -123,16 +143,13 @@ public class DialogUI : MonoBehaviour
 
     public void DialogControll()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (typing)
         {
-            if (typing)
-            {
-                DrawAllSentece();
-            }
-            else
-            {
-                NextSentence();
-            }
+            DrawAllSentece();
+        }
+        else
+        {
+            NextSentence();
         }
     }
 

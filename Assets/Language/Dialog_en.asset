@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Dialog_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: a312b7e7aee38964daf2441a582d88b3, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 47199875072
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96566833152
+    m_Localized: (It's a questionable looking skeleton head...)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98852728832
+    m_Localized: Wait, knight over there
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101386088448
+    m_Localized: (The skull is talking...?)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2398002409472
+    m_Localized: Yes. You there. Won't you do me a favor?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2401252995072
+    m_Localized: What could it be?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2401844391936
+    m_Localized: 'Kill the other skeleton that made me do this and collect their
+      bones.
+
+      I''ll make sure to repay you'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2402439983104
+    m_Localized: You still haven't gone yet?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2403018797056
+    m_Localized: What are you doing?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26196734963712
+    m_Localized: Thank you... I'll give you the currency you can use in the tower
+      in return.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

@@ -81,6 +81,14 @@ MonoBehaviour:
     m_Address: Assets/Language/SkillEffect Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
+  - m_GUID: a312b7e7aee38964daf2441a582d88b3
+    m_Address: Assets/Language/Dialog Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+  - m_GUID: b216feb4b47553242bf8f8bc31ce8cf7
+    m_Address: Assets/Language/NPC Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 5abc97afe0b7072489f6ee8b6808c52f, type: 2}
   m_SchemaSet:

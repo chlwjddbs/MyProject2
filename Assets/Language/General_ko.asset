@@ -80,6 +80,30 @@ MonoBehaviour:
       \uC885\uB8CC\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items: []
+  - m_Id: 81525004660174848
+    m_Localized: "\uC758\uB8B0\uC11C"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525051909009408
+    m_Localized: "\uBCF4\uC0C1 \uBAA9\uB85D"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525250136010752
+    m_Localized: "\uAE08\uD654"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525348714737664
+    m_Localized: "\uACBD\uD5D8\uCE58"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525409410510848
+    m_Localized: "\uBB3C\uD488"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81626546004357120
+    m_Localized: "\uC218\uB77D"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

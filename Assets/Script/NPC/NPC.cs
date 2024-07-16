@@ -5,6 +5,7 @@ using TMPro;
 
 public class NPC : MonoBehaviour
 {
+    private Player player;
     private QuestManager questManager;
     private DialogManager dialogManager;
     public NPCInfo npcInfo;
@@ -14,7 +15,12 @@ public class NPC : MonoBehaviour
 
     public List<Quest> npcQuest;
 
-    public string xmlFile;
+    public string dialogXml;
+    public string questXml;
+
+    public Quest startAbleQuest;
+
+    public int randomDialog;
 
     private void Start()
     {
@@ -30,10 +36,19 @@ public class NPC : MonoBehaviour
 
     public void SetData()
     {
-        questManager = QuestManager.instance;
+        player = GameData.instance.player;
+
         dialogManager = DialogManager.instance;
-        npcQuest = questManager.GetNpcQuest(npcInfo.npcIndex);
-        dialogManager.RegistDialogXml(xmlFile);
+        questManager = QuestManager.instance;
+        
+        dialogManager.RegistDialogXml(dialogXml);
+        questManager.RegistQuestXml(npcInfo.npcName, questXml);
+
+        //questManager.SetNpcQuest(npcInfo.npcName);
+        foreach (Quest item in questManager.SetNpcQuest(npcInfo.npcName))
+        {
+            npcQuest.Add(item);
+        }
     }
 
     private void OnMouseOver()
@@ -62,9 +77,38 @@ public class NPC : MonoBehaviour
         if(npcQuest.Count == 0)
         {
             questManager.cuurentState = QuestState.None;
-            dialogManager.StartDialog(xmlFile,0);
+            dialogManager.StartDialog(dialogXml, 0);
             return;
         }
+
+        foreach (Quest _quest in npcQuest)
+        {
+            if(player.PlayerLv >= _quest.level)
+            {
+                startAbleQuest = _quest;
+                startAbleQuest.questState = questManager.GetQuestState(_quest);
+                break;
+            }
+        }
+
+        switch (startAbleQuest.questState)
+        {
+            case QuestState.None:
+                dialogManager.StartDialog(dialogXml, 0);
+                break;
+            case QuestState.Ready:
+                dialogManager.StartDialog(dialogXml, startAbleQuest.dialogIndex);
+                break;
+            case QuestState.Accept:
+                dialogManager.StartDialog(dialogXml, startAbleQuest.dialogIndex + Random.Range(1, startAbleQuest.randomIndex));
+                break;
+            case QuestState.Complete:
+                dialogManager.StartDialog(dialogXml, startAbleQuest.completeIndex);
+                break;
+            default:
+                break;
+        }
+
     }
 
     private void OnMouseExit()

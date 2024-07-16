@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Pool;
 
 public class ObjectPoolingManager : MonoBehaviour
@@ -33,22 +34,30 @@ public class ObjectPoolingManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public List<IObjectPool<GameObject>> foolList = new List<IObjectPool<GameObject>>();
-    public Dictionary<string, FoolObjectInfo> foolObjDic = new Dictionary<string, FoolObjectInfo>();
+    public List<IObjectPool<GameObject>> poolList = new List<IObjectPool<GameObject>>();
+    public Dictionary<string, FoolObjectInfo> poolObjDic = new Dictionary<string, FoolObjectInfo>();
+
+    //현재 QuestUI에서만 간단하게 사용할 풀링오브젝트로 저장은 따로 구현하지 않고 이용하여 딕셔너리는 필요없다.
+    public IObjectPool<Image> imagePool;
 
 
-    public void RegisetPoolObj(GameObject _foolObj, IObjectPool<GameObject> _foolObjs, int _count = 2)
+    public void RegisetPoolObj(GameObject _poolObj, IObjectPool<GameObject> _poolObjs, int _count = 2)
     {
-        if (!foolObjDic.TryGetValue(_foolObj.name, out FoolObjectInfo value))
+        if (!poolObjDic.TryGetValue(_poolObj.name, out FoolObjectInfo value))
         {
-            foolList.Add(_foolObjs);
-            foolObjDic.Add(_foolObj.name, new FoolObjectInfo(_foolObj.name, _foolObjs, _count));
+            poolList.Add(_poolObjs);
+            poolObjDic.Add(_poolObj.name, new FoolObjectInfo(_poolObj.name, _poolObjs, _count));
         }
+    }
+
+    public void RegisetPoolImageObj(Image _poolObj, IObjectPool<Image> _poolObjs, int _count = 2)
+    {
+        imagePool = _poolObjs;
     }
 
     public IObjectPool<GameObject> FindPool(string _foolName)
     {
-        if (foolObjDic.TryGetValue(_foolName, out FoolObjectInfo value))
+        if (poolObjDic.TryGetValue(_foolName, out FoolObjectInfo value))
         {
             return value.objectPool;
         }

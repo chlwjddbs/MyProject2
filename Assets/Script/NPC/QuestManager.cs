@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System.Xml;
 
 public class QuestManager : MonoBehaviour
@@ -18,11 +19,6 @@ public class QuestManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
-
-        //PickUpQuestGiver에서 퀘스트 리스트를 받아오려면 QuestManager에서 LoadQuestXml이 먼저 실행되어야 한다.
-        //그래서 LoadQuestXml이 Start에 있으면 PickUpQuestGiver에서 먼저 Start가 돌 가능성이 있기 때문에
-        //Awake에서 실행하도록 한다.
-        LoadQuestXml(xmlFile);
     }
     #endregion
 
@@ -38,65 +34,84 @@ public class QuestManager : MonoBehaviour
 
     public List<Quest> completeQuest = new List<Quest>();       //완료한 퀘스트
 
-    private void LoadQuestXml(string fileName)
+    public Dictionary<string, XmlNodeList> NodeAll = new Dictionary<string, XmlNodeList>();
+    public Dictionary<string, List<Quest>> AllQuest = new Dictionary<string, List<Quest>>();
+
+    private string codeStr;
+
+    public UnityAction<Quest> setQuestUI;
+
+    public void RegistQuestXml(string npcName, string fileName)
     {
         TextAsset xmlFile = Resources.Load(fileName) as TextAsset;
 
         XmlDocument xmlDoc = new XmlDocument();
         xmlDoc.LoadXml(xmlFile.text);
         allNodes = xmlDoc.SelectNodes("root/quest");
+        NodeAll[npcName] = xmlDoc.SelectNodes("root/quest");
         Debug.Log("load xml file complete");
     }
 
     //지정된 인덱스의 Npc에서 퀘스트를 호출
-    public List<Quest> GetNpcQuest(int npcIndex)
+    public List<Quest> SetNpcQuest(string npcName)
     {
         List<Quest> quests = new List<Quest>();
 
-        foreach (XmlNode node in allNodes)
+        foreach (XmlNode node in NodeAll[npcName])
         {
-            int index = int.Parse(node["npc"].InnerText);
-            if (index == npcIndex)
+            Quest quest = new Quest();
+            
+            quest.questProgress = new QuestProgress();
+
+            quest.number = int.Parse(node["questNumber"].InnerText);         //퀘스트 번호
+            quest.qName = node["questName"].InnerText;                       //퀘스트 이름
+            quest.description = node["description"].InnerText;               //퀘스트 설명
+            quest.dialogIndex = int.Parse(node["diologIndex"].InnerText);    //퀘스트 진행가능 상태일때 Npc의 dialog
+            quest.randomIndex = int.Parse(node["randomIndex"].InnerText);    //퀘스트 진행중 다시 대화를 걸었을때의 dialog
+            quest.completeIndex = int.Parse(node["completeIndex"].InnerText);//퀘스트 완료 dialog
+
+            quest.level = int.Parse(node["level"].InnerText);                //퀘스트 레벨
+
+            int qType = int.Parse(node["questType"].InnerText);             //퀘스트 타입 : 킬 퀘스트, 수집 퀘스트 등
+      
+            quest.questProgress.questType = (QuestType)qType;
+            quest.questProgress.currentAmount = 0;                                          //퀘스트의 현재 진행상황 : 퀘스트를 처음 받으면 당연히 0이여야한다.
+            quest.questProgress.reachedAmount = int.Parse(node["goalAmount"].InnerText);    //퀘스트 목표 : 퀘스트가 완료되기 위한 조건
+
+            //아이템이나 목표 몬스터의 인덱스를 받아와 처리하도록 한다.
+            //ex) 좀비를 잡아 오는 퀘스트를 진행시 좀비의 인덱스가 0이고 뮤턴트의 인덱스가 1이면
+            // 인덱스가 0인 좀비만 카운트가 될 수 있게 한다.
+            quest.questProgress.typeIndex = int.Parse(node["goalIndex"].InnerText);
+
+            quest.goldReward = int.Parse(node["gold"].InnerText);
+            quest.expReward = int.Parse(node["exp"].InnerText);
+
+            //node의 item 번호를 받아와 rewardItem의 리스트 번호로 맞춰 보상 설정
+            codeStr = "item";
+            int itemIndex = int.Parse(node[codeStr].InnerText);
+            Debug.Log(itemIndex);
+            int i = 0;
+            while (itemIndex > -1)
             {
-                Quest quest = new Quest();
-                //QuestProgress도 직렬화된 클래스 이기 떄문에 new를 하여 객체를 생성해 줘야 데이터를 담을 수 있다.
-                quest.questProgress = new QuestProgress();
-
-                quest.number = int.Parse(node["number"].InnerText);
-                quest.npcIndex = index;
-                quest.qName = node["name"].InnerText;
-                quest.description = node["description"].InnerText;
-                quest.dialogIndex = int.Parse(node["diologIndex"].InnerText);
-                quest.level = int.Parse(node["level"].InnerText);
-
-                int qType = int.Parse(node["questType"].InnerText);
-                //방법1 : 메서드를 통해 QuestType 받아오기
-                //quest.questGoal.questType = QuestTypeIndex(qType);
-                //방법2 : node["questType"].InnerText를 인트형으로 담아 QuestType으로 형 변환
-                quest.questProgress.questType = (QuestType)qType;
-                quest.questProgress.currentAmount = 0;
-                quest.questProgress.reachedAmount = int.Parse(node["goalAmount"].InnerText);
-
-                //아이템이나 목표 몬스터의 인덱스를 받아와 처리하도록 한다.
-                //ex) 좀비를 잡아 오는 퀘스트를 진행시 좀비의 인덱스가 0이고 뮤턴트의 인덱스가 1이면
-                // 인덱스가 0인 좀비만 카운트가 될 수 있게 한다.
-                quest.questProgress.typeIndex = int.Parse(node["goalIndex"].InnerText);
-
-                quest.goldReward = int.Parse(node["gold"].InnerText);
-                quest.expReward = int.Parse(node["exp"].InnerText);
-
-                //node의 item 번호를 받아와 rewardItem의 리스트 번호로 맞춰 보상 설정
-                int itemIndex = int.Parse(node["item"].InnerText);
-                //아이템 번호가 -1이면 아이템을 지급하지 않음. 보상null
-                if (itemIndex > -1)
+                quest.itemReward.Add(rewardItem[itemIndex]);
+                i++;
+                codeStr = $"item{i}";
+                try
                 {
-                    quest.itemReward = rewardItem[itemIndex];
+                    itemIndex = int.Parse(node[codeStr].InnerText);
                 }
-                quests.Add(quest);
+                catch (System.Exception)
+                {
+                    itemIndex = -1;
+                }
             }
+            
+            quests.Add(quest);
         }
 
-        return quests;
+        AllQuest[npcName] = quests; //npc 이름으로 된 모든 퀘스트를 따로 정리한다.
+
+        return quests; //npc 이름으로 된 퀘스트를 반환하여 npc에 등록한다.
     }
 
     //플레이어 퀘스트 리스트 중 지정된 퀘스트를 뽑아서 그 퀘스트의 상태를 넘겨준다.
@@ -156,7 +171,10 @@ public class QuestManager : MonoBehaviour
         //보상 받기
         if (currentQuest.itemReward != null)
         {
-            Inventory.instance.AddItem(currentQuest.itemReward);
+            foreach (var item in currentQuest.itemReward)
+            {
+                Inventory.instance.AddItem(item);
+            }
         }
 
         //PlayerStats.instance.AddGold(currentQuest.goldReward);
@@ -166,6 +184,17 @@ public class QuestManager : MonoBehaviour
 
         //플레이어 퀘스트리스트에서 삭제
         performingQuest.Remove(currentQuest);
+    }
+
+    public void SetQuestUI()
+    {
+        setQuestUI?.Invoke(currentQuest);
+    }
+
+    public void ResetQuest()
+    {
+        currentQuest = null;
+        cuurentState = QuestState.None;
     }
 }
 

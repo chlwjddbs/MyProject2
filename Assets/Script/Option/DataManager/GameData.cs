@@ -31,6 +31,8 @@ public class GameData : DataManager
 
     //public Dictionary<int> slotItem;
 
+    public Player player;
+
     protected void Awake()
     {
         if (instance != null)

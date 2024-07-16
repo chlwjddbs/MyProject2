@@ -7,6 +7,7 @@ public class SkeletonLich : Enemy_FSM
 {
     private ObjectPoolingManager poolingManager;
     public IObjectPool<GameObject> connectPool;
+
     [Header("Lich Ball")]
     public GameObject lichballprefab;
     public Transform lichballPoint;

@@ -29,8 +29,6 @@ public class DialogManager : MonoBehaviour
     private Dictionary<string, XmlNodeList> nodeAll = new Dictionary<string, XmlNodeList>();
     public Queue<Dialog> dialogs = new Queue<Dialog>();
 
-    private string dialogSentence;
-
     public bool isOpen = false;
 
     public DialogUI dialogUI;

@@ -4,49 +4,70 @@
 		<number>0</number>
 		<character>questionablehead0</character>
 		<name>questionablehead</name>
-		<sentence>...</sentence>
+		<sentence>QuestionableHead_0</sentence>
 		<next>-1</next>
 	</dialog>
 	<dialog>
 		<number>0</number>
 		<character>Player0</character>
 		<name>Player</name>
-		<sentence>(수상해 보이는 해골이군...)</sentence>
+		<sentence>QuestionableHead_1</sentence>
 		<next>-1</next>
 	</dialog>
 	<dialog>
 		<number>1</number>
 		<character>questionablehead0</character>
 		<name>questionablehead</name>
-		<sentence>잠깐, 거기 기사 양반</sentence>
+		<sentence>QuestionableHead_2</sentence>
 		<next>-1</next>
 	</dialog>
 	<dialog>
 		<number>1</number>
 		<character>Player0</character>
 		<name>Player</name>
-		<sentence>(해골이 말을..?)</sentence>
+		<sentence>QuestionableHead_3</sentence>
 		<next>-1</next>
 	</dialog>
 	<dialog>
 		<number>1</number>
 		<character>questionablehead0</character>
 		<name>questionablehead</name>
-		<sentence>그래. 거기 너. 내 부탁을 하나 들어주지 않겠어?</sentence>
+		<sentence>QuestionableHead_4</sentence>
 		<next>-1</next>
 	</dialog>
 	<dialog>
 		<number>1</number>
 		<character>Player0</character>
 		<name>Player</name>
-		<sentence>무슨 일지지?</sentence>
+		<sentence>QuestionableHead_5</sentence>
 		<next>-1</next>
 	</dialog>
 	<dialog>
 		<number>1</number>
 		<character>questionablehead0</character>
 		<name>questionablehead</name>
-		<sentence>나를 이렇게 만든 다른 스켈레톤을 죽이고 그들의 뼈를 모아다 주게. \n 보상은 꼭 하도록 하지.</sentence>
+		<sentence>QuestionableHead_6</sentence>
+		<next>-1</next>
+	</dialog>
+	<dialog>
+		<number>2</number>
+		<character>questionablehead0</character>
+		<name>questionablehead</name>
+		<sentence>QuestionableHead_7</sentence>
+		<next>-1</next>
+	</dialog>
+	<dialog>
+		<number>2</number>
+		<character>questionablehead0</character>
+		<name>questionablehead</name>
+		<sentence>QuestionableHead_8</sentence>
+		<next>-1</next>
+	</dialog>
+	<dialog>
+		<number>3</number>
+		<character>questionablehead0</character>
+		<name>questionablehead</name>
+		<sentence>QuestionableHead_9</sentence>
 		<next>-1</next>
 	</dialog>
 </root>

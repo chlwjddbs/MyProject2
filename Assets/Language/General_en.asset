@@ -76,6 +76,30 @@ MonoBehaviour:
       you lose unsaved information.'
     m_Metadata:
       m_Items: []
+  - m_Id: 81525004660174848
+    m_Localized: Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525051909009408
+    m_Localized: Reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525250136010752
+    m_Localized: Gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525348714737664
+    m_Localized: Exp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525409410510848
+    m_Localized: Item
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81626546004357120
+    m_Localized: Accept
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

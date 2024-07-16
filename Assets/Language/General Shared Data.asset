@@ -73,6 +73,30 @@ MonoBehaviour:
     m_Key: QuitPlayGame
     m_Metadata:
       m_Items: []
+  - m_Id: 81525004660174848
+    m_Key: QuesTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525051909009408
+    m_Key: RewardTile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525250136010752
+    m_Key: GoldText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525348714737664
+    m_Key: ExpText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81525409410510848
+    m_Key: ItemText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81626546004357120
+    m_Key: Accept
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

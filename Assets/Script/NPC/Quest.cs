@@ -11,14 +11,16 @@ public class Quest
     public string description;
 
     //dialogIndex를 참조하여 대화창이 열림
-    public int dialogIndex;
+    public int dialogIndex;                 //퀘스트 dialog시작
+    public int randomIndex;                 //퀘스트 진행중 npc에게 다시 말을 걸면 나오는 dialog의 갯수
+    public int completeIndex;               //퀘스트 완료 dialog
 
-    public int level;
+    public int level;                       //퀘스트 시작 가능 레벨
 
     //보상 목록
     public int goldReward;
     public int expReward;
-    public Item itemReward;
+    public List<Item> itemReward = new List<Item>();
 
     public QuestState questState;
 
