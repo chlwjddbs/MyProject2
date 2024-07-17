@@ -75,6 +75,10 @@ MonoBehaviour:
     m_Key: MoveSpeed
     m_Metadata:
       m_Items: []
+  - m_Id: 58734084986564608
+    m_Key: QuestList
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

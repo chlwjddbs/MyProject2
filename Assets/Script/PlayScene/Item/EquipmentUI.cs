@@ -8,6 +8,7 @@ using TMPro;
 public class EquipmentUI : MonoBehaviour
 {
     private Equipment equipment;
+    private ControllOption controllOption;
 
     //¿Â¬¯√¢ UI
     public GameObject equipUI;
@@ -35,6 +36,8 @@ public class EquipmentUI : MonoBehaviour
     private Vector3 resetPos;
 
     public RectTransform levelTitle;
+
+    public KeyOption keyOption;
 
     private void Awake()
     {
@@ -86,6 +89,7 @@ public class EquipmentUI : MonoBehaviour
     {
         equipment = Equipment.instance;
         equipSlot = equipItems.GetComponentsInChildren<EquipItemSlot>();
+        controllOption = OptionManager.instance.controllOption;
 
         invenUI = GetComponent<InventoryUI>();
         equipUIrect = equipUI.GetComponent<RectTransform>();
@@ -125,7 +129,7 @@ public class EquipmentUI : MonoBehaviour
         }
         
 
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(controllOption.bindKey_Dic[keyOption].bindKey))
         {
             isOpen = !isOpen;
             if (isOpen)

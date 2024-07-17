@@ -78,6 +78,10 @@ MonoBehaviour:
     m_Localized: 'MoveSpeed :'
     m_Metadata:
       m_Items: []
+  - m_Id: 58734084986564608
+    m_Localized: Quest List
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

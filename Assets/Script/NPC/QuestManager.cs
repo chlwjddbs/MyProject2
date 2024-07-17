@@ -25,21 +25,22 @@ public class QuestManager : MonoBehaviour
     //xml
     public string xmlFile = "Quest/Quest";
     public XmlNodeList allNodes;
-
-    //
-    public List<Quest> performingQuest = new List<Quest>();     //진행중인 퀘스트
+  
+    public List<Quest> performingQuest = new List<Quest>();     //진행중인 퀘스트  
     public Quest currentQuest;                                  //현재 상호작용 중인 퀘스트 ex) npc가 퀘스트를 부여하는 대화를 진행 중 부여할 주체가 되는 퀘스트. 퀘스트 수락 버튼을 눌렀을때 진행중인 퀘스트에 등록되어야 하는 퀘스트. 
     public QuestState cuurentState;                             //현재 퀘스트 상태(수락중인지, 진행중인지 등등)
     public List<Item> rewardItem;                               //퀘스트 진행시 리워드 아이템 목록을 리스트로 만들고 아이템 저장
 
     public List<Quest> completeQuest = new List<Quest>();       //완료한 퀘스트
 
-    public Dictionary<string, XmlNodeList> NodeAll = new Dictionary<string, XmlNodeList>();
-    public Dictionary<string, List<Quest>> AllQuest = new Dictionary<string, List<Quest>>();
+    public Dictionary<string, XmlNodeList> NodeAll = new Dictionary<string, XmlNodeList>();     //퀘스트 정보를 담고있는 xml node
+    public Dictionary<string, List<Quest>> AllQuest = new Dictionary<string, List<Quest>>();    //게임 시작시 등록된 퀘스트
 
-    private string codeStr;
+    private string codeStr; //퀘스트 보상 아이템을 확인하기 위한 string 변수
 
-    public UnityAction<Quest> setQuestUI;
+    public UnityAction<bool> setQuestUI;
+
+    public QuestSlot selectSlot; //QuestList에서 선택한 Quest 정보를 담고 있는 슬롯
 
     public void RegistQuestXml(string npcName, string fileName)
     {
@@ -188,13 +189,21 @@ public class QuestManager : MonoBehaviour
 
     public void SetQuestUI()
     {
-        setQuestUI?.Invoke(currentQuest);
+        setQuestUI?.Invoke(false);
     }
 
     public void ResetQuest()
     {
         currentQuest = null;
         cuurentState = QuestState.None;
+    }
+
+    public void GiveupQuest()
+    {
+        performingQuest.Remove(currentQuest);
+        Destroy(selectSlot.gameObject);
+        selectSlot = null;
+        ResetQuest();
     }
 }
 

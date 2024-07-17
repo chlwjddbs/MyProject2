@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class SkillBookUI : MonoBehaviour
 {
+    private ControllOption controllOption;
+
     public GameObject skillBookUI;
     private RectTransform skillBookUIrect;
     private bool isOpen;
 
     public Sound[] skillboolSound;
+
+    public KeyOption keyOption;
 
     private void Start()
     {
@@ -21,6 +25,7 @@ public class SkillBookUI : MonoBehaviour
     public void SetData()
     {
         skillBookUIrect = skillBookUI.GetComponent<RectTransform>();
+        controllOption = OptionManager.instance.controllOption;
     }
 
     // Update is called once per frame
@@ -63,7 +68,7 @@ public class SkillBookUI : MonoBehaviour
         }
         
 
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(controllOption.bindKey_Dic[keyOption].bindKey))
         {
             isOpen = !isOpen;
             if (isOpen)

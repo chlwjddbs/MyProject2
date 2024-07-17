@@ -690,5 +690,7 @@ public enum KeyOption
 
     ViewDescription,
 
+    QuestList,
+
     KeyCount,
 }

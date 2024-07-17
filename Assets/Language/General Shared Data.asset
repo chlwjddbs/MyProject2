@@ -97,6 +97,10 @@ MonoBehaviour:
     m_Key: Accept
     m_Metadata:
       m_Items: []
+  - m_Id: 81968630951374848
+    m_Key: GiveUp
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

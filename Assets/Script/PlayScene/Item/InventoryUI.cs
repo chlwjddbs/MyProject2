@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     private Inventory inven;
+    private ControllOption controllOption;
 
     //실제 인벤토리 창으로 쓰일 오브젝트
     public GameObject InvenUI;
@@ -33,6 +34,8 @@ public class InventoryUI : MonoBehaviour
 
     public Sound[] InvenSound;
 
+    public KeyOption keyOption;
+
     private void Awake()
     { 
         Inventory.instance.SetUIData += SetUIData;
@@ -48,7 +51,7 @@ public class InventoryUI : MonoBehaviour
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    private void LateUpdate()
     {
         if (!GameData.instance.isSet)
         {
@@ -89,6 +92,7 @@ public class InventoryUI : MonoBehaviour
     public void SetUIData()
     {
         inven = Inventory.instance;
+        controllOption = OptionManager.instance.controllOption;
         equipUI = GetComponent<EquipmentUI>();
         InvenUIrect = InvenUI.GetComponent<RectTransform>();
         itemInformation.SetData();
@@ -138,7 +142,6 @@ public class InventoryUI : MonoBehaviour
 
     public void ToggleUI()
     {
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isOpen)
@@ -149,7 +152,7 @@ public class InventoryUI : MonoBehaviour
                 AudioManager.instance.PlayExternalSound("InvenClose");
             }
         }
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(controllOption.bindKey_Dic[keyOption].bindKey))
         {
             //인벤토리가 직접 꺼지면 다양한 버그가 발생하여 위치를 옮기는 방식으로 변경
             /*InvenUI.SetActive(!InvenUI.activeSelf);          

@@ -4,11 +4,11 @@
 	<quest>
 		<questNumber>0</questNumber>
 		<npcName>questionablehead</npcName>
-		<questName>Revenge of the Skeletone</questName>
+		<questName>questionablehead_qname</questName>
 		<description>questionablehead_quest</description>
 		<diologIndex>1</diologIndex>
 		<randomIndex>2</randomIndex>
-		<completeIndex>9</completeIndex>
+		<completeIndex>4</completeIndex>
 		<level>1</level>
 		<questType>0</questType>
 		<goalIndex>0</goalIndex>
@@ -20,7 +20,7 @@
 	<quest>
 		<questNumber>1</questNumber>
 		<npcName>questionablehead</npcName>
-		<questName>Revenge of the Skeletone2</questName>
+		<questName>questionablehead_qname2</questName>
 		<description>questionablehead_quest2</description>
 		<diologIndex>2</diologIndex>
 		<randomIndex>4</randomIndex>

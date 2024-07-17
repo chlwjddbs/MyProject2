@@ -57,14 +57,14 @@
 		<next>-1</next>
 	</dialog>
 	<dialog>
-		<number>2</number>
+		<number>3</number>
 		<character>questionablehead0</character>
 		<name>questionablehead</name>
 		<sentence>QuestionableHead_8</sentence>
 		<next>-1</next>
 	</dialog>
 	<dialog>
-		<number>3</number>
+		<number>4</number>
 		<character>questionablehead0</character>
 		<name>questionablehead</name>
 		<sentence>QuestionableHead_9</sentence>

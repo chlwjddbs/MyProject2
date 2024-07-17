@@ -2,14 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization.Settings;
 using TMPro;
 using UnityEngine.Pool;
 
 public class QuestUI : MonoBehaviour
 {
     private QuestManager questManager;
+    private ControllOption controllOption;
+    private QuestList questList;
 
     public RectTransform questUI;
+    public RectTransform questListUI;
 
     public TextMeshProUGUI questName;
 
@@ -24,9 +28,12 @@ public class QuestUI : MonoBehaviour
 
     public TextMeshProUGUI itemText;
 
-    public Transform goldReward;
-    public Transform expReward;
-    public Transform ItemReward;
+    public RectTransform goldReward;
+    public RectTransform expReward;
+    public RectTransform ItemReward;
+
+    public GameObject AcceptButton;
+    public GameObject GiveupButton;
 
     public Image rewardItemImagePrefab;
     public List<Image> rewardImages = new List<Image>();
@@ -34,13 +41,22 @@ public class QuestUI : MonoBehaviour
     private ObjectPoolingManager poolingManager;
     public IObjectPool<Image> connectPool;
 
-    private Quest curQuset;
     private Vector3 ClosePos = new Vector3(0, 1080f, 0);
+
+    private bool isListOpen = false;
+
+    public KeyOption keyOption;
+
+    public ConfirmedPopup confirmedPopup;
 
     public void Start()
     {
         questManager = QuestManager.instance;
         questManager.setQuestUI += SetQuestUI;
+
+        controllOption = OptionManager.instance.controllOption;
+
+        questList = GetComponentInChildren<QuestList>();
 
         poolingManager = ObjectPoolingManager.instance;
         poolingManager.RegisetPoolImageObj(rewardItemImagePrefab, new ObjectPool<Image>(CreatePool, OnGet, OnRelease, OnDes, maxSize: 3));
@@ -53,36 +69,50 @@ public class QuestUI : MonoBehaviour
         }
     }
 
-    public void SetQuestUI(Quest _quest)
+    private void LateUpdate()
     {
-        curQuset = _quest;
+        if (!GameData.instance.isSet)
+        {
+            return;
+        }
+        if (GameSceneMenu.isMenuOpen)
+        {
+            return;
+        }
 
-        questName.text = _quest.qName;
+        ToggleUI();
+    }
 
-        descriptionArea.text = _quest.description;
-        questGoal.text = $"[{_quest.questProgress.currentAmount}/{_quest.questProgress.reachedAmount}]";
+    public void SetQuestUI(bool isListUI)
+    {
+        questName.text = LocalizationSettings.StringDatabase.GetLocalizedString("Quest", questManager.currentQuest.qName, LocalizationSettings.SelectedLocale);
 
-        if (_quest.goldReward == 0)
+        descriptionArea.text = LocalizationSettings.StringDatabase.GetLocalizedString("Quest", questManager.currentQuest.description , LocalizationSettings.SelectedLocale);
+        questGoal.text = $"[{questManager.currentQuest.questProgress.currentAmount}/{questManager.currentQuest.questProgress.reachedAmount}]";
+
+        if (questManager.currentQuest.goldReward == 0)
         {
             goldReward.gameObject.SetActive(false);
         }
         else
         {
             goldReward.gameObject.SetActive(true);
-            gold.text = _quest.goldReward.ToString();
+            gold.text = questManager.currentQuest.goldReward.ToString();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(goldReward);
         }
 
-        if(_quest.expReward == 0)
+        if(questManager.currentQuest.expReward == 0)
         {
             expReward.gameObject.SetActive(false);
         }
         else
         {
             expReward.gameObject.SetActive(true);
-            exp.text = _quest.expReward.ToString();
+            exp.text = questManager.currentQuest.expReward.ToString();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(expReward);
         }
 
-        if (_quest.itemReward.Count == 0)
+        if (questManager.currentQuest.itemReward.Count == 0)
         {
             ItemReward.gameObject.SetActive(false);
         }
@@ -90,20 +120,23 @@ public class QuestUI : MonoBehaviour
         {
             ItemReward.gameObject.SetActive(true);
 
-            for (int i = 0; i < _quest.itemReward.Count; i++)
+            for (int i = 0; i < questManager.currentQuest.itemReward.Count; i++)
             {
                 rewardImages.Add(connectPool.Get());
-                rewardImages[i].sprite = _quest.itemReward[i].itemImege;
+                rewardImages[i].sprite = questManager.currentQuest.itemReward[i].itemImege;
             }
         }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(questUI);
+       
+        AcceptButton.SetActive(!isListUI);
+        GiveupButton.SetActive(isListUI);
 
         OpenUI();
     }
 
     public void ReSetQuestUI()
     {
-        CloseUI();
-
         questName.text = null;
 
         descriptionArea.text = null;
@@ -137,14 +170,58 @@ public class QuestUI : MonoBehaviour
         questUI.anchoredPosition = ClosePos;
     }
 
+    private void ToggleUI()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isListOpen)
+            {
+                CloseListUI();
+            }
+        }
+        if (Input.GetKeyDown(controllOption.bindKey_Dic[keyOption].bindKey))
+        {
+            isListOpen = !isListOpen;
+            if (isListOpen)
+            {
+                questListUI.anchoredPosition = new Vector3(0, 0, 0);
+            }
+            else
+            {
+                questListUI.anchoredPosition = new Vector3(0, 1080f, 0);
+            }
+        }
+    }
+
+    public void CloseListUI()
+    {
+        isListOpen = false;
+        questListUI.anchoredPosition = new Vector3(0, 1080f, 0);
+    }
+
     public void Accecpt()
     {
         CloseUI();
-        questManager.performingQuest.Add(curQuset);
+        questManager.cuurentState = QuestState.Accept;
+        questManager.performingQuest.Add(questManager.currentQuest);
+        questList.ListAdd(questManager.currentQuest);
+    }
+
+    public void GiveUpButton()
+    {
+        confirmedPopup.myRect.anchoredPosition = Vector3.zero;
+    }
+
+    public void GiveupQuest()
+    {
+        CloseUI();
+        confirmedPopup.CloseUI();
+        questManager.GiveupQuest();
     }
 
     public void Cancel()
     {
+        CloseUI();
         ReSetQuestUI();
     }
     #region 오브젝트 풀링 메서드

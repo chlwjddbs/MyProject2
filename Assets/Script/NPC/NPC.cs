@@ -100,7 +100,7 @@ public class NPC : MonoBehaviour
                 dialogManager.StartDialog(dialogXml, startAbleQuest.dialogIndex);
                 break;
             case QuestState.Accept:
-                dialogManager.StartDialog(dialogXml, startAbleQuest.dialogIndex + Random.Range(1, startAbleQuest.randomIndex));
+                dialogManager.StartDialog(dialogXml, startAbleQuest.dialogIndex + Random.Range(1, startAbleQuest.randomIndex+1));
                 break;
             case QuestState.Complete:
                 dialogManager.StartDialog(dialogXml, startAbleQuest.completeIndex);

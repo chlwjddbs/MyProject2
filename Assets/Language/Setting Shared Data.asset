@@ -171,6 +171,10 @@ MonoBehaviour:
     m_Key: ViewDescription
     m_Metadata:
       m_Items: []
+  - m_Id: 89533009502728192
+    m_Key: QuestList
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
