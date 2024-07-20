@@ -200,4 +200,9 @@ public class GameData : DataManager
             return false;
         }
     }
+
+    public void FindPlayer()
+    {
+        player = GameObject.Find("ThePlayer").GetComponent<Player>();
+    }
 }

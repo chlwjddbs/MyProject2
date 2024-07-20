@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f70407b0e96ad4aa58c5c71dfec170, type: 3}
   m_Name: NomalHeal
   m_EditorClassIdentifier: 
-  itemNumber: 0
+  itemNumber: 5201
   itemType: 4
   itemGrade: 0
   itemName: NomalHeal_Book

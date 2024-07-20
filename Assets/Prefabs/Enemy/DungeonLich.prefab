@@ -1289,6 +1289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3aa8eeb99b575743a3992b4120a1847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -1315,6 +1316,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  enemyIndex: 10
   rotateSpeed: 7
   moveSpeed: 3.5
   exp: 0

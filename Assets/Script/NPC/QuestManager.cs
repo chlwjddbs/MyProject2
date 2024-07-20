@@ -22,6 +22,10 @@ public class QuestManager : MonoBehaviour
     }
     #endregion
 
+    private Player player;
+    private Inventory inventory;
+    private GameData gameData;
+
     //xml
     public string xmlFile = "Quest/Quest";
     public XmlNodeList allNodes;
@@ -39,6 +43,8 @@ public class QuestManager : MonoBehaviour
     private string codeStr; //퀘스트 보상 아이템을 확인하기 위한 string 변수
 
     public UnityAction<bool> setQuestUI;
+    public UnityAction<Quest> removeList;
+    public UnityAction<Quest> loadData;
 
     public QuestSlot selectSlot; //QuestList에서 선택한 Quest 정보를 담고 있는 슬롯
 
@@ -115,17 +121,47 @@ public class QuestManager : MonoBehaviour
         return quests; //npc 이름으로 된 퀘스트를 반환하여 npc에 등록한다.
     }
 
+    private void Start()
+    {
+        SetData();
+    }
+
+    public void SetData()
+    {
+        player = GameData.instance.player;
+        inventory = Inventory.instance;
+        gameData = GameData.instance;
+    }
+
+    public void SaveData()
+    {
+        GameData.instance.userData.PerperformingQuest = performingQuest;
+        GameData.instance.userData.CompleteQuest = completeQuest;
+    }
+
+    public void LoadData()
+    {
+        performingQuest = new List<Quest>(gameData.userData.PerperformingQuest);
+        completeQuest = new List<Quest>(gameData.userData.CompleteQuest);
+
+        foreach (var quest in performingQuest)
+        {
+            currentQuest = quest;
+            loadData?.Invoke(currentQuest);
+        }
+    }
+
     //플레이어 퀘스트 리스트 중 지정된 퀘스트를 뽑아서 그 퀘스트의 상태를 넘겨준다.
-    public QuestState GetQuestState(Quest npcQuests)
+    public QuestState GetQuestState(Quest npcQuest)
     {
         //playerQuests
         cuurentState = QuestState.Ready;
-        currentQuest = npcQuests;
+        currentQuest = npcQuest;
 
         //npc가 여러명이고 퀘스트를 여러개 진행한다는 전재
         foreach (Quest quest in performingQuest)
         {
-            if (quest == npcQuests)
+            if (quest.qName == npcQuest.qName)
             {
                 cuurentState = quest.questState;
             }
@@ -133,7 +169,6 @@ public class QuestManager : MonoBehaviour
 
         return cuurentState;
     }
-
 
     private QuestType QuestTypeIndex(int type)
     {
@@ -167,24 +202,78 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    public void RewardQuest()
+    public void CompleteQuest()
     {
         //보상 받기
         if (currentQuest.itemReward != null)
         {
             foreach (var item in currentQuest.itemReward)
             {
-                Inventory.instance.AddItem(item);
+                ItemReward(item);
             }
         }
 
-        //PlayerStats.instance.AddGold(currentQuest.goldReward);
+        inventory.AddGold(currentQuest.goldReward);
         Debug.Log(currentQuest.goldReward + " 골드를 획득 하였습니다.");
-        //PlayerStats.instance.AddExp(currentQuest.expReward);
+        player.AddExp(currentQuest.expReward);
         Debug.Log(currentQuest.expReward + " 경험치를 획득 하였습니다.");
 
+        currentQuest.questState = QuestState.Complete;
+        completeQuest.Add(currentQuest);
+
         //플레이어 퀘스트리스트에서 삭제
-        performingQuest.Remove(currentQuest);
+        removeList?.Invoke(currentQuest);
+        //performingQuest.Remove(currentQuest);
+        foreach (Quest quest in performingQuest)
+        {
+            if (quest.qName == currentQuest.qName)
+            {
+                performingQuest.Remove(quest);
+                break;
+            }
+        }
+        ResetQuest();
+    }
+
+    public void ItemReward(Item item) 
+    {
+        switch (item.itemType)
+        {
+            case ItemType.Used:
+
+                inventory.CheckUseableSlot?.Invoke(item); //인벤토리에 현재 보상으로 받는 소모품과 같은 소모품이 있고, 중첩 가능한지 체크.
+                if (inventory.UseableSlot)
+                {
+                    inventory.AddPotion(item); //가능하면 보상 지급
+                }
+                else
+                {
+                    if (inventory.isAdd) //중첩할 아이템을 찾지 못했지만 인벤토리를 사용가능하면 보상 지급
+                    {
+                        inventory.AddPotion(item);
+                    }
+                    else
+                    {
+                        Vector3 dropPos = player.transform.position;
+                        dropPos.y = 0;
+                        AddItem _potion = Instantiate(item.FieldObject, dropPos, item.FieldObject.transform.rotation, DropItemManager.instance.transform).GetComponent<AddItem>();
+                        _potion.quantity = 1;
+                    }
+                }
+                break;
+            default:
+                if (inventory.isAdd)
+                {
+                    inventory.AddItem(item);
+                }
+                else
+                {
+                    Vector3 dropPos = player.transform.position;
+                    dropPos.y = 0;
+                    Instantiate(item.FieldObject, dropPos, item.FieldObject.transform.rotation, DropItemManager.instance.transform);
+                }
+                break;
+        }
     }
 
     public void SetQuestUI()

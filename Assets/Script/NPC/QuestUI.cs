@@ -43,7 +43,8 @@ public class QuestUI : MonoBehaviour
 
     private Vector3 ClosePos = new Vector3(0, 1080f, 0);
 
-    private bool isListOpen = false;
+    private bool isOpen = false;
+    private bool isQuestUIOpen = false;
 
     public KeyOption keyOption;
 
@@ -85,6 +86,8 @@ public class QuestUI : MonoBehaviour
 
     public void SetQuestUI(bool isListUI)
     {
+        ReSetQuestUI();
+
         questName.text = LocalizationSettings.StringDatabase.GetLocalizedString("Quest", questManager.currentQuest.qName, LocalizationSettings.SelectedLocale);
 
         descriptionArea.text = LocalizationSettings.StringDatabase.GetLocalizedString("Quest", questManager.currentQuest.description , LocalizationSettings.SelectedLocale);
@@ -96,6 +99,7 @@ public class QuestUI : MonoBehaviour
         }
         else
         {
+            Debug.Log(questManager.currentQuest.goldReward);
             goldReward.gameObject.SetActive(true);
             gold.text = questManager.currentQuest.goldReward.ToString();
             LayoutRebuilder.ForceRebuildLayoutImmediate(goldReward);
@@ -156,33 +160,36 @@ public class QuestUI : MonoBehaviour
 
             rewardImages.Clear();
         }
-
-        questManager.ResetQuest();
     }
 
     public void OpenUI()
     {
-        questUI.anchoredPosition = Vector3.zero;
+        isQuestUIOpen = true;
+        questUI.anchoredPosition = Vector3.zero;       
     }
 
     public void CloseUI()
     {
+        isQuestUIOpen = false;
         questUI.anchoredPosition = ClosePos;
+        if (questManager.selectSlot != null)
+        {
+            questManager.selectSlot.isOpen = false;
+        }
     }
 
     private void ToggleUI()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isListOpen)
-            {
-                CloseListUI();
-            }
+            CloseListUI();
+            CloseUI();
         }
+
         if (Input.GetKeyDown(controllOption.bindKey_Dic[keyOption].bindKey))
         {
-            isListOpen = !isListOpen;
-            if (isListOpen)
+            isOpen = !isOpen;
+            if (isOpen)
             {
                 questListUI.anchoredPosition = new Vector3(0, 0, 0);
             }
@@ -195,7 +202,7 @@ public class QuestUI : MonoBehaviour
 
     public void CloseListUI()
     {
-        isListOpen = false;
+        isOpen = false;
         questListUI.anchoredPosition = new Vector3(0, 1080f, 0);
     }
 
@@ -203,6 +210,7 @@ public class QuestUI : MonoBehaviour
     {
         CloseUI();
         questManager.cuurentState = QuestState.Accept;
+        questManager.currentQuest.questState = QuestState.Accept;
         questManager.performingQuest.Add(questManager.currentQuest);
         questList.ListAdd(questManager.currentQuest);
     }
@@ -223,7 +231,14 @@ public class QuestUI : MonoBehaviour
     {
         CloseUI();
         ReSetQuestUI();
+        questManager.ResetQuest();
     }
+
+    public bool UIOpenCheck()
+    {
+        return isOpen || isQuestUIOpen;
+    }
+
     #region 오브젝트 풀링 메서드
     private Image CreatePool()
     {

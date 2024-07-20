@@ -12,7 +12,7 @@
 		<level>1</level>
 		<questType>0</questType>
 		<goalIndex>0</goalIndex>
-		<goalAmount>1</goalAmount>
+		<goalAmount>6</goalAmount>
 		<gold>100</gold>
 		<exp>350</exp>
 		<item>0</item>
@@ -22,12 +22,12 @@
 		<npcName>questionablehead</npcName>
 		<questName>questionablehead_qname2</questName>
 		<description>questionablehead_quest2</description>
-		<diologIndex>2</diologIndex>
-		<randomIndex>4</randomIndex>
-		<completeIndex>9</completeIndex>
+		<diologIndex>5</diologIndex>
+		<randomIndex>1</randomIndex>
+		<completeIndex>7</completeIndex>
 		<level>3</level>
 		<questType>0</questType>
-		<goalIndex>0</goalIndex>
+		<goalIndex>10</goalIndex>
 		<goalAmount>1</goalAmount>
 		<gold>200</gold>
 		<exp>1000</exp>

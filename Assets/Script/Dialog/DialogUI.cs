@@ -50,6 +50,10 @@ public class DialogUI : MonoBehaviour
     public void OpenUI()
     {
         isOpen = true;
+        if(dialogRect == null)
+        {
+            Debug.Log("©ж Ёнюс?");
+        }
         dialogRect.anchoredPosition = Vector3.zero;
     }
 

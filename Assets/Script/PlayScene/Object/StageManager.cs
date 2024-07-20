@@ -21,7 +21,9 @@ public class StageManager : MonoBehaviour
     public List<GameObject> startFieldItems;
 
     public List<Enemy_FSM> stageEnemy;
-    public List<Enemy> spawnEnemy;
+    public List<NPC> stageNpc;
+
+    //public List<Enemy> spawnEnemy;
 
     
 
@@ -30,6 +32,7 @@ public class StageManager : MonoBehaviour
         gameData = GameData.instance;
         fader = gameData.fader;
         SaveFileManager.isMain = false;
+        gameData.FindPlayer();
     }
 
     void Start()
@@ -50,6 +53,7 @@ public class StageManager : MonoBehaviour
     {
         SetPlayer();
         SetEnemy();
+        SetNpc();
 
         if (GameData.instance.newGame)
         {
@@ -86,6 +90,12 @@ public class StageManager : MonoBehaviour
     {
         //StageEnemy의 기본 세팅
     }
+
+    public virtual void SetNpc()
+    {
+        //StageNpc의 기본 세팅
+    }
+
     #endregion
     #region LoadData
     public virtual void LoadData()
@@ -96,13 +106,15 @@ public class StageManager : MonoBehaviour
         LoadEnemy();
         LoadItem();
         LoadPlayer();
+        LoadQuest();
+        LoadNpc();
     }
 
     public virtual void LoadPlayer()
     { 
         Inventory.instance.LoadData();
         Equipment.instance.LoadData();
-        SkillBook.instance.LoadData();
+        SkillBook.instance.LoadData();       
         GateManager.instence.LoadData();
         player.LoadData();
         //player.GetComponent<PlayerStatus>().LoadBaseData();
@@ -118,6 +130,19 @@ public class StageManager : MonoBehaviour
     {
         //시작 아이템 및 Player가 버린 아이템 등 Stage의 아이템 정보를 로드한다.
     }
+
+    public virtual void LoadQuest()
+    {
+        //진행중인 퀘스트 및 완료한 퀘스트 등 퀘스트 정보를 불러온다.
+        QuestManager.instance.LoadData();
+    }
+
+    public virtual void LoadNpc() 
+    { 
+        //npc의 정보를 불러온다.
+        //현재는 완료된 퀘스트 정보만 있다. 2024.07.19
+    }
+
     #endregion
     #region SaveData
     public virtual void SaveData()
@@ -128,6 +153,7 @@ public class StageManager : MonoBehaviour
         SavePlayer();
         SaveEnemy();
         SaveItem();
+        SaveQuest();
     }
 
     public virtual void SavePlayer()
@@ -135,7 +161,7 @@ public class StageManager : MonoBehaviour
         player.SaveData();
         Inventory.instance.SaveData();
         Equipment.instance.SaveData();
-        SkillBook.instance.SaveData();
+        SkillBook.instance.SaveData();      
         GateManager.instence.SaveData();
     }
 
@@ -147,6 +173,11 @@ public class StageManager : MonoBehaviour
     public virtual void SaveItem()
     {
         //StageItem 저장
+    }
+
+    public virtual void SaveQuest()
+    {
+        QuestManager.instance.SaveData();
     }
 
     public void AutoSave()

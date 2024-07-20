@@ -14,6 +14,7 @@
 		<sentence>QuestionableHead_1</sentence>
 		<next>-1</next>
 	</dialog>
+	
 	<dialog>
 		<number>1</number>
 		<character>questionablehead0</character>
@@ -68,6 +69,42 @@
 		<character>questionablehead0</character>
 		<name>questionablehead</name>
 		<sentence>QuestionableHead_9</sentence>
+		<next>-1</next>
+	</dialog>
+
+	<dialog>
+		<number>5</number>
+		<character>questionablehead0</character>
+		<name>questionablehead</name>
+		<sentence>QuestionableHead_10</sentence>
+		<next>-1</next>
+	</dialog>
+	<dialog>
+		<number>5</number>
+		<character>questionablehead0</character>
+		<name>questionablehead</name>
+		<sentence>QuestionableHead_11</sentence>
+		<next>-1</next>
+	</dialog>
+	<dialog>
+		<number>5</number>
+		<character>questionablehead0</character>
+		<name>questionablehead</name>
+		<sentence>QuestionableHead_12</sentence>
+		<next>-1</next>
+	</dialog>
+	<dialog>
+		<number>6</number>
+		<character>questionablehead0</character>
+		<name>questionablehead</name>
+		<sentence>QuestionableHead_13</sentence>
+		<next>-1</next>
+	</dialog>
+	<dialog>
+		<number>7</number>
+		<character>questionablehead0</character>
+		<name>questionablehead</name>
+		<sentence>QuestionableHead_14</sentence>
 		<next>-1</next>
 	</dialog>
 </root>

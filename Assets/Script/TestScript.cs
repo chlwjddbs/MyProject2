@@ -33,7 +33,7 @@ public class TestScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        olf.SetData();
+        //olf.SetData();
         /*
         a = new Vector3(0, 0, 0);
         a1 = new Vector3(1, 0, 1);

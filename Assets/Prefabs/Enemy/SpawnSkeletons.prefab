@@ -1176,6 +1176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0927b3d0a0c64082770bd4decf9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -1196,6 +1197,7 @@ MonoBehaviour:
   hitBox: {fileID: 203704089333252619}
   patrolUnit: 0
   PatrolPoint: []
+  enemyIndex: 1
   rotateSpeed: 7
   moveSpeed: 5
   exp: 0
@@ -2351,6 +2353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0927b3d0a0c64082770bd4decf9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -2371,6 +2374,7 @@ MonoBehaviour:
   hitBox: {fileID: 1388488700703437037}
   patrolUnit: 0
   PatrolPoint: []
+  enemyIndex: 1
   rotateSpeed: 7
   moveSpeed: 5
   exp: 0
@@ -4551,6 +4555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0927b3d0a0c64082770bd4decf9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -4571,6 +4576,7 @@ MonoBehaviour:
   hitBox: {fileID: 1700084932487637411}
   patrolUnit: 0
   PatrolPoint: []
+  enemyIndex: 1
   rotateSpeed: 7
   moveSpeed: 5
   exp: 0
@@ -5706,6 +5712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0927b3d0a0c64082770bd4decf9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -5726,6 +5733,7 @@ MonoBehaviour:
   hitBox: {fileID: 2318291098199848631}
   patrolUnit: 0
   PatrolPoint: []
+  enemyIndex: 1
   rotateSpeed: 7
   moveSpeed: 5
   exp: 0
@@ -7109,6 +7117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0927b3d0a0c64082770bd4decf9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -7129,6 +7138,7 @@ MonoBehaviour:
   hitBox: {fileID: 2663058289424810936}
   patrolUnit: 0
   PatrolPoint: []
+  enemyIndex: 1
   rotateSpeed: 7
   moveSpeed: 5
   exp: 0
@@ -8839,6 +8849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0927b3d0a0c64082770bd4decf9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -8859,6 +8870,7 @@ MonoBehaviour:
   hitBox: {fileID: 4823403465811627226}
   patrolUnit: 0
   PatrolPoint: []
+  enemyIndex: 1
   rotateSpeed: 7
   moveSpeed: 5
   exp: 0
@@ -10280,6 +10292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0927b3d0a0c64082770bd4decf9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -10300,6 +10313,7 @@ MonoBehaviour:
   hitBox: {fileID: 5400874271861367134}
   patrolUnit: 0
   PatrolPoint: []
+  enemyIndex: 1
   rotateSpeed: 7
   moveSpeed: 5
   exp: 0
@@ -12392,6 +12406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0927b3d0a0c64082770bd4decf9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -12412,6 +12427,7 @@ MonoBehaviour:
   hitBox: {fileID: 7073269981971407447}
   patrolUnit: 0
   PatrolPoint: []
+  enemyIndex: 1
   rotateSpeed: 7
   moveSpeed: 5
   exp: 0
@@ -14970,6 +14986,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0927b3d0a0c64082770bd4decf9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -14990,6 +15007,7 @@ MonoBehaviour:
   hitBox: {fileID: 8871673112489280539}
   patrolUnit: 0
   PatrolPoint: []
+  enemyIndex: 1
   rotateSpeed: 7
   moveSpeed: 5
   exp: 0

@@ -10,10 +10,13 @@ public class NPC : MonoBehaviour
     private DialogManager dialogManager;
     public NPCInfo npcInfo;
 
+    private SetCursorImage setCursor;
+
     //플레이어와의 거리
     public float theDistance;
 
     public List<Quest> npcQuest;
+    public Dictionary<string, Quest> questDic = new Dictionary<string, Quest>();
 
     public string dialogXml;
     public string questXml;
@@ -21,11 +24,6 @@ public class NPC : MonoBehaviour
     public Quest startAbleQuest;
 
     public int randomDialog;
-
-    private void Start()
-    {
-        SetData();
-    }
 
     // Update is called once per frame
     void Update()
@@ -40,48 +38,68 @@ public class NPC : MonoBehaviour
 
         dialogManager = DialogManager.instance;
         questManager = QuestManager.instance;
-        
+        setCursor = GetComponent<SetCursorImage>();
+
+
         dialogManager.RegistDialogXml(dialogXml);
         questManager.RegistQuestXml(npcInfo.npcName, questXml);
 
         //questManager.SetNpcQuest(npcInfo.npcName);
-        foreach (Quest item in questManager.SetNpcQuest(npcInfo.npcName))
+        foreach (Quest _quest in questManager.SetNpcQuest(npcInfo.npcName))
         {
-            npcQuest.Add(item);
+            npcQuest.Add(_quest);
+            questDic[_quest.qName] = _quest;
+        }
+    }
+
+    public void LoadData()
+    {
+        foreach (var completeQuest in questManager.completeQuest)
+        {
+            if (questDic.TryGetValue(completeQuest.qName, out Quest value))
+            {
+                for (int i = 0; i < npcQuest.Count; i++)
+                {
+                    if(npcQuest[i].qName == value.qName)
+                    {
+                        npcQuest.Remove(npcQuest[i]);
+                    }
+                }
+                questDic.Remove(value.qName);
+            }
+        }
+
+        foreach (var performingQuest in questManager.performingQuest)
+        {
+            if (questDic.TryGetValue(performingQuest.qName, out Quest value))
+            {
+                value.questState = performingQuest.questState;
+                value.questProgress = performingQuest.questProgress;
+            }
         }
     }
 
     private void OnMouseOver()
     {
-        if (theDistance < 2.0f)
-        {
-            
-        }
-        else
-        {
-            
-        }
-
         if (Input.GetButtonDown("Action"))
         {
-            if (theDistance < 2.0f)
+            if (setCursor.theDistance < setCursor.actionDis)
             {
                 DoEvent();
             }
         }
-
     }
 
     private void DoEvent()
     {
-        if(npcQuest.Count == 0)
+        if(questDic.Count == 0)
         {
             questManager.cuurentState = QuestState.None;
             dialogManager.StartDialog(dialogXml, 0);
             return;
         }
 
-        foreach (Quest _quest in npcQuest)
+        foreach (Quest _quest in questDic.Values)
         {
             if(player.PlayerLv >= _quest.level)
             {
@@ -103,6 +121,9 @@ public class NPC : MonoBehaviour
                 dialogManager.StartDialog(dialogXml, startAbleQuest.dialogIndex + Random.Range(1, startAbleQuest.randomIndex+1));
                 break;
             case QuestState.Complete:
+                npcQuest.Remove(startAbleQuest);
+                questDic.Remove(startAbleQuest.qName);
+                questManager.CompleteQuest();
                 dialogManager.StartDialog(dialogXml, startAbleQuest.completeIndex);
                 break;
             default:

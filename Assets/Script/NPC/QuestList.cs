@@ -10,25 +10,28 @@ public class QuestList : MonoBehaviour
 
     public QuestSlot questPrefab;
 
-    public List<QuestSlot> questSlots;
+    public Dictionary<string, QuestSlot> questSlots = new Dictionary<string, QuestSlot>();
+
+    private void Awake()
+    {
+        QuestManager.instance.loadData += ListAdd;
+        QuestManager.instance.removeList += ListRemove;
+    }
 
 
-    public void ListAdd(Quest quset)
+    public void ListAdd(Quest quest)
     {
         QuestSlot questSlot = Instantiate(questPrefab, questPage);
         questSlot.SetQuestSlot();
-        questSlots.Add(questSlot);
+        questSlots[quest.qName] = questSlot;
     }
 
     public void ListRemove(Quest quest)
     {
-        foreach (var slot in questSlots)
+        if(questSlots.TryGetValue(quest.qName,out QuestSlot slot))
         {
-            if(slot.QuestName() == quest.qName)
-            {
-                questSlots.Remove(slot);
-                Destroy(slot);
-            }
+            questSlots.Remove(slot.QuestName());
+            Destroy(slot.gameObject);
         }
     }
 }

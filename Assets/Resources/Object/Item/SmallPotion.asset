@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd3836cbba80cf4dbffb1b2f7edac34, type: 3}
   m_Name: SmallPotion
   m_EditorClassIdentifier: 
-  itemNumber: 5001
+  itemNumber: 3001
   itemType: 2
   itemGrade: 0
   itemName: SmallPotion

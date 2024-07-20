@@ -37,6 +37,14 @@ public class Stage_1stFloor : StageManager
         */
     }
 
+    public override void SetNpc()
+    {
+        for (int i = 0; i < stageNpc.Count; i++)
+        {
+            stageNpc[i].SetData();
+        }
+    }
+
     public override void SaveData()
     {
         base.SaveData();
@@ -131,6 +139,19 @@ public class Stage_1stFloor : StageManager
             GameObject field = Instantiate(gameData.userData.FiledItme_1F[i].fieldItem.FieldObject, dropItemManager.transform);
             field.transform.position = gameData.userData.FiledItme_1F[i].itemPos;
             field.GetComponentInChildren<AddItem>().quantity = gameData.userData.FiledItme_1F[i].quantity;
+        }
+    }
+
+    public override void LoadQuest()
+    {
+        base.LoadQuest();
+    }
+
+    public override void LoadNpc()
+    {
+        for (int i = 0; i < stageNpc.Count; i++)
+        {
+            stageNpc[i].LoadData();
         }
     }
 }

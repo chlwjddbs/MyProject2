@@ -99,10 +99,12 @@ public class UserData
     public float basicDefence;
     #endregion
 
-    #region 플레이어 장비 데이터
+    #region 플레이어 인벤토리 및 장비 데이터
     //public Item[] inventoryItem;
     //인벤토리 기본 크기 25
     public int invenSize = 25;
+    public int gold;
+
     //캐릭터 생성시 사용중인 인벤토리 0
     public int useSlot= 0;
 
@@ -141,6 +143,11 @@ public class UserData
     #region 필드 퍼즐 관리
     public List<bool> puzzleKey;
     public List<bool> openGate;
+    #endregion
+
+    #region 퀘스트 관리
+    public List<Quest> PerperformingQuest = new List<Quest>();
+    public List<Quest> CompleteQuest = new List<Quest>();
     #endregion
 }
 

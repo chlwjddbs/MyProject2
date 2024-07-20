@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40ace07b6d622da46b5a7d9b2385efd3, type: 3}
   m_Name: Stone
   m_EditorClassIdentifier: 
-  itemNumber: 0
+  itemNumber: 2001
   itemType: 1
   itemGrade: 0
   itemName: stron

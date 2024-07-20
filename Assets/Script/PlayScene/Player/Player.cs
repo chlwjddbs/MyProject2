@@ -708,7 +708,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
             baseDamage += i * attackCoefficient;
             baseDefence += defenceCoefficient;
             baseHealth += i * healthCoefficient;
-            baseMana += manaCoefficient;
+            baseMana += i * manaCoefficient;
         }
 
         attackDamage = baseDamage + equipDamage;

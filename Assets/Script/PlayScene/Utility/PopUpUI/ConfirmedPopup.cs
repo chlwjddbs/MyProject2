@@ -12,11 +12,16 @@ public class ConfirmedPopup : MonoBehaviour
 
     private Vector3 closePos = new Vector3(0,1080f,0);
 
+    public bool destroyUI = true;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Cancel();
+            if (destroyUI)
+            {
+                Cancel();
+            }
         }   
     }
 

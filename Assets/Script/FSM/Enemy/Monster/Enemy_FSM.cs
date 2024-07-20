@@ -117,6 +117,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
 
     #region 기타 정보
     [Header("Etc Data")]
+    public int enemyIndex;
     //Enemy가 Target을 향해 회전하는 속도
     [SerializeField] protected float rotateSpeed = 7f;
     [SerializeField] protected float moveSpeed = 3.5f;
@@ -124,6 +125,8 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     [SerializeField] protected GameObject renderBox;
     public GameObject enemyMark;
     public List<Item> dropItem;
+
+    protected QuestManager questManager;
     
     public int Exp { get { return exp; } }
     public GameObject RenderBox { get { return renderBox; } }
@@ -310,10 +313,19 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
         if(Target.TryGetComponent<Player>(out Player player))
         {
             player.AddExp(exp);
+            UpdateKillQuest();
         }
         DropItem();
         //자신을 죽인 타겟에게 경험치를 주도록 구현
         //ex) Die로부터 자신을 죽은 타겟을 받아와 해당 타겟의 경험치를 상승시키도록 한다.
+    }
+
+    public void UpdateKillQuest()
+    {
+        if(questManager.performingQuest.Count > 0)
+        {
+            questManager.UpdateKillQuest(enemyIndex);
+        }
     }
 
     public virtual void DropItem()
@@ -385,6 +397,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     #region Data Manager
     public virtual void SetData()
     {
+        questManager = QuestManager.instance;
         eAnime = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         searchPlayer = GetComponent<SearchPlayer>();

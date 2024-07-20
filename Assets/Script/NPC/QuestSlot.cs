@@ -10,6 +10,8 @@ public class QuestSlot : MonoBehaviour
     private Quest quest;
     public TextMeshProUGUI questName;
 
+    public bool isOpen = false;
+
     public void SetQuestSlot()
     {
         questManager = QuestManager.instance;
@@ -22,10 +24,27 @@ public class QuestSlot : MonoBehaviour
         return quest.qName;
     }
 
-    public void OpenQuestUI() 
+    public void OpenQuestUI()
     {
-        questManager.currentQuest = quest;
-        questManager.selectSlot = this;
-        questManager.setQuestUI?.Invoke(true);
+        if (!isOpen)
+        {
+            OtherSlotOpen();
+
+            isOpen = true;
+            questManager.currentQuest = quest;
+            questManager.selectSlot = this;
+            questManager.setQuestUI?.Invoke(true);
+        }
+    }
+
+    public void OtherSlotOpen()
+    {
+        if (questManager.selectSlot != null)
+        {
+            if (questManager.selectSlot != this)
+            {
+                questManager.selectSlot.isOpen = false;
+            }
+        }
     }
 }

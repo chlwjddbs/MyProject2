@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30f18dd725cb47498e530deb87e4ece, type: 3}
   m_Name: Frost Sword
   m_EditorClassIdentifier: 
-  itemNumber: 0
+  itemNumber: 10
   itemType: 0
   itemGrade: 3
   itemName: FrostSword

@@ -51,6 +51,8 @@ public class Inventory : MonoBehaviour
 
     public UnityAction<int> RemoveUpdateUI;
 
+    public UnityAction<int> UpdateGoldUI;
+
     //public List<Item> items = new List<Item>();
     public int invenSize;
     //아이템이 들어온 슬롯번호
@@ -61,6 +63,9 @@ public class Inventory : MonoBehaviour
     public Item[] items;
     //다량 아이템의 수량 배열
     //public int[] quantityCheck;
+
+    //플레이가 사용할 수 있는 화폐;
+    public int gold;
 
     //사용중인 인벤토리 슬롯의 갯수
     private int useSlot = 0;
@@ -134,6 +139,8 @@ public class Inventory : MonoBehaviour
             invenSize = 25;
             useSlot = 0;
             items = new Item[invenSize];
+            gold = 150;
+            UpdateGoldUI?.Invoke(gold);
 
             for (int i = 0; i < invenSize; i++)
             {
@@ -149,7 +156,8 @@ public class Inventory : MonoBehaviour
         invenSize = gameData.userData.invenSize;
         useSlot = gameData.userData.useSlot;
         items = new Item[gameData.userData.invenItem.Count];
-
+        gold = gameData.userData.gold;
+        UpdateGoldUI?.Invoke(gold);
         for (int i = 0; i < invenSize; i++)
         {
             invenItems.Add(i, new InvenItem(gameData.userData.invenItem[i].slotItem));
@@ -164,6 +172,7 @@ public class Inventory : MonoBehaviour
         //GameData.instance.userData.inventoryItem = items;
         GameData.instance.userData.invenSize = invenSize;
         GameData.instance.userData.useSlot = useSlot;
+        GameData.instance.userData.gold = gold;
 
         for (int i = 0; i < invenSize; i++)
         {
@@ -274,6 +283,23 @@ public class Inventory : MonoBehaviour
         //사용 가능한 인벤토리는 반듯이 존재한다. 왜냐하면 아이템을 인벤토리에 등록하기전, 습득단계에서 획득 가능 여부를 체크하기 때문
     }
 
+    public void AddGold(int _gold)
+    {
+        gold += _gold;
+        UpdateGoldUI?.Invoke(gold);
+    }
+
+    public void UseGold(int _gold)
+    {
+        if(gold < _gold)
+        {
+            Debug.Log("소지금이 부족합니다.");
+            return;
+        }
+
+        gold -= _gold;
+        UpdateGoldUI?.Invoke(gold);
+    }
 
     public void SwapItem(Item _item, int _slotNum)
     {

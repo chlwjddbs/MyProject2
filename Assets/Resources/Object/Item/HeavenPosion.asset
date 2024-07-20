@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd3836cbba80cf4dbffb1b2f7edac34, type: 3}
   m_Name: HeavenPosion
   m_EditorClassIdentifier: 
-  itemNumber: 5002
+  itemNumber: 4002
   itemType: 2
+  itemGrade: 0
   itemName: HeavenPotion
   description: Pull Recovery HP
   itemWeight: 0.1

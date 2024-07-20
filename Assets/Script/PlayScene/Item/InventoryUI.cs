@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class InventoryUI : MonoBehaviour
 
     //아이템 슬롯들을 가지고 있는 부모오브젝트 Items를 받아옴
     public Transform Items;
+
+    public TextMeshProUGUI goldText;
 
     //Items에서 가져온 슬롯들을 정리할 배열 생성
     [HideInInspector] public ItemSlot[] itemSlot;
@@ -122,6 +125,7 @@ public class InventoryUI : MonoBehaviour
 
         //인벤토리 업데이트 액션함수에 등록
         inven.AddUpdateUI += AddItemUI;
+        inven.UpdateGoldUI += UpdateGoldUI;
         inven.RemoveUpdateUI += DeSelectSlot;
         inven.CheckUseableSlot += CheckSlot;
         inven.GoodsOverlap += GoodsOverlap;
@@ -180,6 +184,11 @@ public class InventoryUI : MonoBehaviour
     public void AddItemUI(int _slotNum)
     {
         itemSlot[_slotNum].SetItemSlot();
+    }
+
+    public void UpdateGoldUI(int _gold)
+    {
+        goldText.text = string.Format("{0 : #,###}", _gold);
     }
 
     //인벤토리에 추가되는 아이템이 중첩 가능한 아이템일 때 중첩 가능한지 체크

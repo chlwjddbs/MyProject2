@@ -16,9 +16,20 @@ public class GameSceneMenu : MainMenu
 
     private Player player;
 
+    private InventoryUI inventoryUI;
+    private EquipmentUI equipmentUI;
+    private SkillBookUI skillBookUI;
+    private QuestUI questUI;
+
     private void Awake()
     {
         player = GameObject.Find("ThePlayer").GetComponent<Player>();
+
+        inventoryUI = GetComponent<InventoryUI>();
+        equipmentUI = GetComponent<EquipmentUI>();
+        skillBookUI = GetComponent<SkillBookUI>();
+        questUI = GetComponent<QuestUI>();
+
     }
 
     public override void Update()
@@ -106,9 +117,10 @@ public class GameSceneMenu : MainMenu
     //열려있는 UI가 없으면 Menu를 불러온다.
     public override bool InGameUIOpenCheck()
     {
-        if (GetComponent<InventoryUI>().UIOpenCheck()) return true;
-        if (GetComponent<EquipmentUI>().UIOpenCheck()) return true;
-        if (GetComponent<SkillBookUI>().UIOpenCheck()) return true;
+        if (inventoryUI.UIOpenCheck()) return true;
+        if (equipmentUI.UIOpenCheck()) return true;
+        if (skillBookUI.UIOpenCheck()) return true;
+        if (questUI.UIOpenCheck()) return true;
         if (player.isCasting) return true;
         if (ControllOption.isChanging) return true;
         return false;
@@ -117,9 +129,10 @@ public class GameSceneMenu : MainMenu
     //
     public void InGameUIClose()
     {
-        GetComponent<InventoryUI>().CloseUI();
-        GetComponent<EquipmentUI>().CloseUI();
-        GetComponent<SkillBookUI>().CloseUI();
+        inventoryUI.CloseUI();
+        equipmentUI.CloseUI();
+        skillBookUI.CloseUI();
+        questUI.CloseListUI();
     }
 
     //save와 load버튼은 SaveFileManger에서 관리중

@@ -62,6 +62,37 @@ MonoBehaviour:
       in return.
     m_Metadata:
       m_Items: []
+  - m_Id: 1721508335775744
+    m_Localized: 'You, I think you''re stronger than I thought.
+
+      I want you
+      to do me one more favor.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1721512790126592
+    m_Localized: If you go north-west from the middle gate, there is a 'the way of
+      the dead'.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1721519551344640
+    m_Localized: 'If you go follow the road and there''s a powerful skeleton wizard,
+      Lich. Please kill the him;
+
+      I''ll reward you a lot again this time.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1726132677570560
+    m_Localized: you forgotten way? north-west of middlel Gate, go to the way of
+      the dead.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1726347941834752
+    m_Localized: 'k ha ha. My revenge continues...!
+
+      Here''s the reward I
+      promised.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
