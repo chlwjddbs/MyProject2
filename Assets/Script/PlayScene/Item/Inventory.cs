@@ -11,14 +11,14 @@ public class Inventory : MonoBehaviour
     {
         //Item을 ScriptableObject로 만들어져 있다.
         //그렇기 때문에 직접적으로 수량등을 변경 할 수 없기 때문에 인벤토리 아이템으로 따로 정보를 만들어준다.
-        public Item slotItem;
+        public int slotItem;
         public int quantity;
 
-        public InvenItem(Item _item, int _quantity = 0, bool _isTemp = false)
+        public InvenItem(int _item = -1, int _quantity = 0, bool _isTemp = false)
         {
             slotItem = _item;
 
-            if (slotItem == null)
+            if (slotItem == -1)
             {
                 quantity = 0;
             }
@@ -83,9 +83,13 @@ public class Inventory : MonoBehaviour
     //inventoryUI의 set함수를 실행
     public UnityAction SetUIData;
     //Inventory load data를 ItemSlot과 연동
-    public UnityAction LoadSlot; 
+    public UnityAction LoadSlot;
 
+    public ItemManager itemManager;
     public Dictionary<int, InvenItem> invenItems = new Dictionary<int, InvenItem>();
+
+    private QuestManager questManager;
+    public UnityAction<int, int> ConsumeQuestItems;
 
     /*
     private void Start()
@@ -131,6 +135,8 @@ public class Inventory : MonoBehaviour
         }
 
         gameData = GameData.instance;
+        itemManager = ItemManager.instance;
+        questManager = QuestManager.instance;
 
         SetUIData.Invoke();
 
@@ -144,7 +150,7 @@ public class Inventory : MonoBehaviour
 
             for (int i = 0; i < invenSize; i++)
             {
-                invenItems.Add(i, new InvenItem(null));
+                invenItems.Add(i, new InvenItem());
             }
 
             InventorySpace();
@@ -161,7 +167,15 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < invenSize; i++)
         {
             invenItems.Add(i, new InvenItem(gameData.userData.invenItem[i].slotItem));
-            items[i] = invenItems[i].slotItem;
+            if(invenItems[i].slotItem == -1)
+            {
+                items[i] = null;
+            }
+            else
+            {
+                items[i] = itemManager.itemManage[invenItems[i].slotItem];
+            }
+            
         }
         LoadSlot.Invoke();
 
@@ -204,8 +218,9 @@ public class Inventory : MonoBehaviour
             {
                 //items[i] = _item;
                 slotNum = i;
-                invenItems[slotNum].slotItem = _item;
-                items[slotNum] = invenItems[slotNum].slotItem;
+                invenItems[slotNum].slotItem = _item.itemNumber;
+                items[slotNum] = _item;
+                questManager.UpdateCollectQuest(_item.itemNumber);
                 AddUpdateUI?.Invoke(slotNum);
 
                 //아이템이 들어오면 인벤토리의 소모율 증가
@@ -245,6 +260,7 @@ public class Inventory : MonoBehaviour
                     //가능하면 아이템 중첩
                     if (isOverlap)
                     {
+                        questManager.UpdateCollectQuest(_potion.itemNumber);
                         AddUpdateUI?.Invoke(i);
                         //Debug.Log("중첩");
                         break;
@@ -266,8 +282,9 @@ public class Inventory : MonoBehaviour
                 {
                     //items[i] = _potion;
                     slotNum = i;
-                    invenItems[slotNum].slotItem = _potion;
-                    items[slotNum] = invenItems[slotNum].slotItem;
+                    invenItems[slotNum].slotItem = _potion.itemNumber;
+                    items[slotNum] = _potion;
+                    questManager.UpdateCollectQuest(_potion.itemNumber);
                     AddUpdateUI?.Invoke(slotNum);
 
                     //아이템이 들어오면 인벤토리의 소모율 증가
@@ -281,6 +298,38 @@ public class Inventory : MonoBehaviour
         }
 
         //사용 가능한 인벤토리는 반듯이 존재한다. 왜냐하면 아이템을 인벤토리에 등록하기전, 습득단계에서 획득 가능 여부를 체크하기 때문
+    }
+
+    public void ConsumeQuestItem(int _itemNum, int _consumeQuantity)
+    {
+        int questGoal = _consumeQuantity;
+        for (int i = 0; i < invenItems.Count; i++)
+        {
+            if (invenItems[i].slotItem != -1)
+            {
+                if (invenItems[i].slotItem == _itemNum)
+                {
+                    if (invenItems[i].quantity > questGoal)
+                    {
+                        ConsumeQuestItems?.Invoke(i, questGoal);
+                        invenItems[i].quantity -= questGoal;
+                        break;
+                    }
+                    else if(invenItems[i].quantity < questGoal)
+                    {
+                        ConsumeQuestItems?.Invoke(i, questGoal);
+                        questGoal -= invenItems[i].quantity;
+                        invenItems[i].quantity = 0;
+                    }
+                    else
+                    {
+                        ConsumeQuestItems?.Invoke(i, questGoal);
+                        invenItems[i].quantity = 0;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     public void AddGold(int _gold)
@@ -312,7 +361,7 @@ public class Inventory : MonoBehaviour
     {
         RemoveUpdateUI?.Invoke(_slotNum);
         items[_slotNum] = null;
-        invenItems[_slotNum].slotItem = null;
+        invenItems[_slotNum].slotItem = -1;
 
         slotNum = -1;
 
@@ -334,6 +383,25 @@ public class Inventory : MonoBehaviour
         {
             isAdd = true;
         }
+    }
+
+    public int CheckQuestitem(int itemNum)
+    {
+        int questAmount = 0;
+
+        for (int i = 0; i < invenItems.Count; i++)
+        {
+            if (invenItems[i].slotItem != -1)
+            {
+                if (invenItems[i].slotItem == itemNum)
+                {
+                    questAmount += invenItems[i].quantity;
+                    Debug.Log(questAmount);
+                }
+            }
+        }
+
+        return questAmount;
     }
 
     /*

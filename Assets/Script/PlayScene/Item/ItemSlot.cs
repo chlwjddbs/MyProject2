@@ -39,14 +39,25 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         {
             if (inven.invenItems.TryGetValue(slotNum, out itemInfo))
             {
-                return inven.invenItems[slotNum]?.slotItem;
+                if (itemInfo.slotItem == -1)
+                {
+                    return null;
+                }
+                else
+                {
+                    return inven.itemManager.itemManage[itemInfo.slotItem];
+                }
             }
             else
             {
                 return null;
             }
         }
-        set { inven.invenItems[slotNum].slotItem = value; }
+        set
+        {
+            inven.invenItems[slotNum].slotItem = value? value.itemNumber : -1;
+
+        }
     }
 
     private Item tempItem;
@@ -96,7 +107,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
     {
         quantity = _quantity;
 
-        if (inven.items[slotNum].itemType == ItemType.Used)
+        if (inven.items[slotNum].itemType == ItemType.Used || inven.items[slotNum].itemType == ItemType.Ingredient)
         {
             QuantityItem();
 
@@ -104,7 +115,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
             {
                 isOverlap = true;
             }
-            else if (quantity >= (item as Used).ownershipLimit)
+            else if (quantity >= (item as IOverlapItem).OwnershipLimit)
             {
                 invenUI.invenState = invenState.stay;
                 isOverlap = false;
@@ -130,7 +141,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
             quantity++;
 
             //인벤토리에 있는 아이템이 포션이라면
-            if (inven.items[slotNum].itemType == ItemType.Used)
+            if (inven.items[slotNum].itemType == ItemType.Used || inven.items[slotNum].itemType == ItemType.Ingredient)
             {
                 //현재 가지고 있는 아이템의 갯수를 체크하여 text표시방법 여부 확인
                 QuantityItem();
@@ -147,7 +158,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
                     isOverlap = true;
                 }
                 //아이템의 갯수가 아이템의 최대 중첩한도에 도달하면 해당 슬롯에는 더 이상 중첩이 불가능하다고 표시해준다.
-                else if (quantity >= (item as Used).ownershipLimit)
+                else if (quantity >= (item as IOverlapItem).OwnershipLimit)
                 {
                     //InventoryUI의 CheckSlot 함수 호출 시 반복문을 통해 모든 슬롯을 체크하고
                     //invenState가 able 일시 인벤토리내에 사용 가능한 슬롯이 존재한다고 판정하고
@@ -264,7 +275,17 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         }
         else if(item.itemType == ItemType.Ingredient)
         {
-            Debug.Log("재료 아이템");
+            quantity--;
+            QuantityItem();
+            if (quantity <= 0)
+            {
+                tempItem = item;
+                inven.RemoveItem(slotNum);
+                RemoveItemSlot();
+
+                //사용 효과 발동
+                tempItem.Use(slotNum, player);
+            }
         }
         //그 외 아이템 일 때
         else
@@ -303,6 +324,17 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         */
     }
 
+    public void ConsumeQuestItem(int _quantity)
+    {
+        quantity -= _quantity;
+        QuantityItem();
+        if (quantity <= 0)
+        {
+            inven.RemoveItem(slotNum);
+            RemoveItemSlot();
+        }
+    }
+
     public Item HavedItem()
     {
         return item;
@@ -318,9 +350,9 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
             isOverlap = false;
             return;
         }
-        if (item.itemType == ItemType.Used)
+        if (item.itemType == ItemType.Used || item.itemType == ItemType.Ingredient)
         {
-            if (quantity >= (item as Used).ownershipLimit)
+            if (quantity >= ((item as IOverlapItem).OwnershipLimit))
             {
                 isUseable = false;
                 isOverlap = false;
@@ -374,7 +406,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
                 if (invenUI.Player.GetComponentInChildren<PlayerSight>().Dropable(hitpos))
                 {
                     //아이템이 포션이고 2개 이상 가지고 있다면
-                    if (item.itemType == ItemType.Used && quantity > 1)
+                    if ((item.itemType == ItemType.Used || item.itemType == ItemType.Ingredient) && quantity > 1)
                     {
                         //몇개를 버릴지 물어본다.
                         Debug.Log("몇개를 버리시겠습니까?");
@@ -624,7 +656,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
                         //Drag 슬롯에 저장된 item을 변경하지 않으면 슬롯에 저장된 아이템은 Drop슬롯에 Drag 아이템이 존재하게 된다
                         //Drop슬롯 오브젝트에 Drag슬롯의 오브젝트를를 넣어준다.
                         dropSlot.itemImage = dragItemImage;
-                        dropSlot.item = _dragItem.slotItem;
+                        dropSlot.item = inven.itemManager.itemManage[_dragItem.slotItem];
                         dropSlot.quantity = dragquntity;
                         dropSlot.QuantityItem();
                         //dropSlot.inven.invenItems[dropSlot.slotNum] = _dragItem;

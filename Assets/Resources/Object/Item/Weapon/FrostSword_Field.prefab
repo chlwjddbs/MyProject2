@@ -690,7 +690,9 @@ MonoBehaviour:
   BackGroundUI: {fileID: 431468558836925909}
   itemnameText: {fileID: 431468557977993965}
   ItemShapeBox: {fileID: 431468558062130077}
+  cursor: {fileID: 0}
   quantity: 0
+  test: 0
 --- !u!114 &2721496539913336688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -706,6 +708,7 @@ MonoBehaviour:
   theDistance: 0
   actionDis: 5
   isDraw: 0
+  overMouse: 0
   enableCursor: 1
   disableCursor: 2
 --- !u!114 &626701829470133064
@@ -720,13 +723,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f5c5f2984c66494eb1e8ae5f6eb4134, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theDistance: 0
-  actionDis: 5
   outlineMaterial:
   - {fileID: 2100000, guid: 48823000c7a1c434594446b66f8ec027, type: 2}
   orignMaterial:
   - {fileID: 2100000, guid: 1064ed52bd28ff447bdef0feaa7cc62c, type: 2}
-  isDraw: 0
 --- !u!136 &626701829470133065
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -11,10 +11,10 @@ public class SkillBook : MonoBehaviour
     [System.Serializable]
     public class SetEquipSkill
     {
-        public SkillItem equipSkill;
+        public int equipSkill;
         public float coolTime;
 
-        public SetEquipSkill(SkillItem _skill = null , float _coolTime = 0)
+        public SetEquipSkill(int _skill = -1 , float _coolTime = 0)
         {
             equipSkill = _skill;
             coolTime = _coolTime;
@@ -83,7 +83,7 @@ public class SkillBook : MonoBehaviour
         //현재 사용 가능한 스킬 버튼 가져오기
         button = skillButtons.GetComponentsInChildren<SkillButton>();
 
-        AudioManager.instance.skillSound = new Sound[skillButtons.transform.childCount];
+        //AudioManager.instance.skillSound = new Sound[skillButtons.transform.childCount];
 
         skillbookUI = GetComponentInParent<SkillBookUI>();
         skillbookUI.SetData();
@@ -97,11 +97,10 @@ public class SkillBook : MonoBehaviour
     public void LoadData()
     {
         learnedSkill = new List<SkillItem>();
-        //equipSkill = (SkillItem[])(DataManager.instance.userData.equipSkill).Clone();
 
         for (int i = 0; i < GameData.instance.userData.learedSkill.Count; i++)
         {
-            LearnSkill(GameData.instance.userData.learedSkill[i]);
+            LearnSkill(ItemManager.instance.itemManage[GameData.instance.userData.learedSkill[i].itemNumber] as SkillItem);
         }
         skillbookUI.CloseUI();
 
@@ -113,6 +112,7 @@ public class SkillBook : MonoBehaviour
         }
     }
 
+    //save 과정에서 skillItem이 instance로 저장된다. 그래서 아이템 정보가 변경되거나 수정되었을때 type miss mach 가 되어 불러오기가 제대로 되지 않는다... 수정 방법 생각하기.
     public void SaveData()
     {
         GameData.instance.userData.learedSkill = learnedSkill;

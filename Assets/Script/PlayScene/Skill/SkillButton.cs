@@ -158,7 +158,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
         //게임 플레이 중 변경되는 Button들의 정보를 수월하게 관리하기 위해 미리 딕셔너리 정보를 생성한다. 
         if (GameData.instance.newGame)
         {
-            SkillBook.instance.skillButtonInfo.Add(buttonNum, new SkillBook.SetEquipSkill(skillItem, remainingTime));
+            SkillBook.instance.skillButtonInfo.Add(buttonNum, new SkillBook.SetEquipSkill(-1, remainingTime));
         }
     }
 
@@ -174,7 +174,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     public void SaveData()
     {
         //SetData 과정에서 스킬버튼을 관리하는 딕셔너리를 미리 생성해 두었기 때문에 현재 정보를 만들어 딕셔너리에 벨류만 교체해주면 된다.
-        SkillBook.SetEquipSkill saveData = new SkillBook.SetEquipSkill(skillItem, remainingTime);
+        SkillBook.SetEquipSkill saveData = new SkillBook.SetEquipSkill(skillItem? skillItem.itemNumber : -1, remainingTime);
         SkillBook.instance.skillButtonInfo[buttonNum] = saveData;
     }
 
@@ -182,7 +182,18 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     {
         if (_skillItem != null)
         {
-            AudioManager.instance.AddSkillSound(_skillItem.skillSound, buttonNum);
+            try
+            {
+                foreach (var sound in _skillItem.skillSounds)
+                {
+                    AudioManager.instance.AddSkillSound(sound);
+                }
+            }
+            catch (System.Exception)
+            {
+                Debug.Log("장착한 스킬은 사운드가 없습니다.");
+            }
+
             //스킬 장착시 SkillBook 스크립트의 장착 스킬 목록에 현재 버튼위치에 장착된 스킬을 저장
             //ex) 2번째 스킬 버튼에 heal스킬이 장착되면 장착 스킬 목록 리스트 2번쨰에 heal스킬 추가
             SkillBook.instance.equipSkill[buttonNum] = _skillItem;
@@ -197,28 +208,55 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IBeginDragHandle
     }
 
     //게임을 로드하면 사용했던 스킬의 쿨타임을 적용해주어야 하기 때문에 EquipSkill에서 쿨타임을 적용하는 형태로 적용한다. 
-    public void LoadSkill(SkillItem _skillItem , float _coolTime)
+    public void LoadSkill(int _skillItem , float _coolTime)
     {
-        if(_skillItem == null)
+        if(_skillItem == -1)
         {
             return;
         }
-        AudioManager.instance.AddSkillSound(_skillItem.skillSound, buttonNum);
-        SkillBook.instance.equipSkill[buttonNum] = _skillItem;
-        skillItem = _skillItem;
+      
+        SkillBook.instance.equipSkill[buttonNum] = ItemManager.instance.itemManage[_skillItem] as SkillItem;
+        skillItem = ItemManager.instance.itemManage[_skillItem] as SkillItem;
         GameObject _skill = Instantiate(skillItem.skill.gameObject, skillPos);
-        skill = skillItem.skill;
+        skill = _skill.GetComponent<SkillManager>();
+        skill.LoadPlayer(player);
         skillImage.sprite = skillItem.itemImege;
         skillImage.enabled = true;
         remainingTime = _coolTime;
         CheckButtonState();
+
+        try
+        {
+            foreach (var sound in skillItem.skillSounds)
+            {
+                AudioManager.instance.AddSkillSound(sound);
+            }
+        }
+        catch (System.Exception)
+        {
+            Debug.Log("장착한 스킬은 사운드가 없습니다.");
+        }
     }
 
     public void UnequipSkill()
     {
         //장착 해제 시 장착한 스킬 목록에서 제거
         SkillBook.instance.equipSkill[buttonNum] = null;
-        AudioManager.instance.RemoveSkillSound(buttonNum);
+        try
+        {
+            foreach (var sound in skillItem.skillSounds)
+            {
+                AudioManager.instance.AddSkillSound(sound);
+            }
+        }
+        catch (System.Exception)
+        {
+            Debug.Log("제거된 스킬은 사운드가 없습니다.");
+        }
+        
+
+        //AudioManager.instance.RemoveSkillSound(buttonNum);
+
         skillItem = null;
         if (skill != null)
         {

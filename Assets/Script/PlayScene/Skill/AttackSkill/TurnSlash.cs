@@ -13,6 +13,7 @@ public class TurnSlash : SkillManager
 
         if (isUse)
         {
+            Debug.Log("useSkill");
             player.UseMana(cunsumeMana);
             player.SetAnime(skillMotion);
             player.SetDamage(skillDamage,true);

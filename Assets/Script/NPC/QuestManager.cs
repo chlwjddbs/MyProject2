@@ -33,7 +33,7 @@ public class QuestManager : MonoBehaviour
     public List<Quest> performingQuest = new List<Quest>();     //진행중인 퀘스트  
     public Quest currentQuest;                                  //현재 상호작용 중인 퀘스트 ex) npc가 퀘스트를 부여하는 대화를 진행 중 부여할 주체가 되는 퀘스트. 퀘스트 수락 버튼을 눌렀을때 진행중인 퀘스트에 등록되어야 하는 퀘스트. 
     public QuestState cuurentState;                             //현재 퀘스트 상태(수락중인지, 진행중인지 등등)
-    public List<Item> rewardItem;                               //퀘스트 진행시 리워드 아이템 목록을 리스트로 만들고 아이템 저장
+    public ItemManager itemManager;                             //퀘스트 진행시 리워드 아이템 목록을 리스트로 만들고 아이템 저장
 
     public List<Quest> completeQuest = new List<Quest>();       //완료한 퀘스트
 
@@ -95,14 +95,14 @@ public class QuestManager : MonoBehaviour
 
             //node의 item 번호를 받아와 rewardItem의 리스트 번호로 맞춰 보상 설정
             codeStr = "item";
+
             int itemIndex = int.Parse(node[codeStr].InnerText);
-            Debug.Log(itemIndex);
             int i = 0;
             while (itemIndex > -1)
             {
-                quest.itemReward.Add(rewardItem[itemIndex]);
+                quest.itemReward.Add(itemManager.itemManage[itemIndex]); //아이템을 관리하고 있는 itemManager에서 아이템 번호(itemIndex)로 보상으로 줄 아이템을 가져온다.
                 i++;
-                codeStr = $"item{i}";
+                codeStr = $"item{i}";   //xml node로 부터 아이템을 찾기 때문에 다음 node를 검색할 수 있게 int i 로 반복문을 실행하고 try문을 통해 node를 찾이 못했을때 반목문을 종료한다.
                 try
                 {
                     itemIndex = int.Parse(node[codeStr].InnerText);
@@ -131,6 +131,7 @@ public class QuestManager : MonoBehaviour
         player = GameData.instance.player;
         inventory = Inventory.instance;
         gameData = GameData.instance;
+        itemManager = ItemManager.instance;
     }
 
     public void SaveData()
@@ -213,6 +214,11 @@ public class QuestManager : MonoBehaviour
             }
         }
 
+        if(currentQuest.questProgress.questType == QuestType.Gathering)
+        {
+            inventory.ConsumeQuestItem(currentQuest.questProgress.typeIndex, currentQuest.questProgress.reachedAmount);
+        }
+
         inventory.AddGold(currentQuest.goldReward);
         Debug.Log(currentQuest.goldReward + " 골드를 획득 하였습니다.");
         player.AddExp(currentQuest.expReward);
@@ -261,6 +267,27 @@ public class QuestManager : MonoBehaviour
                     }
                 }
                 break;
+            case ItemType.Ingredient:
+                inventory.CheckUseableSlot?.Invoke(item); //인벤토리에 현재 보상으로 받는 소모품과 같은 소모품이 있고, 중첩 가능한지 체크.
+                if (inventory.UseableSlot)
+                {
+                    inventory.AddPotion(item); //가능하면 보상 지급
+                }
+                else
+                {
+                    if (inventory.isAdd) //중첩할 아이템을 찾지 못했지만 인벤토리를 사용가능하면 보상 지급
+                    {
+                        inventory.AddPotion(item);
+                    }
+                    else
+                    {
+                        Vector3 dropPos = player.transform.position;
+                        dropPos.y = 0;
+                        AddItem _potion = Instantiate(item.FieldObject, dropPos, item.FieldObject.transform.rotation, DropItemManager.instance.transform).GetComponent<AddItem>();
+                        _potion.quantity = 1;
+                    }
+                }
+                break;
             default:
                 if (inventory.isAdd)
                 {
@@ -279,6 +306,26 @@ public class QuestManager : MonoBehaviour
     public void SetQuestUI()
     {
         setQuestUI?.Invoke(false);
+    }
+
+    public void AcceptQuest()
+    {
+        cuurentState = QuestState.Accept;
+        currentQuest.questState = QuestState.Accept;
+        performingQuest.Add(currentQuest);
+
+        if(currentQuest.questProgress.questType == QuestType.Kill)
+        {
+            
+        }
+        else if(currentQuest.questProgress.questType == QuestType.Gathering) //수집 퀘스트의 경우 퀘스트에 필요한 아이템이 인벤토리에 미리 존재 할 수 있음으로 인벤토리를 한번 체크해 준다.
+        {
+            currentQuest.questProgress.currentAmount = inventory.CheckQuestitem(currentQuest.questProgress.typeIndex);
+            if(currentQuest.questProgress.isReached())
+            {
+                currentQuest.questState = QuestState.Complete;
+            }
+        }
     }
 
     public void ResetQuest()

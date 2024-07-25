@@ -10,6 +10,7 @@ public class NomalHeal : SkillManager
     public override void UseSkill()
     {
         base.UseSkill();
+
         if (isUse)
         {
             //마나소모

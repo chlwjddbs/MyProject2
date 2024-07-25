@@ -129,6 +129,7 @@ public class InventoryUI : MonoBehaviour
         inven.RemoveUpdateUI += DeSelectSlot;
         inven.CheckUseableSlot += CheckSlot;
         inven.GoodsOverlap += GoodsOverlap;
+        inven.ConsumeQuestItems += ConsumeQuestItem;
 
         inven.LoadSlot += LoadSlot;
     }
@@ -137,7 +138,7 @@ public class InventoryUI : MonoBehaviour
     {
         for (int i = 0; i < inven.invenItems.Count; i++)
         {
-            if(inven.invenItems[i].slotItem != null)
+            if(inven.invenItems[i].slotItem != -1)
             {
                 itemSlot[i].LoadData(GameData.instance.userData.invenItem[i].quantity);
             }
@@ -194,7 +195,7 @@ public class InventoryUI : MonoBehaviour
     //인벤토리에 추가되는 아이템이 중첩 가능한 아이템일 때 중첩 가능한지 체크
     public void GoodsOverlap(int _slotNum, Item _item)
     {
-        if (_item.itemType == ItemType.Used)
+        if (_item.itemType == ItemType.Used || _item.itemType == ItemType.Ingredient)
         {
             inven.isOverlap = itemSlot[_slotNum].PotionOverlapable();
         }
@@ -245,6 +246,10 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    public void ConsumeQuestItem(int _slotNum, int _quantity)
+    {
+        itemSlot[_slotNum].ConsumeQuestItem(_quantity);
+    }
 
     /*
     public void RemoveItemUI(int _slotNum, Item _item)

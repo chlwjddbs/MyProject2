@@ -25,8 +25,8 @@ MonoBehaviour:
   skillName: NomalHeal
   skillType: 3000
   skill: {fileID: 7299911114127905667, guid: c3f990da58d66bd4e88c820e300c0b2e, type: 3}
-  skillSound:
-    name: nomalHeal
+  skillSounds:
+  - name: NomalHeal
     clip: {fileID: 8300000, guid: dddde2397affa4973880bcc238b6ad30, type: 3}
     volume: 0.2
     pitch: 1

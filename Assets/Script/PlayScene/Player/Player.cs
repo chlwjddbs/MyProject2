@@ -68,6 +68,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
     [SerializeField] private float maxHealth;               //최종 HP
     [SerializeField] private float remainHealth;            //남아 있는 HP
     [SerializeField] private float startHealth = 150f;      //게임 시작시 설정된 HP    
+    private float saveHealth;
     
     private float baseHealth;                               //기본 HP
     private float equipHealth;                              //장비로 추가 된 HP
@@ -75,7 +76,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
     private float healthCoefficient = 10f;                  //레벨 당 추가 HP 계수
 
     [SerializeField] private float defencePoint;            //최종 방어력
-    [SerializeField] private float startDefence = 5f;     //게임 시작시 설정된 방어력
+    [SerializeField] private float startDefence = 5f;       //게임 시작시 설정된 방어력
 
     private float baseDefence;                              //기본 방어력
     private float equipDefence;                             //장비로 추가 된 방어력
@@ -100,6 +101,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
     [SerializeField] private float maxMana;                  //최종 MP
     [SerializeField] private float remainMana;               //남아 있는 MP
     [SerializeField] private float startMana = 50f;          //게임 시작시 설정된 MP   
+    private float saveMana;
 
     private float baseMana;                                  //기본 MP
     private float equipMana;                                 //장비로 추가 된 MP
@@ -299,7 +301,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
             return;
         }
 
-        //_damage = _damage - currentDefence;
+        _damage = _damage - defencePoint;
         _damage = Mathf.Clamp(_damage, 1, _damage);
 
         remainHealth -= _damage;
@@ -307,7 +309,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
         playerStatusUI.SetHpUI();
         //Debug.Log("남은 체력" + currentHealth);
 
-        //RemainHPSound();
+        HPSound();
 
         if (remainHealth <= 0)
         {
@@ -383,12 +385,28 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
     {
         if (_equipItem.health != 0)
         {
+            if (_equipItem.health + maxHealth < 0) //장비의 체력감소 옵션이 현재 최대 체력보다 높을때 체력은 음수가 될 수 없으므로 1이 된다. 이때는 장비를 장착하기 전 체력을 저장해놓고 장비 장착 해제시 hp를 돌려주도록 한다.
+            {
+                if (maxHealth != 1)
+                {
+                    saveHealth = remainHealth / maxHealth;
+                    saveHealth = MathF.Round(saveHealth * 10000) * 0.0001f;
+                }
+            }
             equipHealth += _equipItem.health;
             SetHP();
         }
 
         if (_equipItem.mana != 0)
         {
+            if (_equipItem.mana + maxMana < 0) //장비의 체력감소 옵션이 현재 최대 체력보다 높을때 체력은 음수가 될 수 없으므로 1이 된다. 이때는 장비를 장착하기 전 체력을 저장해놓고 장비 장착 해제시 hp를 돌려주도록 한다.
+            {
+                if (maxMana != 1)
+                {
+                    saveMana = remainMana / maxMana;
+                    saveMana = MathF.Round(saveMana * 10000) * 0.0001f;
+                }
+            }
             equipMana += _equipItem.mana;
             SetMp();
         }
@@ -458,8 +476,11 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
 
             baseHealth += playerLv * healthCoefficient;
             maxHealth = baseHealth + equipHealth;
+            maxHealth = Mathf.Clamp(maxHealth,1, baseHealth + equipHealth);
+
             baseMana += playerLv * manaCoefficient;
             maxMana = baseMana + equipMana;
+            maxMana = Mathf.Clamp(maxMana, 1, baseMana + equipMana);
 
             baseDamage += playerLv * attackCoefficient;
             attackDamage = baseDamage + equipDamage;
@@ -487,9 +508,51 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
         //소수점 5번쨰 자리 반올림 (hp 차이를 최소화 하기 위해 반올림 수를 크게 잡음)
         _health = MathF.Round(_health * 10000) * 0.0001f;
         maxHealth = baseHealth + equipHealth;
-        remainHealth = MathF.Round(_health * maxHealth);
+        maxHealth = Mathf.Clamp(maxHealth, 1, baseHealth + equipHealth);
+
+        if (saveHealth > 0)                      //saveHealth가 있다는건 기존 MaxHealth가 음수였다는 소리이다. 
+        {
+            if (baseHealth + equipHealth > 0)    //saveHealth가 있고 maxHealth가 음수를 벗어났을때 음수가 되기전 hp수치를 적용해 준다. %위에서 clamp로 maxHealth를 묶었기 때문에 baseHealth + equipHealth를 조건문으로 넣어준다.
+            {
+                remainHealth = MathF.Round(saveHealth * maxHealth);
+                saveHealth = 0;
+            }
+            else
+            {
+                remainHealth = 1;
+            }
+        }
+        else
+        {
+            remainHealth = MathF.Round(_health * maxHealth);
+            //remainHealth = Mathf.Clamp(remainHealth, 1, remainHealth);
+        }
         playerStatusUI.SetHpUI();
-        //RemainHPSound();
+        HPSound();
+    }
+
+    public void HPSound()
+    {
+        if (remainHealth / maxHealth <= 0.0f)
+        {
+            AudioManager.instance.StopAm("DangerHeart");
+            AudioManager.instance.StopAm("WarningHeart");
+        }
+        else if (remainHealth / maxHealth <= 0.25f)
+        {
+            AudioManager.instance.StopAm("WarningHeart");
+            AudioManager.instance.PlayAmSond("DangerHeart");
+        }
+        else if (remainHealth / maxHealth <= 0.4f)
+        {
+            AudioManager.instance.StopAm("DangerHeart");
+            AudioManager.instance.PlayAmSond("WarningHeart");
+        }
+        else
+        {
+            AudioManager.instance.StopAm("DangerHeart");
+            AudioManager.instance.StopAm("WarningHeart");
+        }
     }
 
     public void SetMp()
@@ -498,7 +561,25 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
         _mana = remainMana / maxMana;
         _mana = MathF.Round(_mana * 10000) / 10000;
         maxMana = baseMana + equipMana;
-        remainMana = MathF.Round(_mana * maxMana);
+        maxMana = Mathf.Clamp(maxMana, 1, baseMana + equipMana);
+
+        if (saveMana > 0)                      
+        {
+            if (baseMana + equipMana > 0)
+            {
+                remainMana = MathF.Round(saveMana * maxMana);
+                saveMana = 0;
+            }
+            else
+            {
+                remainMana = 1;
+            }
+        }
+        else
+        {
+            remainMana = MathF.Round(_mana * maxMana);
+        }
+        
         playerStatusUI.SetMpUI();
     }
 
@@ -512,7 +593,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
         remainHealth = Math.Clamp(remainHealth, 0, maxHealth);
         remainHealth = MathF.Round(remainHealth);
         playerStatusUI.SetHpUI();
-        //RemainHPSound();
+        HPSound();
         Debug.Log("남은 체력 : " + remainHealth);
     }
 
@@ -705,6 +786,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
         //int = 1부터해서 게임 불러오기시에 0레벨 성장을 막아준다.
         for (int i = 1; i < playerLv; i++)
         {
+            nextLvExp += i * addExpCoefficient;
             baseDamage += i * attackCoefficient;
             baseDefence += defenceCoefficient;
             baseHealth += i * healthCoefficient;
@@ -713,8 +795,11 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
 
         attackDamage = baseDamage + equipDamage;
         defencePoint = baseDefence + equipDefence;
+
         maxHealth = baseHealth + equipHealth;
+        SetHP();
         maxMana = baseMana + equipMana;
+        SetMp();
 
         remainHealth = dataManager.userData.remainHealth;
         remainMana = dataManager.userData.remainMana;

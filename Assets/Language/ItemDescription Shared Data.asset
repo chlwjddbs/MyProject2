@@ -67,6 +67,10 @@ MonoBehaviour:
     m_Key: UseEffect
     m_Metadata:
       m_Items: []
+  - m_Id: 7296677661962240
+    m_Key: SkeletonBone
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -67,6 +67,10 @@ MonoBehaviour:
     m_Key: FrostSword
     m_Metadata:
       m_Items: []
+  - m_Id: 60607679505428480
+    m_Key: SkeletonBone
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

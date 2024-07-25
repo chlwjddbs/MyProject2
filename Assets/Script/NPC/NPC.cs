@@ -123,8 +123,9 @@ public class NPC : MonoBehaviour
             case QuestState.Complete:
                 npcQuest.Remove(startAbleQuest);
                 questDic.Remove(startAbleQuest.qName);
-                questManager.CompleteQuest();
                 dialogManager.StartDialog(dialogXml, startAbleQuest.completeIndex);
+
+                //questManager.CompleteQuest(); 퀘스트 완료 대화 이후에 보상을 지급한다. DialogUI가 Close 될때 실행한다.
                 break;
             default:
                 break;

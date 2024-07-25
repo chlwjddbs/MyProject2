@@ -26,6 +26,11 @@ public class UICheck : MonoBehaviour//, IPointerExitHandler, IPointerEnterHandle
             return;
         }
 
+        if(player == null)
+        {
+            return;
+        }
+
         if (player.isUI && !EventSystem.current.IsPointerOverGameObject())
         {
             player.isUI = false;

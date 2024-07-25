@@ -60,6 +60,11 @@ public class PlayerAnimControl : MonoBehaviour
         audioManager.PlayExternalSound(_playerSound);
     }
 
+    public void PlayerSkillSound(string _playerSkillSound)
+    {
+        audioManager.PlayerSkillSound(_playerSkillSound);
+    }
+
     public void ChangeState(State _newState)
     {
         player.ChangeState(_newState);

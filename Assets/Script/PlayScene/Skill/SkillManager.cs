@@ -14,7 +14,7 @@ public class SkillManager : MonoBehaviour
 
     //소모마나
     public float cunsumeMana;
-    protected Player player;
+    [SerializeField]protected Player player;
     public bool isUse;
     public AnimationClip skillMotion;
     public float actionSpeed;
@@ -26,7 +26,7 @@ public class SkillManager : MonoBehaviour
         if (!isUse)
         {
             remainingTime -= Time.deltaTime;
-            if (remainingTime <= 0)
+            if (remainingTime <= 0 && player.RemainMana>= cunsumeMana)
             {
                 isUse = true;
             }
@@ -40,10 +40,16 @@ public class SkillManager : MonoBehaviour
         remainingTime = 0;
     }
 
+    public void LoadPlayer(Player _player)
+    {
+        player = _player;
+    }
+
     public virtual void UseSkill()
     {
         if (player.RemainMana < cunsumeMana)
         {
+            isUse = false;
             useSequenceText = false;
             SequenceText.instance.SetSequenceText(null, "NotEnoughMana");
             Invoke("SequenceTextAble", .5f);

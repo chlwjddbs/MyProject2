@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 7829433457887708762}
   - component: {fileID: 6559606838046460415}
   - component: {fileID: 9001729063561952565}
-  m_Layer: 0
+  - component: {fileID: 1233816687094743479}
+  m_Layer: 14
   m_Name: Frost Sword_Equip
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -40,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7488479662973443296}
-  m_Mesh: {fileID: 3104799598188098559, guid: cb1f0969d6e33744e9dd370f59938405, type: 3}
+  m_Mesh: {fileID: 4300000, guid: da1a377b056416f489b956f10d1b68f2, type: 2}
 --- !u!23 &9001729063561952565
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -61,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9fa1bf0b674c9ee4da9ae875d7e287fb, type: 2}
+  - {fileID: 2100000, guid: 8e5cb5e4190fbaa418c1d639bcb2d747, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,3 +84,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1233816687094743479
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7488479662973443296}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: da1a377b056416f489b956f10d1b68f2, type: 2}

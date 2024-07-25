@@ -13,7 +13,7 @@ public class AudioManager : MonoBehaviour
     //sound 파일을 가지고 있을 sound 목록
     public Sound[] sounds;
     public List<Sound> externalSound = new List<Sound>();
-    public Sound[] skillSound;
+    public Dictionary<string, Sound> skillSound = new Dictionary<string, Sound>();
 
     //볼륨조절을 위한 오디오 믹서
     public AudioMixer audioMixer;
@@ -247,7 +247,8 @@ public class AudioManager : MonoBehaviour
     public void PlayAmSond(string _soundName)
     {
         Sound sound = null;
-        foreach (var s in sounds)
+
+        foreach (var s in externalSound)
         {
             if (s.name == _soundName)
             {
@@ -275,7 +276,7 @@ public class AudioManager : MonoBehaviour
     public void StopAm(string _soundName)
     {
         Sound sound = null;
-        foreach (var s in sounds)
+        foreach (var s in externalSound)
         {
             if (s.name == _soundName)
             {
@@ -341,9 +342,9 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void AddSkillSound(Sound s , int buttonNum)
+    public void AddSkillSound(Sound s)
     {
-        skillSound[buttonNum] = s;
+        skillSound[s.name] = s;
         s.source = gameObject.AddComponent<AudioSource>();
         s.source.clip = s.clip;
         s.source.volume = s.volume;
@@ -364,8 +365,19 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void RemoveSkillSound(int buttonNum)
+    public void RemoveSkillSound(Sound s)
     {
+        if(skillSound.TryGetValue(s.name, out Sound sound))
+        {
+            Destroy(sound.source);
+            skillSound.Remove(sound.name);
+        }
+        else
+        {
+            
+        }
+
+        /*
         if(skillSound[buttonNum] == null)
         {
             return;
@@ -373,11 +385,19 @@ public class AudioManager : MonoBehaviour
 
         Destroy(skillSound[buttonNum].source);
         skillSound[buttonNum] = null;
+        */
     }
 
-    public void PlayerSkillSound(int buttonNum)
+    public void PlayerSkillSound(string soundName)
     {
-        skillSound[buttonNum].source.Play();
+        if (skillSound.TryGetValue(soundName, out Sound sound))
+        {
+            skillSound[sound.name].source.Play();
+        }
+        else
+        {
+            Debug.Log("실행할 사운드가 없습니다.");
+        }
     }
 
     public void AllAmStop()

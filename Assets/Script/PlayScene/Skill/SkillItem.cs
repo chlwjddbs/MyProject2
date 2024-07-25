@@ -10,7 +10,7 @@ public class SkillItem : Item
 
     public SkillManager skill;
 
-    public Sound skillSound;
+    public Sound[] skillSounds;
    
     public override void Use(int slotNum , Player player = null)
     {

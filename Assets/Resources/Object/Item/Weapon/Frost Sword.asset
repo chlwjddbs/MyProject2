@@ -31,5 +31,5 @@ MonoBehaviour:
   moveSpeed: 0
   equipItemObject: {fileID: 7488479662973443296, guid: 43b05adf51843e640a61f510fc829b9b, type: 3}
   offset: {x: 180, y: 90, z: 85}
-  mesh: {fileID: 3104799598188098559, guid: cb1f0969d6e33744e9dd370f59938405, type: 3}
+  mesh: {fileID: 4300000, guid: da1a377b056416f489b956f10d1b68f2, type: 2}
   attackClip: {fileID: 7400000, guid: 29b06588bceda1f47a3128ceb25f65d0, type: 2}

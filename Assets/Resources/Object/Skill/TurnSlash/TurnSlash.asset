@@ -25,8 +25,8 @@ MonoBehaviour:
   skillName: TurnSlash
   skillType: 0
   skill: {fileID: 4639209112979521401, guid: b9439f3ab697e96438d55a21cc466989, type: 3}
-  skillSound:
-    name: TurnSlash
+  skillSounds:
+  - name: TurnSlash
     clip: {fileID: 8300000, guid: 707639fa619d7204eb22cd8b6270f95f, type: 3}
     volume: 0.3
     pitch: 1

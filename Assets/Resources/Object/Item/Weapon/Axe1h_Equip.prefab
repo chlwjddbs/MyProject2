@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6065332911881866115}
   - component: {fileID: 7170785797010572326}
   - component: {fileID: 4928988553430151404}
-  - component: {fileID: 6027748525226460405}
+  - component: {fileID: -21382956714761559}
   m_Layer: 0
   m_Name: Axe1h_Equip
   m_TagString: Item
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6027748525226460405
+--- !u!64 &-21382956714761559
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

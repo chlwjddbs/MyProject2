@@ -66,6 +66,10 @@ public class DialogUI : MonoBehaviour
         {
             questManager.SetQuestUI();
         }
+        else if(questManager.cuurentState == QuestState.Complete)
+        {
+            questManager.CompleteQuest();
+        }
     }
 
     public void ResetDialogUI()

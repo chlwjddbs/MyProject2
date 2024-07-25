@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemNumber: 3001
   itemType: 2
-  itemGrade: 0
+  itemGrade: 1
   itemName: SmallPotion
   description: This item restores a 100 point of HP to the player.
   itemWeight: 0.1

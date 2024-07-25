@@ -55,7 +55,7 @@ public class TeleportGate : Interaction
                 {
                     SequenceText.instance.SetSequenceText(null, "SelectMoveGate");
                     gateManager.CheckStartingPoint(gateNumber);
-                    gateManager.OpenUI();
+                    gateManager.teleportGateUI.OpenUI();
                 }
             }
         }

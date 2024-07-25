@@ -88,11 +88,24 @@ public class QuestUI : MonoBehaviour
     {
         ReSetQuestUI();
 
+        //퀘스트 제목
         questName.text = LocalizationSettings.StringDatabase.GetLocalizedString("Quest", questManager.currentQuest.qName, LocalizationSettings.SelectedLocale);
 
+        //퀘스트 설명
         descriptionArea.text = LocalizationSettings.StringDatabase.GetLocalizedString("Quest", questManager.currentQuest.description , LocalizationSettings.SelectedLocale);
-        questGoal.text = $"[{questManager.currentQuest.questProgress.currentAmount}/{questManager.currentQuest.questProgress.reachedAmount}]";
 
+        //수집 퀘스트의 경우 인벤토리를 검사하여 가지고 있는 퀘스트 물품을 체크하여 수량으로 보여준다.       
+        if (questManager.currentQuest.questProgress.questType == QuestType.Gathering)
+        {
+            int haveQuestItem = Inventory.instance.CheckQuestitem(questManager.currentQuest.questProgress.typeIndex);
+            questGoal.text = $"[{haveQuestItem}/{questManager.currentQuest.questProgress.reachedAmount}]";
+        }
+        else
+        {
+            questGoal.text = $"[{questManager.currentQuest.questProgress.currentAmount}/{questManager.currentQuest.questProgress.reachedAmount}]";
+        }
+
+        //골드 보상의 유무에 따라 UI에 변화를 준다.
         if (questManager.currentQuest.goldReward == 0)
         {
             goldReward.gameObject.SetActive(false);
@@ -105,7 +118,8 @@ public class QuestUI : MonoBehaviour
             LayoutRebuilder.ForceRebuildLayoutImmediate(goldReward);
         }
 
-        if(questManager.currentQuest.expReward == 0)
+        //경험치 보상의 유무에 따라 UI에 변화를 준다.
+        if (questManager.currentQuest.expReward == 0)
         {
             expReward.gameObject.SetActive(false);
         }
@@ -116,6 +130,7 @@ public class QuestUI : MonoBehaviour
             LayoutRebuilder.ForceRebuildLayoutImmediate(expReward);
         }
 
+        //아이템 보상의 유무에 따라 UI에 변화를 준다.
         if (questManager.currentQuest.itemReward.Count == 0)
         {
             ItemReward.gameObject.SetActive(false);
@@ -209,9 +224,7 @@ public class QuestUI : MonoBehaviour
     public void Accecpt()
     {
         CloseUI();
-        questManager.cuurentState = QuestState.Accept;
-        questManager.currentQuest.questState = QuestState.Accept;
-        questManager.performingQuest.Add(questManager.currentQuest);
+        questManager.AcceptQuest();
         questList.ListAdd(questManager.currentQuest);
     }
 

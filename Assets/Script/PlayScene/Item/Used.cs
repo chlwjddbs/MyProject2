@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "new Used", menuName = "Item/Used")]
-public class Used : Item
+public class Used : Item , IOverlapItem
 {
     public PotionTpye potionTpye;
 
@@ -13,8 +13,9 @@ public class Used : Item
     //현재 소지 개수
     public int quntity = 0;
 
-    //public GameObject potionItemObject;
+    public int OwnershipLimit { get { return ownershipLimit; } }
 
+    public int Quntity { get { return quntity; } }
 }
 
 public enum PotionTpye

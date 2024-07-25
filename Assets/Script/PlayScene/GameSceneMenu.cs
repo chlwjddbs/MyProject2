@@ -19,6 +19,7 @@ public class GameSceneMenu : MainMenu
     private InventoryUI inventoryUI;
     private EquipmentUI equipmentUI;
     private SkillBookUI skillBookUI;
+    private TeleportGateUI teleportGateUI;
     private QuestUI questUI;
 
     private void Awake()
@@ -28,6 +29,7 @@ public class GameSceneMenu : MainMenu
         inventoryUI = GetComponent<InventoryUI>();
         equipmentUI = GetComponent<EquipmentUI>();
         skillBookUI = GetComponent<SkillBookUI>();
+        teleportGateUI = GetComponent<TeleportGateUI>();
         questUI = GetComponent<QuestUI>();
 
     }
@@ -41,7 +43,21 @@ public class GameSceneMenu : MainMenu
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            /*
+            if (InGameUIOpenCheck())
+            {
+                return;
+            }
+           
+            if (tempMenu != null)
+            {
+                MenuClose(tempMenu);
+            }
+            else
+            {
+                ToggleMenu();
+            }
+        }
+        /*
             if (tempMenu == null)
             {
                 if (InGameUIOpenCheck())
@@ -59,21 +75,6 @@ public class GameSceneMenu : MainMenu
                 MenuClose(tempMenu);
             }
             */
-
-            if (InGameUIOpenCheck())
-            {
-                return;
-            }
-           
-            if (tempMenu != null)
-            {
-                MenuClose(tempMenu);
-            }
-            else
-            {
-                ToggleMenu();
-            }
-        }
     }
 
     public void ToggleMenu()
@@ -120,6 +121,7 @@ public class GameSceneMenu : MainMenu
         if (inventoryUI.UIOpenCheck()) return true;
         if (equipmentUI.UIOpenCheck()) return true;
         if (skillBookUI.UIOpenCheck()) return true;
+        if (teleportGateUI.UIOpenCheck()) return true;
         if (questUI.UIOpenCheck()) return true;
         if (player.isCasting) return true;
         if (ControllOption.isChanging) return true;
@@ -132,6 +134,7 @@ public class GameSceneMenu : MainMenu
         inventoryUI.CloseUI();
         equipmentUI.CloseUI();
         skillBookUI.CloseUI();
+        teleportGateUI.CloseUI();
         questUI.CloseListUI();
     }
 
