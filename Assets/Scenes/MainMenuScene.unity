@@ -8056,7 +8056,6 @@ MonoBehaviour:
     playOnAwake: 0
     source: {fileID: 0}
   externalSound: []
-  skillSound: []
   audioMixer: {fileID: 24100000, guid: c180d8e7f5a443b49882e56a36249787, type: 2}
   audioGroups: []
 --- !u!4 &454164525

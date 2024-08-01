@@ -112,7 +112,7 @@ public class DropItemPopupUI : MonoBehaviour
     public void OkButton()
     {
         AudioManager.instance.PlayeSound("dropItem");
-        invenUI.itemSlot[slotNum].GetComponentInChildren<ItemSlot>().DropPotion(value,DropPos);
+        invenUI.itemSlot[slotNum].GetComponentInChildren<ItemSlot>().DropItems(value,DropPos);
         CancelButton();
     }
 

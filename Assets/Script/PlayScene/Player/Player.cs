@@ -81,7 +81,7 @@ public class Player : MonoBehaviour , ICombatable , IAttackable , ISlow_StatusEf
     private float baseDefence;                              //기본 방어력
     private float equipDefence;                             //장비로 추가 된 방어력
 
-    private float defenceCoefficient = 15f;
+    private float defenceCoefficient = 5f;
 
     [SerializeField] private CapsuleCollider hitBox;
 

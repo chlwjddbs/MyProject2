@@ -79,6 +79,10 @@ MonoBehaviour:
     m_Key: QuestList
     m_Metadata:
       m_Items: []
+  - m_Id: 64162774671224832
+    m_Key: IntroPressButton
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

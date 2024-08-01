@@ -11,6 +11,7 @@ public class Item : ScriptableObject
     //아이템 타입(장비, 포션, 퍼즐 등)
     public ItemType itemType;
 
+    //아이템 등급
     public ItemGrade itemGrade;
 
     //아이템 이름
@@ -37,7 +38,7 @@ public class Item : ScriptableObject
 
     public virtual void Use(int slotNum, Player player)
     {
-        Debug.Log("소모품 사용");
+        Debug.Log("아이템 사용");
     }
     
 }

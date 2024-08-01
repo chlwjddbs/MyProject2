@@ -18,7 +18,7 @@ MonoBehaviour:
   itemName: SkeletonBone
   description: 
   itemWeight: 0
-  itemImege: {fileID: 21300000, guid: 9a32185a4d4b2d1459c58a811ed95887, type: 3}
+  itemImege: {fileID: 21300000, guid: e873ac85750ebcf4ba9357be4d5119f2, type: 3}
   shopPrice: 15
   sellPrice: 10
   FieldObject: {fileID: 8920798932221935012, guid: ef93ba3015ffadf42971c77438660529, type: 3}

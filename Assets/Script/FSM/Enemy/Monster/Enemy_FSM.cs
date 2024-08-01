@@ -132,6 +132,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     public GameObject RenderBox { get { return renderBox; } }
     #endregion
 
+    #region Sound Data
     [Header("Sound Data")]
     public Sound[] sounds;
     [SerializeField]protected GameObject audios;
@@ -140,6 +141,7 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
     [SerializeReference] protected string moveSound;
     [SerializeReference] protected string damagedSound;
     [SerializeReference] protected string deathSound;
+    #endregion
 
     protected virtual void Start()
     {

@@ -53,6 +53,22 @@ public class Quest
             }
         }
     }
+
+    public void ItemLost(int itemTpye, int quantity)
+    {
+        if (questProgress.questType == QuestType.Gathering && questProgress.typeIndex == itemTpye)
+        {
+            questProgress.currentAmount -= quantity;
+            if (questProgress.isReached())
+            {
+                questState = QuestState.Complete;
+            }
+            else
+            {
+                questState = QuestState.Accept;
+            }
+        }
+    }
 }
 
 public enum QuestState

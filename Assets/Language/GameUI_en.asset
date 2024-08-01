@@ -82,6 +82,10 @@ MonoBehaviour:
     m_Localized: Quest List
     m_Metadata:
       m_Items: []
+  - m_Id: 64162774671224832
+    m_Localized: Press ESC...
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

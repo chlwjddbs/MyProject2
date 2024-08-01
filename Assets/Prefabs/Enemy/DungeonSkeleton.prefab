@@ -843,6 +843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04b0927b3d0a0c64082770bd4decf9bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eStatusUI: {fileID: 0}
   searchPlayer: {fileID: 0}
   chaseTargetDis: 0
   chaseTargetDir: {x: 0, y: 0, z: 0}
@@ -852,7 +853,7 @@ MonoBehaviour:
   returnHome: 0
   isCasting: 0
   bossEnemy: 0
-  attackDamage: 15
+  attackDamage: 40
   attackDelay: 1.5
   attackRange: 3.5
   attackCollider: {fileID: 8172487260337432250}
@@ -863,6 +864,7 @@ MonoBehaviour:
   hitBox: {fileID: 972882342932451134}
   patrolUnit: 0
   PatrolPoint: []
+  enemyIndex: 0
   rotateSpeed: 7
   moveSpeed: 5
   exp: 1

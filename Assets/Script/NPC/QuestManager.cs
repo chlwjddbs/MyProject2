@@ -195,11 +195,19 @@ public class QuestManager : MonoBehaviour
     }
 
     //item을 획득 하면 현재 진행중인 gathering quest를 모두 찾아서 currentAmmount++ 
-    public void UpdateCollectQuest(int itemIndex)
+    public void AddCollectQuest(int itemIndex)
     {
         foreach (Quest quest in performingQuest)
         {
             quest.ItemCollect(itemIndex);
+        }
+    }
+
+    public void RemoveCollectQuest(int itemIndex, int quantity)
+    {
+        foreach (Quest quest in performingQuest)
+        {
+            quest.ItemLost(itemIndex, quantity);
         }
     }
 
@@ -217,6 +225,7 @@ public class QuestManager : MonoBehaviour
         if(currentQuest.questProgress.questType == QuestType.Gathering)
         {
             inventory.ConsumeQuestItem(currentQuest.questProgress.typeIndex, currentQuest.questProgress.reachedAmount);
+            RemoveCollectQuest(currentQuest.questProgress.typeIndex, currentQuest.questProgress.reachedAmount);
         }
 
         inventory.AddGold(currentQuest.goldReward);
@@ -250,13 +259,13 @@ public class QuestManager : MonoBehaviour
                 inventory.CheckUseableSlot?.Invoke(item); //인벤토리에 현재 보상으로 받는 소모품과 같은 소모품이 있고, 중첩 가능한지 체크.
                 if (inventory.UseableSlot)
                 {
-                    inventory.AddPotion(item); //가능하면 보상 지급
+                    inventory.AddItems(item); //가능하면 보상 지급
                 }
                 else
                 {
                     if (inventory.isAdd) //중첩할 아이템을 찾지 못했지만 인벤토리를 사용가능하면 보상 지급
                     {
-                        inventory.AddPotion(item);
+                        inventory.AddItems(item);
                     }
                     else
                     {
@@ -271,13 +280,13 @@ public class QuestManager : MonoBehaviour
                 inventory.CheckUseableSlot?.Invoke(item); //인벤토리에 현재 보상으로 받는 소모품과 같은 소모품이 있고, 중첩 가능한지 체크.
                 if (inventory.UseableSlot)
                 {
-                    inventory.AddPotion(item); //가능하면 보상 지급
+                    inventory.AddItems(item); //가능하면 보상 지급
                 }
                 else
                 {
                     if (inventory.isAdd) //중첩할 아이템을 찾지 못했지만 인벤토리를 사용가능하면 보상 지급
                     {
-                        inventory.AddPotion(item);
+                        inventory.AddItems(item);
                     }
                     else
                     {
@@ -291,7 +300,7 @@ public class QuestManager : MonoBehaviour
             default:
                 if (inventory.isAdd)
                 {
-                    inventory.AddItem(item);
+                    inventory.GetItem(item);
                 }
                 else
                 {
