@@ -15,13 +15,15 @@ public class ItemManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
+
+        SetData();
     }
 
     public List<Item> gameItems;
 
     public Dictionary<int, Item> itemManage = new Dictionary<int, Item>();
 
-    private void Start()
+    public void SetData()
     {
         foreach (var item in gameItems)
         {

@@ -100,6 +100,7 @@ public class SkillBook : MonoBehaviour
 
         for (int i = 0; i < GameData.instance.userData.learedSkill.Count; i++)
         {
+            Debug.Log(GameData.instance.userData.learedSkill[i].itemNumber);
             LearnSkill(ItemManager.instance.itemManage[GameData.instance.userData.learedSkill[i].itemNumber] as SkillItem);
         }
         skillbookUI.CloseUI();

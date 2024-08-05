@@ -233,10 +233,10 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
             return;
         }
 
-        quantity--;
         //사용하는 아이템이 포션일 때
         if (item.itemType == ItemType.Used)
         {
+            quantity--;
             Debug.Log(inven.invenItems[slotNum].quantity);
             QuantityItem();
             //사용 후 남은 갯수가 없다면
@@ -259,7 +259,8 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         //사용하는 아이템이 스킬북일 때
         else if(item.itemType == ItemType.SkillBook)
         {
-            if(SkillBook.instance.isLearn(item as SkillItem))
+            quantity--;
+            if (SkillBook.instance.isLearn(item as SkillItem))
             {
                 tempItem = item;
                 //인벤토리에서 정보 제거
@@ -273,23 +274,18 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
                 Debug.Log("이미 습득한 스킬 입니다.");
             }
         }
+        //사용하는 아이템이 재료 아이템일때
         else if(item.itemType == ItemType.Ingredient)
         {
-            quantity--;
-            QuantityItem();
             if (quantity <= 0)
             {
-                tempItem = item;
-                inven.RemoveItem(slotNum);
-                RemoveItemSlot();
-
-                //사용 효과 발동
-                tempItem.Use(slotNum, player);
+                item.Use(slotNum, player);
             }
         }
         //그 외 아이템 일 때
         else
         {
+            quantity--;
             tempItem = item;
             //인벤토리에서 정보 제거
             inven.RemoveItem(slotNum);

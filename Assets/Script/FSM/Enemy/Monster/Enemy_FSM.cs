@@ -544,7 +544,8 @@ public class Enemy_FSM : MonoBehaviour, IEnemyData, ICombatable, IAttackable, IR
             enemyMark.SetActive(false);
             remainHealth = 0;
             hitBox.enabled = false;
-            attackCollider.enabled = false;    
+            attackCollider.enabled = false;
+            renderBox.SetActive(false);
             return;
         }
 

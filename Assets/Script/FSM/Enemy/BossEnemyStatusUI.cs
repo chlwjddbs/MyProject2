@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Localization.Settings;
 
 public class BossEnemyStatusUI : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class BossEnemyStatusUI : MonoBehaviour
         nameText.gameObject.SetActive(true);
         bossEnemy = _bossEnemy;
         SetHpBar();
-        nameText.text = bossEnemy.name;
+        nameText.text = LocalizationSettings.StringDatabase.GetLocalizedString("Enemy", bossEnemy.name, LocalizationSettings.SelectedLocale);
     }
 
     public void SetHpBar()

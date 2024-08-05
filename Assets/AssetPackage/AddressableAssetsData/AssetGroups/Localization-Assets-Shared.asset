@@ -93,6 +93,10 @@ MonoBehaviour:
     m_Address: Assets/Language/Quest Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
+  - m_GUID: e5e65bdc7beb4a04086557296c5bff3c
+    m_Address: Assets/Language/Enemy Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 5abc97afe0b7072489f6ee8b6808c52f, type: 2}
   m_SchemaSet:

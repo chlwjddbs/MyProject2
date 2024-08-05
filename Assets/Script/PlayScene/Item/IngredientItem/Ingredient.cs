@@ -15,6 +15,6 @@ public class Ingredient : Item , IOverlapItem
 
     public override void Use(int slotNum, Player player)
     {
-        //
+        Debug.Log("재료 아이템 사용");
     }
 }

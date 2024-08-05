@@ -14,6 +14,8 @@ public class IntroManager : MonoBehaviour
 
     private void Awake()
     {
+        //게임 시작 -> 메인 메뉴 -> 게임 시작 시 timeScale이 0으로 되어 intro가 정상작동하지 않는다. timeScale을 원래대로 돌려 준다.
+        Time.timeScale = 1;
         fader = GameData.instance.fader;
     }
 
@@ -35,7 +37,7 @@ public class IntroManager : MonoBehaviour
     IEnumerator UserNameTyping()
     {
         string name = GameData.instance.userData.userName;
-
+        Debug.Log(name);
         yield return new WaitForSeconds(0.1f);
 
         for (int i = 0; i < name.Length; i++)
